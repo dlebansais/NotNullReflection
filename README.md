@@ -5,6 +5,7 @@ Proxy for System.Reflection with no null references whatsoever.
 ## Supported types
 
 `System.Reflexion.Assembly`
+`System.Reflexion.AssemblyName`
 
 ## Supported frameworks
 

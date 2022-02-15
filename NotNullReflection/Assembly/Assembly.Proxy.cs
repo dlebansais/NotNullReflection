@@ -15,12 +15,12 @@ using BindingFlags = System.Reflection.BindingFlags;
 using OriginBinder = System.Reflection.Binder;
 using OriginModuleResolveEventHandler = System.Reflection.ModuleResolveEventHandler;
 using OriginManifestResourceInfo = System.Reflection.ManifestResourceInfo;
-using OriginAssemblyName = System.Reflection.AssemblyName;
 using OriginReflectionTypeLoadException = System.Reflection.ReflectionTypeLoadException;
 using System.Security;
 using System.IO;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Linq;
 
 /// <summary>
 /// Represents an assembly, which is a reusable, versionable, and self-describing building block of a common language runtime application.
@@ -588,22 +588,22 @@ public partial class Assembly
     }
 
     /// <summary>
-    /// Gets a <see cref="OriginAssemblyName"/> for this assembly.
+    /// Gets a <see cref="AssemblyName"/> for this assembly.
     /// </summary>
     /// <returns>An object that contains the fully parsed display name for this assembly.</returns>
-    public virtual OriginAssemblyName GetName()
+    public virtual AssemblyName GetName()
     {
-        return Origin.GetName();
+        return new AssemblyName(Origin.GetName());
     }
 
     /// <summary>
-    /// Gets a <see cref="OriginAssemblyName"/> for this assembly, setting the codebase as specified by copiedName.
+    /// Gets a <see cref="AssemblyName"/> for this assembly, setting the codebase as specified by copiedName.
     /// </summary>
     /// <param name="copiedName">true to set the <see cref="OriginAssembly.CodeBase"/> to the location of the assembly after it was shadow copied; false to set <see cref="OriginAssembly.CodeBase"/> to the original location.</param>
     /// <returns>An object that contains the fully parsed display name for this assembly.</returns>
-    public virtual OriginAssemblyName GetName(bool copiedName)
+    public virtual AssemblyName GetName(bool copiedName)
     {
-        return Origin.GetName(copiedName);
+        return new AssemblyName(Origin.GetName(copiedName));
     }
 
     /// <summary>
@@ -617,15 +617,21 @@ public partial class Assembly
     }
 
     /// <summary>
-    /// Gets the <see cref="OriginAssemblyName"/> objects for all the assemblies referenced by this assembly.
+    /// Gets the <see cref="AssemblyName"/> objects for all the assemblies referenced by this assembly.
     /// </summary>
     /// <returns>An array that contains the fully parsed display names of all the assemblies referenced by this assembly.</returns>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly references might be removed")]
 #endif
-    public virtual OriginAssemblyName[] GetReferencedAssemblies()
+    public virtual AssemblyName[] GetReferencedAssemblies()
     {
-        return Origin.GetReferencedAssemblies();
+        return Enumerable.ToArray(GetAssemblyNameList());
+    }
+
+    private IEnumerable<AssemblyName> GetAssemblyNameList()
+    {
+        return from System.Reflection.AssemblyName Item in Origin.GetReferencedAssemblies()
+               select new AssemblyName(Item);
     }
 
     /// <summary>
@@ -800,7 +806,7 @@ public partial class Assembly
     }
 
     /// <summary>
-    /// Loads an assembly given its <see cref="OriginAssemblyName"/>.
+    /// Loads an assembly given its <see cref="AssemblyName"/>.
     /// </summary>
     /// <param name="assemblyRef">The object that describes the assembly to be loaded.</param>
     /// <returns>The loaded assembly.</returns>
@@ -809,9 +815,9 @@ public partial class Assembly
     /// <exception cref="FileLoadException"><paramref name="assemblyRef"/> specifies a remote assembly, but the ability to execute code in remote assemblies is disabled. See &lt;LoadFromRemoteSources&gt;. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="assemblyRef"/> is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyRef"/> was compiled with a later version.</exception>
-    public static Assembly Load(OriginAssemblyName assemblyRef)
+    public static Assembly Load(AssemblyName assemblyRef)
     {
-        OriginAssembly Origin = OriginAssembly.Load(assemblyRef);
+        OriginAssembly Origin = OriginAssembly.Load(assemblyRef.Origin);
         return new Assembly(Origin);
     }
 
