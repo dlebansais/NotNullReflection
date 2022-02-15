@@ -45,7 +45,9 @@ public partial class Assembly
     /// <returns>A collection of the types defined in this assembly.</returns>
     public virtual IEnumerable<OriginTypeInfo> DefinedTypes
     {
+#if NET5_0_OR_GREATER
         [RequiresUnreferencedCode("Types might be removed")]
+#endif
         get
         {
             return Origin.DefinedTypes;
@@ -71,7 +73,9 @@ public partial class Assembly
     /// <returns>A collection of the public types defined in this assembly that are visible outside the assembly.</returns>
     public virtual IEnumerable<Type> ExportedTypes
     {
+#if NET5_0_OR_GREATER
         [RequiresUnreferencedCode("Types might be removed")]
+#endif
         get
         {
             return Origin.ExportedTypes;
@@ -115,6 +119,7 @@ public partial class Assembly
         }
     }
 
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether this assembly is held in a collectible System.Runtime.Loader.AssemblyLoadContext.
     /// </summary>
@@ -126,6 +131,7 @@ public partial class Assembly
             return Origin.IsCollectible;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the current assembly was generated dynamically in the current process by using reflection emit.
@@ -241,7 +247,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="typeName"/> is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
+#endif
     public object CreateInstance(string typeName)
     {
         return Origin.CreateInstance(typeName) ?? throw new NullReferenceException($"{nameof(typeName)} is not found");
@@ -262,7 +270,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="typeName"/> is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
+#endif
     public object CreateInstance(string typeName, bool ignoreCase)
     {
         return Origin.CreateInstance(typeName, ignoreCase) ?? throw new NullReferenceException($"{nameof(typeName)} is not found");
@@ -288,7 +298,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="typeName"/> is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
+#endif
     public virtual object CreateInstance(string typeName, bool ignoreCase, BindingFlags bindingAttr, OriginBinder binder, object[] args, CultureInfo culture)
     {
         return Origin.CreateInstance(typeName, ignoreCase, bindingAttr, binder != DefaultBinder ? binder : null, args, culture, null) ?? throw new NullReferenceException($"{nameof(typeName)} is not found");
@@ -388,7 +400,9 @@ public partial class Assembly
     /// <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
     /// <exception cref="NotSupportedException">The assembly is a dynamic assembly.</exception>
     /// <exception cref="FileNotFoundException">Unable to load a dependent assembly.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
+#endif
     public virtual Type[] GetExportedTypes()
     {
         return Origin.GetExportedTypes();
@@ -403,7 +417,9 @@ public partial class Assembly
     /// <exception cref="FileNotFoundException"><paramref name="name"/> was not found.</exception>
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> is not a valid assembly.</exception>
+#if NET6_0_OR_GREATER
     [RequiresAssemblyFiles("This member throws an exception for assemblies embedded in a single-file app")]
+#endif
     public virtual FileStream GetFile(string name)
     {
         return Origin.GetFile(name) ?? throw new FileNotFoundException($"{nameof(name)} was not found.");
@@ -416,7 +432,9 @@ public partial class Assembly
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
     /// <exception cref="FileNotFoundException">A file was not found.</exception>
     /// <exception cref="BadImageFormatException">A file was not a valid assembly.</exception>
+#if NET6_0_OR_GREATER
     [RequiresAssemblyFiles("This member throws an exception for assemblies embedded in a single-file app")]
+#endif
     public virtual FileStream[] GetFiles()
     {
         return Origin.GetFiles();
@@ -430,21 +448,27 @@ public partial class Assembly
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
     /// <exception cref="FileNotFoundException">A file was not found.</exception>
     /// <exception cref="BadImageFormatException">A file was not a valid assembly.</exception>
+#if NET6_0_OR_GREATER
     [RequiresAssemblyFiles("This member throws an exception for assemblies embedded in a single-file app")]
+#endif
     public virtual FileStream[] GetFiles(bool getResourceModules)
     {
         return Origin.GetFiles(getResourceModules);
     }
 
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
     /// <summary>
     /// Gets forwarded types.
     /// </summary>
     /// <returns>The forwarded types.</returns>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
+#endif
     public virtual Type[] GetForwardedTypes()
     {
         return Origin.GetForwardedTypes();
     }
+#endif
 
     /// <summary>
     /// Returns the hash code for this instance.
@@ -596,7 +620,9 @@ public partial class Assembly
     /// Gets the <see cref="OriginAssemblyName"/> objects for all the assemblies referenced by this assembly.
     /// </summary>
     /// <returns>An array that contains the fully parsed display names of all the assemblies referenced by this assembly.</returns>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly references might be removed")]
+#endif
     public virtual OriginAssemblyName[] GetReferencedAssemblies()
     {
         return Origin.GetReferencedAssemblies();
@@ -643,7 +669,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException">Class was not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
+#endif
     public virtual Type GetType(string name)
     {
         return Origin.GetType(name) ?? throw new NullReferenceException("Class was not found.");
@@ -664,7 +692,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type cannot be found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
+#endif
     public virtual Type GetType(string name, bool throwOnError)
     {
         return Origin.GetType(name, throwOnError) ?? throw new NullReferenceException("Type cannot be found.");
@@ -686,7 +716,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type cannot be found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
+#endif
     public virtual Type? GetType(string name, bool throwOnError, bool ignoreCase)
     {
         return Origin.GetType(name, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type cannot be found.");
@@ -697,7 +729,9 @@ public partial class Assembly
     /// </summary>
     /// <returns>An array that contains all the types that are defined in this assembly.</returns>
     /// <exception cref="OriginReflectionTypeLoadException">The assembly contains one or more types that cannot be loaded. The array returned by the <see cref="OriginReflectionTypeLoadException.Types"/> property of this exception contains a <see cref="Type"/> object for each type that was loaded and <see cref="TypeNotLoaded"/> for each type that could not be loaded, while the <see cref="OriginReflectionTypeLoadException.LoaderExceptions"/> property contains an exception for each type that could not be loaded.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
+#endif
     public virtual Type[] GetTypes()
     {
         Type[] Result;
@@ -708,9 +742,11 @@ public partial class Assembly
         }
         catch (OriginReflectionTypeLoadException loadException)
         {
-            for (int i = 0; i < loadException.Types.Length; i++)
-                if (loadException.Types[i] == null)
-                    loadException.Types[i] = TypeNotLoaded;
+            Type[] LoadExceptionTypes = loadException.Types!;
+
+            for (int i = 0; i < LoadExceptionTypes.Length; i++)
+                if (LoadExceptionTypes[i] == null)
+                    LoadExceptionTypes[i] = TypeNotLoaded;
 
             throw loadException;
         }
@@ -737,7 +773,9 @@ public partial class Assembly
     /// <returns>The loaded assembly.</returns>
     /// <exception cref="BadImageFormatException"><paramref name="rawAssembly"/> is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="rawAssembly"/> was compiled with a later version.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
+#endif
     public static Assembly Load(byte[] rawAssembly)
     {
         OriginAssembly Origin = OriginAssembly.Load(rawAssembly);
@@ -752,7 +790,9 @@ public partial class Assembly
     /// <returns>The loaded assembly.</returns>
     /// <exception cref="BadImageFormatException"><paramref name="rawAssembly"/> is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="rawAssembly"/> was compiled with a later version.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
+#endif
     public static Assembly Load(byte[] rawAssembly, byte[] rawSymbolStore)
     {
         OriginAssembly Origin = OriginAssembly.Load(rawAssembly, rawSymbolStore);
@@ -802,7 +842,9 @@ public partial class Assembly
     /// <exception cref="FileNotFoundException">The <paramref name="path"/> parameter is an empty string ("") or does not exist.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="path"/> is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="path"/> was compiled with a later version.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
+#endif
     public static Assembly LoadFile(string path)
     {
         OriginAssembly Origin = OriginAssembly.LoadFile(path);
@@ -822,7 +864,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly; for example, a 32-bit assembly in a 64-bit process. See the exception topic for more information.</exception>
     /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyFile"/> was compiled with a later version.</exception>
     /// <exception cref="SecurityException">A codebase that does not start with "file://" was specified without the required System.Net.WebPermission.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
+#endif
     public static Assembly LoadFrom(string assemblyFile)
     {
         OriginAssembly Origin = OriginAssembly.LoadFrom(assemblyFile);
@@ -844,7 +888,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly; for example, a 32-bit assembly in a 64-bit process. See the exception topic for more information.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="SecurityException">A codebase that does not start with "file://" was specified without the required System.Net.WebPermission.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
+#endif
     public static Assembly LoadFrom(string assemblyFile, byte[] hashValue, AssemblyHashAlgorithm hashAlgorithm)
     {
         OriginAssembly Origin = OriginAssembly.LoadFrom(assemblyFile, hashValue, hashAlgorithm);
@@ -860,7 +906,9 @@ public partial class Assembly
     /// <exception cref="ArgumentException"><paramref name="moduleName"/> does not match a file entry in this assembly's manifest.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="rawModule"/> is not a valid module.</exception>
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded module depends on might be removed")]
+#endif
     public OriginModule LoadModule(string moduleName, byte[]? rawModule)
     {
         return Origin.LoadModule(moduleName, rawModule);
@@ -876,7 +924,9 @@ public partial class Assembly
     /// <exception cref="ArgumentException"><paramref name="moduleName"/> does not match a file entry in this assembly's manifest.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="rawModule"/> is not a valid module.</exception>
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded module depends on might be removed")]
+#endif
     public virtual OriginModule LoadModule(string moduleName, byte[] rawModule, byte[] rawSymbolStore)
     {
         return Origin.LoadModule(moduleName, rawModule, rawSymbolStore);
@@ -925,7 +975,9 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="SecurityException">A codebase that does not start with "file://" was specified without the required System.Net.WebPermission.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
+#endif
     public static Assembly UnsafeLoadFrom(string assemblyFile)
     {
         OriginAssembly Origin = OriginAssembly.UnsafeLoadFrom(assemblyFile);
