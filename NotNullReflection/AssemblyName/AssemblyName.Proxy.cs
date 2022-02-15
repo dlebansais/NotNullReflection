@@ -3,17 +3,17 @@
 using System;
 using System.Configuration.Assemblies;
 using System.Globalization;
+using System.IO;
+using System.Security;
+using System.Runtime.Serialization;
 using OriginAssemblyName = System.Reflection.AssemblyName;
 using AssemblyContentType = System.Reflection.AssemblyContentType;
 using AssemblyNameFlags = System.Reflection.AssemblyNameFlags;
 using StrongNameKeyPair = System.Reflection.StrongNameKeyPair;
 using ProcessorArchitecture = System.Reflection.ProcessorArchitecture;
-using System.IO;
-using System.Security;
-using System.Runtime.Serialization;
 
 /// <summary>
-/// Represents an assembly, which is a reusable, versionable, and self-describing building block of a common language runtime application.
+/// Describes an assembly's unique identity in full.
 /// </summary>
 public partial class AssemblyName
 {
@@ -212,7 +212,7 @@ public partial class AssemblyName
     /// Gets the public key of the assembly.
     /// </summary>
     /// <returns>A byte array that contains the public key of the assembly.</returns>
-    /// <exception cref="SecurityException">A public key was provided (for example, by using the <see cref="System.Reflection.AssemblyName.SetPublicKey(byte[])"/> method), but no public key token was provided.</exception>
+    /// <exception cref="SecurityException">A public key was provided (for example, by using the <see cref="OriginAssemblyName.SetPublicKey(byte[])"/> method), but no public key token was provided.</exception>
     /// <exception cref="NullReferenceException">The public key is not supported.</exception>
     public byte[] GetPublicKey()
     {

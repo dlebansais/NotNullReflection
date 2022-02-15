@@ -5,6 +5,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Emit;
 using System.Configuration.Assemblies;
+using System.Security;
+using System.IO;
+using System.Globalization;
+using System.Runtime.Serialization;
+using System.Linq;
 using OriginAssembly = System.Reflection.Assembly;
 using OriginCustomAttributeData = System.Reflection.CustomAttributeData;
 using OriginTypeInfo = System.Reflection.TypeInfo;
@@ -16,11 +21,8 @@ using OriginBinder = System.Reflection.Binder;
 using OriginModuleResolveEventHandler = System.Reflection.ModuleResolveEventHandler;
 using OriginManifestResourceInfo = System.Reflection.ManifestResourceInfo;
 using OriginReflectionTypeLoadException = System.Reflection.ReflectionTypeLoadException;
-using System.Security;
-using System.IO;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Linq;
+using OriginAssemblyName = System.Reflection.AssemblyName;
+using OriginType = System.Type;
 
 /// <summary>
 /// Represents an assembly, which is a reusable, versionable, and self-describing building block of a common language runtime application.
@@ -78,7 +80,7 @@ public partial class Assembly
 #endif
         get
         {
-            return Origin.ExportedTypes;
+            return Type.GetList(Origin.ExportedTypes);
         }
     }
 
@@ -338,7 +340,7 @@ public partial class Assembly
     /// <exception cref="NullReferenceException">Assembly not found.</exception>
     public static Assembly GetAssembly(Type type)
     {
-        OriginAssembly Origin = OriginAssembly.GetAssembly(type) ?? throw new NullReferenceException("Assembly not found.");
+        OriginAssembly Origin = OriginAssembly.GetAssembly(type.Origin) ?? throw new NullReferenceException("Assembly not found.");
         return new Assembly(Origin);
     }
 
@@ -361,7 +363,7 @@ public partial class Assembly
     /// <exception cref="ArgumentException"><paramref name="attributeType"/> is not a runtime type.</exception>
     public virtual object[] GetCustomAttributes(Type attributeType, bool inherit)
     {
-        return Origin.GetCustomAttributes(attributeType, inherit);
+        return Origin.GetCustomAttributes(attributeType.Origin, inherit);
     }
 
     /// <summary>
@@ -405,7 +407,7 @@ public partial class Assembly
 #endif
     public virtual Type[] GetExportedTypes()
     {
-        return Origin.GetExportedTypes();
+        return Type.GetList(Origin.GetExportedTypes()).ToArray();
     }
 
     /// <summary>
@@ -466,7 +468,7 @@ public partial class Assembly
 #endif
     public virtual Type[] GetForwardedTypes()
     {
-        return Origin.GetForwardedTypes();
+        return Type.GetList(Origin.GetForwardedTypes()).ToArray();
     }
 #endif
 
@@ -549,7 +551,7 @@ public partial class Assembly
     /// <exception cref="NullReferenceException">No resources were specified during compilation or the resource is not visible to the caller.</exception>
     public virtual Stream GetManifestResourceStream(Type type, string name)
     {
-        return Origin.GetManifestResourceStream(type, name) ?? throw new NullReferenceException("No resources were specified during compilation or the resource is not visible to the caller.");
+        return Origin.GetManifestResourceStream(type.Origin, name) ?? throw new NullReferenceException("No resources were specified during compilation or the resource is not visible to the caller.");
     }
 
     /// <summary>
@@ -625,13 +627,7 @@ public partial class Assembly
 #endif
     public virtual AssemblyName[] GetReferencedAssemblies()
     {
-        return Enumerable.ToArray(GetAssemblyNameList());
-    }
-
-    private IEnumerable<AssemblyName> GetAssemblyNameList()
-    {
-        return from System.Reflection.AssemblyName Item in Origin.GetReferencedAssemblies()
-               select new AssemblyName(Item);
+        return Enumerable.ToArray(AssemblyName.GetList(Origin.GetReferencedAssemblies()));
     }
 
     /// <summary>
@@ -680,7 +676,7 @@ public partial class Assembly
 #endif
     public virtual Type GetType(string name)
     {
-        return Origin.GetType(name) ?? throw new NullReferenceException("Class was not found.");
+        return new Type(Origin.GetType(name) ?? throw new NullReferenceException("Class was not found."));
     }
 
     /// <summary>
@@ -703,7 +699,7 @@ public partial class Assembly
 #endif
     public virtual Type GetType(string name, bool throwOnError)
     {
-        return Origin.GetType(name, throwOnError) ?? throw new NullReferenceException("Type cannot be found.");
+        return new Type(Origin.GetType(name, throwOnError) ?? throw new NullReferenceException("Type cannot be found."));
     }
 
     /// <summary>
@@ -725,22 +721,22 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type? GetType(string name, bool throwOnError, bool ignoreCase)
+    public virtual Type GetType(string name, bool throwOnError, bool ignoreCase)
     {
-        return Origin.GetType(name, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type cannot be found.");
+        return new Type(Origin.GetType(name, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type cannot be found."));
     }
 
     /// <summary>
     /// Gets the types defined in this assembly.
     /// </summary>
     /// <returns>An array that contains all the types that are defined in this assembly.</returns>
-    /// <exception cref="OriginReflectionTypeLoadException">The assembly contains one or more types that cannot be loaded. The array returned by the <see cref="OriginReflectionTypeLoadException.Types"/> property of this exception contains a <see cref="Type"/> object for each type that was loaded and <see cref="TypeNotLoaded"/> for each type that could not be loaded, while the <see cref="OriginReflectionTypeLoadException.LoaderExceptions"/> property contains an exception for each type that could not be loaded.</exception>
+    /// <exception cref="OriginReflectionTypeLoadException">The assembly contains one or more types that cannot be loaded. The array returned by the <see cref="OriginReflectionTypeLoadException.Types"/> property of this exception contains a <see cref="Type"/> object for each type that was loaded and <see cref="Type.Missing"/> for each type that could not be loaded, while the <see cref="OriginReflectionTypeLoadException.LoaderExceptions"/> property contains an exception for each type that could not be loaded.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
     public virtual Type[] GetTypes()
     {
-        Type[] Result;
+        OriginType[] Result;
 
         try
         {
@@ -748,16 +744,16 @@ public partial class Assembly
         }
         catch (OriginReflectionTypeLoadException loadException)
         {
-            Type[] LoadExceptionTypes = loadException.Types!;
+            OriginType[] LoadExceptionTypes = loadException.Types!;
 
             for (int i = 0; i < LoadExceptionTypes.Length; i++)
                 if (LoadExceptionTypes[i] == null)
-                    LoadExceptionTypes[i] = TypeNotLoaded;
+                    LoadExceptionTypes[i] = Type.Missing.Origin;
 
             throw loadException;
         }
 
-        return Result;
+        return Type.GetList(Result).ToArray();
     }
 
     /// <summary>
@@ -769,7 +765,7 @@ public partial class Assembly
     /// <exception cref="ArgumentException"><paramref name="attributeType"/> uses an invalid type.</exception>
     public virtual bool IsDefined(Type attributeType, bool inherit)
     {
-        return Origin.IsDefined(attributeType, inherit);
+        return Origin.IsDefined(attributeType.Origin, inherit);
     }
 
     /// <summary>
