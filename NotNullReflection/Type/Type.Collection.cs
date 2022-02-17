@@ -16,4 +16,12 @@ public partial class Type
     /// <returns>A collection of <see cref="Type"/> objects.</returns>
     public static IEnumerable<Type> GetList(IEnumerable<OriginType> collection) => from OriginType Item in collection
                                                                                    select new Type(Item);
+
+    /// <summary>
+    /// Converts a collection of <see cref="Type"/> objects to a collection of <see cref="OriginType"/> objects.
+    /// </summary>
+    /// <param name="collection">The collection of <see cref="Type"/> to convert.</param>
+    /// <returns>A collection of <see cref="OriginType"/> objects.</returns>
+    public static IEnumerable<OriginType> GetOriginList(IEnumerable<Type> collection) => from Type Item in collection
+                                                                                         select Item.Origin;
 }

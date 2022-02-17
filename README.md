@@ -1,4 +1,4 @@
-# NotNullReflexion
+# NotNullReflection
 
 Proxy for System.Reflection with no null references whatsoever.
 
