@@ -33,6 +33,8 @@ using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TypeFilter = System.Reflection.TypeFilter;
 using MemberFilter = System.Reflection.MemberFilter;
+using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
+using InterfaceMapping = System.Reflection.InterfaceMapping;
 
 /// <summary>
 /// Represents type declarations: class types, interface types, array types, value types, enumeration types, type parameters, generic type definitions, and open or closed constructed generic types.
@@ -1164,164 +1166,86 @@ public partial class Type
         return Origin.GetFields(bindingAttr);
     }
 
-    //
-    // Summary:
-    //     Returns an array of System.Type objects that represent the type arguments of
-    //     a closed generic type or the type parameters of a generic type definition.
-    //
-    // Returns:
-    //     An array of System.Type objects that represent the type arguments of a generic
-    //     type. Returns an empty array if the current type is not a generic type.
-    //
-    // Exceptions:
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class. Derived classes must provide
-    //     an implementation.
-    public virtual Type[] GetGenericArguments()
+    /// <summary>
+    /// Returns an array of <see cref="Type"/> objects that represent the type arguments of a closed generic type or the type parameters of a generic type definition.
+    /// </summary>
+    /// <returns>An array of <see cref="Type"/> objects that represent the type arguments of a generic type. Returns an empty array if the current type is not a generic type.</returns>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
+    public Type[] GetGenericArguments()
     {
-        throw null;
+        return GetList(Origin.GetGenericArguments()).ToArray();
     }
 
-    //
-    // Summary:
-    //     Returns an array of System.Type objects that represent the constraints on the
-    //     current generic type parameter.
-    //
-    // Returns:
-    //     An array of System.Type objects that represent the constraints on the current
-    //     generic type parameter.
-    //
-    // Exceptions:
-    //   T:System.InvalidOperationException:
-    //     The current System.Type object is not a generic type parameter. That is, the
-    //     System.Type.IsGenericParameter property returns false.
+    /// <summary>
+    /// Returns an array of <see cref="Type"/> objects that represent the constraints on the current generic type parameter.
+    /// </summary>
+    /// <returns>An array of <see cref="Type"/> objects that represent the constraints on the current generic type parameter.</returns>
+    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> object is not a generic type parameter. That is, the <see cref="Type.IsGenericParameter"/> property returns false.</exception>
     public virtual Type[] GetGenericParameterConstraints()
     {
-        throw null;
+        return GetList(Origin.GetGenericParameterConstraints()).ToArray();
     }
 
-    //
-    // Summary:
-    //     Returns a System.Type object that represents a generic type definition from which
-    //     the current generic type can be constructed.
-    //
-    // Returns:
-    //     A System.Type object representing a generic type from which the current type
-    //     can be constructed.
-    //
-    // Exceptions:
-    //   T:System.InvalidOperationException:
-    //     The current type is not a generic type. That is, System.Type.IsGenericType returns
-    //     false.
-    //
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class. Derived classes must provide
-    //     an implementation.
+    /// <summary>
+    /// Returns a <see cref="Type"/> object that represents a generic type definition from which the current generic type can be constructed.
+    /// </summary>
+    /// <returns>A <see cref="Type"/> object representing a generic type from which the current type can be constructed.</returns>
+    /// <exception cref="InvalidOperationException">The current type is not a generic type. That is, <see cref="Type.IsGenericType"/> returns false.</exception>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
     public virtual Type GetGenericTypeDefinition()
     {
-        throw null;
+        return new Type(Origin.GetGenericTypeDefinition());
     }
 
-    //
-    // Summary:
-    //     Returns the hash code for this instance.
-    //
-    // Returns:
-    //     The hash code for this instance.
+    /// <summary>
+    /// Returns the hash code for this instance.
+    /// </summary>
+    /// <returns>The hash code for this instance.</returns>
     public override int GetHashCode()
     {
-        throw null;
+        return Origin.GetHashCode();
     }
 
-    //
-    // Summary:
-    //     Searches for the interface with the specified name.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the interface to get. For generic interfaces,
-    //     this is the mangled name.
-    //
-    // Returns:
-    //     An object representing the interface with the specified name, implemented or
-    //     inherited by the current System.Type, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
-    //
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     The current System.Type represents a type that implements the same generic interface
-    //     with different type arguments.
+    /// <summary>
+    /// Searches for the interface with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the interface to get. For generic interfaces, this is the mangled name.</param>
+    /// <returns>An object representing the interface with the specified name, implemented or inherited by the current The current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">The current <see cref="Type"/> represents a type that implements the same generic interface with different type arguments.</exception>
+    /// <exception cref="NullReferenceException">Interface not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-    public Type? GetInterface(string name)
+    public Type GetInterface(string name)
     {
-        throw null;
+        return new Type(Origin.GetInterface(name) ?? throw new NullReferenceException("Interface not found."));
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the specified interface, specifying
-    //     whether to do a case-insensitive search for the interface name.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the interface to get. For generic interfaces,
-    //     this is the mangled name.
-    //
-    //   ignoreCase:
-    //     true to ignore the case of that part of name that specifies the simple interface
-    //     name (the part that specifies the namespace must be correctly cased). -or- false
-    //     to perform a case-sensitive search for all parts of name.
-    //
-    // Returns:
-    //     An object representing the interface with the specified name, implemented or
-    //     inherited by the current System.Type, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
-    //
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     The current System.Type represents a type that implements the same generic interface
-    //     with different type arguments.
+    /// <summary>
+    /// When overridden in a derived class, searches for the specified interface, specifying whether to do a case-insensitive search for the interface name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the interface to get. For generic interfaces, this is the mangled name.</param>
+    /// <param name="ignoreCase">true to ignore the case of that part of name that specifies the simple interface name (the part that specifies the namespace must be correctly cased). -or- false to perform a case-sensitive search for all parts of name.</param>
+    /// <returns>An object representing the interface with the specified name, implemented or inherited by the current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">The current <see cref="Type"/> represents a type that implements the same generic interface with different type arguments.</exception>
+    /// <exception cref="NullReferenceException">Interface not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-    public abstract Type? GetInterface(string name, bool ignoreCase);
+    public Type GetInterface(string name, bool ignoreCase)
+    {
+        return new Type(Origin.GetInterface(name, ignoreCase) ?? throw new NullReferenceException("Interface not found."));
+    }
 
-    //
-    // Summary:
-    //     Returns an interface mapping for the specified interface type.
-    //
-    // Parameters:
-    //   interfaceType:
-    //     The interface type to retrieve a mapping for.
-    //
-    // Returns:
-    //     An object that represents the interface mapping for interfaceType.
-    //
-    // Exceptions:
-    //   T:System.ArgumentException:
-    //     interfaceType is not implemented by the current type. -or- The interfaceType
-    //     argument does not refer to an interface. -or- The current instance or interfaceType
-    //     argument is an open generic type; that is, the System.Type.ContainsGenericParameters
-    //     property returns true. -or- interfaceType is a generic interface, and the current
-    //     type is an array type.
-    //
-    //   T:System.ArgumentNullException:
-    //     interfaceType is null.
-    //
-    //   T:System.InvalidOperationException:
-    //     The current System.Type represents a generic type parameter; that is, System.Type.IsGenericParameter
-    //     is true.
-    //
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class. Derived classes must provide
-    //     an implementation.
+    /// <summary>
+    /// Returns an interface mapping for the specified interface type.
+    /// </summary>
+    /// <param name="interfaceType">The interface type to retrieve a mapping for.</param>
+    /// <returns>An object that represents the interface mapping for <paramref name="interfaceType"/>.</returns>
+    /// <exception cref="ArgumentException"><paramref name="interfaceType"/> is not implemented by the current type. -or- The <paramref name="interfaceType"/> argument does not refer to an interface. -or- The current instance of <paramref name="interfaceType"/> argument is an open generic type; that is, the <see cref="Type.ContainsGenericParameters"/> property returns true. -or- <paramref name="interfaceType"/> is a generic interface, and the current type is an array type.</exception>
+    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> represents a generic type parameter; that is, <see cref="Type.IsGenericParameter"/> is true.</exception>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
     public virtual InterfaceMapping GetInterfaceMap([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] Type interfaceType)
     {
-        throw null;
+        return Origin.GetInterfaceMap(interfaceType.Origin);
     }
 
     //
