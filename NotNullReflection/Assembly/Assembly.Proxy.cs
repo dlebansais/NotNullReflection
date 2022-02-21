@@ -14,7 +14,6 @@ using OriginAssembly = System.Reflection.Assembly;
 using OriginCustomAttributeData = System.Reflection.CustomAttributeData;
 using OriginTypeInfo = System.Reflection.TypeInfo;
 using OriginMethodInfo = System.Reflection.MethodInfo;
-using OriginMemberInfo = System.Reflection.MemberInfo;
 using OriginModule = System.Reflection.Module;
 using BindingFlags = System.Reflection.BindingFlags;
 using OriginBinder = System.Reflection.Binder;
@@ -286,7 +285,7 @@ public partial class Assembly
     /// <param name="typeName">The <see cref="Type.FullName"/> of the type to locate.</param>
     /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
     /// <param name="bindingAttr">A bitmask that affects the way in which the search is conducted. The value is a combination of bit flags from <see cref="BindingFlags"/>.</param>
-    /// <param name="binder">An object that enables the binding, coercion of argument types, invocation of members, and retrieval of <see cref="OriginMemberInfo"/> objects via reflection. If binder is <see cref="DefaultBinder"/>, the default binder is used.</param>
+    /// <param name="binder">An object that enables the binding, coercion of argument types, invocation of members, and retrieval of <see cref="MemberInfo"/> objects via reflection. If binder is <see cref="DefaultBinder"/>, the default binder is used.</param>
     /// <param name="args">An array that contains the arguments to be passed to the constructor. This array of arguments must match in number, order, and type the parameters of the constructor to be invoked. If the parameterless constructor is desired, args must be <see cref="Array.Empty"/>.</param>
     /// <param name="culture">An instance of <see cref="CultureInfo"/> used to govern the coercion of types. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired. (This is necessary to convert a string that represents 1000 to a <see cref="double"/> value, for example, since 1000 is represented differently by different cultures.)</param>
     /// <returns>An instance of the specified type; if <paramref name="typeName"/> is not found this method throws an exception. The supplied arguments are used to resolve the type, and to bind the constructor that is used to create the instance.</returns>

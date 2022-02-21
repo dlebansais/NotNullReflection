@@ -37,7 +37,6 @@ using OriginBinder = System.Reflection.Binder;
 using OriginParameterModifier = System.Reflection.ParameterModifier;
 using OriginModule = System.Reflection.Module;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
-using OriginMemberInfo = System.Reflection.MemberInfo;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
 using OriginMethodInfo = System.Reflection.MethodInfo;
@@ -937,19 +936,19 @@ public partial class Type
     }
 
     /// <summary>
-    /// Returns a filtered array of <see cref="OriginMemberInfo"/> objects of the specified member type.
+    /// Returns a filtered array of <see cref="MemberInfo"/> objects of the specified member type.
     /// </summary>
     /// <param name="memberType">A bitwise combination of the enumeration values that indicates the type of member to search for.</param>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <param name="filter">The delegate that does the comparisons, returning true if the member currently being inspected matches the <paramref name="filterCriteria"/> and false otherwise.</param>
-    /// <param name="filterCriteria">The search criteria that determines whether a member is returned in the array of <see cref="OriginMemberInfo"/> objects. The fields of <see cref="FieldAttributes"/>, <see cref="MethodAttributes"/>, and <see cref="MethodImplAttributes"/> can be used in conjunction with the <see cref="OriginType.FilterAttribute"/> delegate supplied by this class.</param>
-    /// <returns>A filtered array of <see cref="OriginMemberInfo"/> objects of the specified member type. -or- An empty array if the current <see cref="Type"/> does not have members of type <paramref name="memberType"/> that match the filter criteria.</returns>
+    /// <param name="filterCriteria">The search criteria that determines whether a member is returned in the array of <see cref="MemberInfo"/> objects. The fields of <see cref="FieldAttributes"/>, <see cref="MethodAttributes"/>, and <see cref="MethodImplAttributes"/> can be used in conjunction with the <see cref="OriginType.FilterAttribute"/> delegate supplied by this class.</param>
+    /// <returns>A filtered array of <see cref="MemberInfo"/> objects of the specified member type. -or- An empty array if the current <see cref="Type"/> does not have members of type <paramref name="memberType"/> that match the filter criteria.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-    public virtual OriginMemberInfo[] FindMembers(MemberTypes memberType, BindingFlags bindingAttr, MemberFilter filter, object filterCriteria)
+    public virtual MemberInfo[] FindMembers(MemberTypes memberType, BindingFlags bindingAttr, MemberFilter filter, object filterCriteria)
     {
-        return Origin.FindMembers(memberType, bindingAttr, filter, filterCriteria);
+        return MemberInfo.GetList(Origin.FindMembers(memberType, bindingAttr, filter, filterCriteria)).ToArray();
     }
 
     /// <summary>
@@ -1058,13 +1057,13 @@ public partial class Type
     /// <summary>
     /// Searches for the members defined for the current <see cref="Type"/> whose <see cref="OriginDefaultMemberAttribute"/> is set.
     /// </summary>
-    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all default members of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMemberInfo"/>, if the current <see cref="Type"/> does not have default members.</returns>
+    /// <returns>An array of <see cref="MemberInfo"/> objects representing all default members of the current <see cref="Type"/>. -or- An empty array of type <see cref="MemberInfo"/>, if the current <see cref="Type"/> does not have default members.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
 #endif
-    public OriginMemberInfo[] GetDefaultMembers()
+    public MemberInfo[] GetDefaultMembers()
     {
-        return Origin.GetDefaultMembers();
+        return MemberInfo.GetList(Origin.GetDefaultMembers()).ToArray();
     }
 
     /// <summary>
@@ -1335,13 +1334,13 @@ public partial class Type
     /// Searches for the public members with the specified name.
     /// </summary>
     /// <param name="name">The string containing the name of the public members to get.</param>
-    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
+    /// <returns>An array of <see cref="MemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
 #endif
-    public OriginMemberInfo[] GetMember(string name)
+    public MemberInfo[] GetMember(string name)
     {
-        return Origin.GetMember(name);
+        return MemberInfo.GetList(Origin.GetMember(name)).ToArray();
     }
 
     /// <summary>
@@ -1349,13 +1348,13 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the members to get.</param>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
+    /// <returns>An array of <see cref="MemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
 #endif
-    public OriginMemberInfo[] GetMember(string name, BindingFlags bindingAttr)
+    public MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
     {
-        return Origin.GetMember(name, bindingAttr);
+        return MemberInfo.GetList(Origin.GetMember(name, bindingAttr)).ToArray();
     }
 
     /// <summary>
@@ -1364,52 +1363,52 @@ public partial class Type
     /// <param name="name">The string containing the name of the members to get.</param>
     /// <param name="type">The value to search for.</param>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
+    /// <returns>An array of <see cref="MemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
     /// <exception cref="NotSupportedException">A derived class must provide an implementation.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
 #endif
-    public OriginMemberInfo[] GetMember(string name, MemberTypes type, BindingFlags bindingAttr)
+    public MemberInfo[] GetMember(string name, MemberTypes type, BindingFlags bindingAttr)
     {
-        return Origin.GetMember(name, type, bindingAttr);
+        return MemberInfo.GetList(Origin.GetMember(name, type, bindingAttr)).ToArray();
     }
 
 #if NET6_0_OR_GREATER
     /// <summary>
-    /// Searches for the <see cref="OriginMemberInfo"/> on the current <see cref="Type"/> that matches the specified <see cref="OriginMemberInfo"/>.
+    /// Searches for the <see cref="MemberInfo"/> on the current <see cref="Type"/> that matches the specified <see cref="MemberInfo"/>.
     /// </summary>
-    /// <param name="member">The <see cref="OriginMemberInfo"/> to find on the current <see cref="Type"/>.</param>
+    /// <param name="member">The <see cref="MemberInfo"/> to find on the current <see cref="Type"/>.</param>
     /// <returns>An object representing the member on the current <see cref="Type"/> that matches the specified member.</returns>
     /// <exception cref="ArgumentException">member does not match a member on the current <see cref="Type"/>.</exception>
-    public OriginMemberInfo GetMemberWithSameMetadataDefinitionAs(OriginMemberInfo member)
+    public MemberInfo GetMemberWithSameMetadataDefinitionAs(MemberInfo member)
     {
-        return Origin.GetMemberWithSameMetadataDefinitionAs(member);
+        return new MemberInfo(Origin.GetMemberWithSameMetadataDefinitionAs(member.Origin));
     }
 #endif
 
     /// <summary>
     /// Returns all the public members of the current <see cref="Type"/>.
     /// </summary>
-    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all the public members of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMemberInfo"/>, if the current <see cref="Type"/> does not have public members.</returns>
+    /// <returns>An array of <see cref="MemberInfo"/> objects representing all the public members of the current <see cref="Type"/>. -or- An empty array of type <see cref="MemberInfo"/>, if the current <see cref="Type"/> does not have public members.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
 #endif
-    public OriginMemberInfo[] GetMembers()
+    public MemberInfo[] GetMembers()
     {
-        return Origin.GetMembers();
+        return MemberInfo.GetList(Origin.GetMembers()).ToArray();
     }
 
     /// <summary>
     /// When overridden in a derived class, searches for the members defined for the current <see cref="Type"/>, using the specified binding constraints.
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all members defined for the current System.Type that match the specified binding constraints. -or- An empty array if no members are defined for the current <see cref="Type"/>, or if none of the defined members match the binding constraints.</returns>
+    /// <returns>An array of <see cref="MemberInfo"/> objects representing all members defined for the current System.Type that match the specified binding constraints. -or- An empty array if no members are defined for the current <see cref="Type"/>, or if none of the defined members match the binding constraints.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
 #endif
-    public OriginMemberInfo[] GetMembers(BindingFlags bindingAttr)
+    public MemberInfo[] GetMembers(BindingFlags bindingAttr)
     {
-        return Origin.GetMembers(bindingAttr);
+        return MemberInfo.GetList(Origin.GetMembers(bindingAttr)).ToArray();
     }
 
     /// <summary>
