@@ -17,6 +17,14 @@ public partial class Assembly
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Assembly"/> class.
+    /// </summary>
+    private Assembly()
+    {
+        Origin = OriginAssembly.GetExecutingAssembly();
+    }
+
+    /// <summary>
     /// Gets the origin assembly for which this class is a proxy.
     /// </summary>
     public OriginAssembly Origin { get; }

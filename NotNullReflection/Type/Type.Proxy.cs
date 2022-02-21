@@ -9,8 +9,17 @@ using NullReferenceException = System.NullReferenceException;
 using InvalidOperationException = System.NullReferenceException;
 using NotSupportedException = System.NotSupportedException;
 using ArgumentException = System.ArgumentException;
+using TypeLoadException = System.TypeLoadException;
+using BadImageFormatException = System.BadImageFormatException;
+using MethodAccessException = System.MethodAccessException;
+using MissingFieldException = System.MissingFieldException;
+using MissingMethodException = System.MissingMethodException;
+using IndexOutOfRangeException = System.IndexOutOfRangeException;
+using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
 using Guid = System.Guid;
 using Array = System.Array;
+using TypedReference = System.TypedReference;
+using TypeCode = System.TypeCode;
 using RuntimeTypeHandle = System.RuntimeTypeHandle;
 using TypeAttributes = System.Reflection.TypeAttributes;
 using FieldAttributes = System.Reflection.FieldAttributes;
@@ -21,6 +30,8 @@ using GenericParameterAttributes = System.Reflection.GenericParameterAttributes;
 using MemberTypes = System.Reflection.MemberTypes;
 using CallingConventions = System.Reflection.CallingConventions;
 using OriginType = System.Type;
+using OriginAssembly = System.Reflection.Assembly;
+using OriginAssemblyName = System.Reflection.AssemblyName;
 using OriginMethodBase = System.Reflection.MethodBase;
 using OriginBinder = System.Reflection.Binder;
 using OriginParameterModifier = System.Reflection.ParameterModifier;
@@ -29,12 +40,17 @@ using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 using OriginMemberInfo = System.Reflection.MemberInfo;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
+using OriginMethodInfo = System.Reflection.MethodInfo;
+using OriginPropertyInfo = System.Reflection.PropertyInfo;
 using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TypeFilter = System.Reflection.TypeFilter;
 using MemberFilter = System.Reflection.MemberFilter;
 using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
+using TargetException = System.Reflection.TargetException;
 using InterfaceMapping = System.Reflection.InterfaceMapping;
+using System.IO;
+using System.Runtime.Versioning;
 
 /// <summary>
 /// Represents type declarations: class types, interface types, array types, value types, enumeration types, type parameters, generic type definitions, and open or closed constructed generic types.
@@ -953,12 +969,12 @@ public partial class Type
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters..</param>
     /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>An object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
-    /// <exception cref="ArgumentException">types is multidimensional. -or- modifiers is multidimensional. -or- types and modifiers do not have the same length.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
     public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetConstructor(bindingAttr, binder, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
+        return Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
     }
 
     /// <summary>
@@ -969,12 +985,12 @@ public partial class Type
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters. -or- <see cref="OriginType.EmptyTypes"/>.</param>
     /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>A <see cref="OriginConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
-    /// <exception cref="ArgumentException">types is multidimensional. -or- modifiers is multidimensional. -or- types and modifiers do not have the same length.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
     public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetConstructor(bindingAttr, binder, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
+        return Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
     }
 
     /// <summary>
@@ -982,7 +998,7 @@ public partial class Type
     /// </summary>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters. Such an empty array is provided by the static field <see cref="OriginType.EmptyTypes"/>.</param>
     /// <returns>An object representing the public instance constructor whose parameters match the types in the parameter type array, if found; otherwise, throws an exception.</returns>
-    /// <exception cref="ArgumentException">types is multidimensional.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public OriginConstructorInfo GetConstructor(Type[] types)
@@ -1248,2657 +1264,981 @@ public partial class Type
         return Origin.GetInterfaceMap(interfaceType.Origin);
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, gets all the interfaces implemented or inherited
-    //     by the current System.Type.
-    //
-    // Returns:
-    //     An array of System.Type objects representing all the interfaces implemented or
-    //     inherited by the current System.Type. -or- An empty array of type System.Type,
-    //     if no interfaces are implemented or inherited by the current System.Type.
-    //
-    // Exceptions:
-    //   T:System.Reflection.TargetInvocationException:
-    //     A static initializer is invoked and throws an exception.
+    /// <summary>
+    /// When overridden in a derived class, gets all the interfaces implemented or inherited by the current <see cref="Type"/>.
+    /// </summary>
+    /// <returns>An array of <see cref="Type"/> objects representing all the interfaces implemented or inherited by the current <see cref="Type"/>. -or- An empty array of type <see cref="Type"/>, if no interfaces are implemented or inherited by the current <see cref="Type"/>.</returns>
+    /// <exception cref="TargetInvocationException">A static initializer is invoked and throws an exception.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-    public abstract Type[] GetInterfaces();
+    public Type[] GetInterfaces()
+    {
+        return GetList(Origin.GetInterfaces()).ToArray();
+    }
 
-    //
-    // Summary:
-    //     Searches for the public members with the specified name.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public members to get.
-    //
-    // Returns:
-    //     An array of System.Reflection.MemberInfo objects representing the public members
-    //     with the specified name, if found; otherwise, an empty array.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// Searches for the public members with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public members to get.</param>
+    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
-    public MemberInfo[] GetMember(string name)
+    public OriginMemberInfo[] GetMember(string name)
     {
-        throw null;
+        return Origin.GetMember(name);
     }
 
-    //
-    // Summary:
-    //     Searches for the specified members, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the members to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return an empty array.
-    //
-    // Returns:
-    //     An array of System.Reflection.MemberInfo objects representing the public members
-    //     with the specified name, if found; otherwise, an empty array.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// Searches for the specified members, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the members to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
+    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
-    public virtual MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
+    public OriginMemberInfo[] GetMember(string name, BindingFlags bindingAttr)
     {
-        throw null;
+        return Origin.GetMember(name, bindingAttr);
     }
 
-    //
-    // Summary:
-    //     Searches for the specified members of the specified member type, using the specified
-    //     binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the members to get.
-    //
-    //   type:
-    //     The value to search for.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return an empty array.
-    //
-    // Returns:
-    //     An array of System.Reflection.MemberInfo objects representing the public members
-    //     with the specified name, if found; otherwise, an empty array.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
-    //
-    //   T:System.NotSupportedException:
-    //     A derived class must provide an implementation.
+    /// <summary>
+    /// Searches for the specified members of the specified member type, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the members to get.</param>
+    /// <param name="type">The value to search for.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
+    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
+    /// <exception cref="NotSupportedException">A derived class must provide an implementation.</exception>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
-    public virtual MemberInfo[] GetMember(string name, MemberTypes type, BindingFlags bindingAttr)
+    public OriginMemberInfo[] GetMember(string name, MemberTypes type, BindingFlags bindingAttr)
     {
-        throw null;
+        return Origin.GetMember(name, type, bindingAttr);
     }
 
-    //
-    // Summary:
-    //     Searches for the System.Reflection.MemberInfo on the current System.Type that
-    //     matches the specified System.Reflection.MemberInfo.
-    //
-    // Parameters:
-    //   member:
-    //     The System.Reflection.MemberInfo to find on the current System.Type.
-    //
-    // Returns:
-    //     An object representing the member on the current System.Type that matches the
-    //     specified member.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     member is null.
-    //
-    //   T:System.ArgumentException:
-    //     member does not match a member on the current System.Type.
-    public virtual MemberInfo GetMemberWithSameMetadataDefinitionAs(MemberInfo member)
+    /// <summary>
+    /// Searches for the <see cref="OriginMemberInfo"/> on the current <see cref="Type"/> that matches the specified <see cref="OriginMemberInfo"/>.
+    /// </summary>
+    /// <param name="member">The <see cref="OriginMemberInfo"/> to find on the current <see cref="Type"/>.</param>
+    /// <returns>An object representing the member on the current <see cref="Type"/> that matches the specified member.</returns>
+    /// <exception cref="ArgumentException">member does not match a member on the current <see cref="Type"/>.</exception>
+    public OriginMemberInfo GetMemberWithSameMetadataDefinitionAs(OriginMemberInfo member)
     {
-        throw null;
+        return Origin.GetMemberWithSameMetadataDefinitionAs(member);
     }
 
-    //
-    // Summary:
-    //     Returns all the public members of the current System.Type.
-    //
-    // Returns:
-    //     An array of System.Reflection.MemberInfo objects representing all the public
-    //     members of the current System.Type. -or- An empty array of type System.Reflection.MemberInfo,
-    //     if the current System.Type does not have public members.
+    /// <summary>
+    /// Returns all the public members of the current <see cref="Type"/>.
+    /// </summary>
+    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all the public members of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMemberInfo"/>, if the current <see cref="Type"/> does not have public members.</returns>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
-    public MemberInfo[] GetMembers()
+    public OriginMemberInfo[] GetMembers()
     {
-        throw null;
+        return Origin.GetMembers();
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the members defined for the
-    //     current System.Type, using the specified binding constraints.
-    //
-    // Parameters:
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return an empty array.
-    //
-    // Returns:
-    //     An array of System.Reflection.MemberInfo objects representing all members defined
-    //     for the current System.Type that match the specified binding constraints. -or-
-    //     An empty array if no members are defined for the current System.Type, or if none
-    //     of the defined members match the binding constraints.
+    /// <summary>
+    /// When overridden in a derived class, searches for the members defined for the current <see cref="Type"/>, using the specified binding constraints.
+    /// </summary>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
+    /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all members defined for the current System.Type that match the specified binding constraints. -or- An empty array if no members are defined for the current <see cref="Type"/>, or if none of the defined members match the binding constraints.</returns>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
-    public abstract MemberInfo[] GetMembers(BindingFlags bindingAttr);
+    public OriginMemberInfo[] GetMembers(BindingFlags bindingAttr)
+    {
+        return Origin.GetMembers(bindingAttr);
+    }
 
-    //
-    // Summary:
-    //     Searches for the public method with the specified name.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    // Returns:
-    //     An object that represents the public method with the specified name, if found;
-    //     otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// Searches for the public method with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public method to get.</param>
+    /// <returns>An object that represents the public method with the specified name, if found; otherwise, null.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo? GetMethod(string name)
+    public OriginMethodInfo GetMethod(string name)
     {
-        throw null;
+        return Origin.GetMethod(name) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified method whose parameters match the specified generic
-    //     parameter count, argument types and modifiers, using the specified binding constraints
-    //     and the specified calling convention.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    //   genericParameterCount:
-    //     The number of generic type parameters of the method.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   callConvention:
-    //     The object that specifies the set of rules to use regarding the order and layout
-    //     of arguments, how the return value is passed, what registers are used for arguments,
-    //     and how the stack is cleaned up.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. To be only used
-    //     when calling through COM interop, and only parameters that are passed by reference
-    //     are handled. The default binder does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified generic parameter
-    //     count, argument types, modifiers, binding constraints and calling convention,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in the types array
-    //     is null.
-    //
-    //   T:System.ArgumentException:
-    //     genericParameterCount is negative.
+    /// <summary>
+    /// Searches for the specified method whose parameters match the specified generic parameter count, argument types and modifiers, using the specified binding constraints and the specified calling convention.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public method to get.</param>
+    /// <param name="genericParameterCount">The number of generic type parameters of the method.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
+    /// <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and how the stack is cleaned up.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the method that matches the specified generic parameter count, argument types, modifiers, binding constraints and calling convention, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo? GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, Binder? binder, CallingConventions callConvention, Type[] types, ParameterModifier[]? modifiers)
+    public OriginMethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified method whose parameters match the specified generic
-    //     parameter count, argument types and modifiers, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    //   genericParameterCount:
-    //     The number of generic type parameters of the method.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. To be only used
-    //     when calling through COM interop, and only parameters that are passed by reference
-    //     are handled. The default binder does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified generic parameter
-    //     count, argument types, modifiers and binding constraints, if found; otherwise,
-    //     null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in the types array
-    //     is null.
-    //
-    //   T:System.ArgumentException:
-    //     genericParameterCount is negative.
+    /// <summary>
+    /// Searches for the specified method whose parameters match the specified generic parameter count, argument types and modifiers, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public method to get.</param>
+    /// <param name="genericParameterCount">The number of generic type parameters of the method.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the method that matches the specified generic parameter count, argument types, modifiers and binding constraints, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo? GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, Binder? binder, Type[] types, ParameterModifier[]? modifiers)
+    public OriginMethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public method whose parameters match the specified
-    //     generic parameter count and argument types.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    //   genericParameterCount:
-    //     The number of generic type parameters of the method.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    // Returns:
-    //     An object representing the public method whose parameters match the specified
-    //     generic parameter count and argument types, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in the types array
-    //     is null.
-    //
-    //   T:System.ArgumentException:
-    //     genericParameterCount is negative.
+    /// <summary>
+    /// Searches for the specified public method whose parameters match the specified generic parameter count and argument types.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public method to get.</param>
+    /// <param name="genericParameterCount">The number of generic type parameters of the method.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <returns>An object representing the public method whose parameters match the specified generic parameter count and argument types, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo? GetMethod(string name, int genericParameterCount, Type[] types)
+    public OriginMethodInfo GetMethod(string name, int genericParameterCount, Type[] types)
     {
-        throw null;
+        return Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public method whose parameters match the specified
-    //     generic parameter count, argument types and modifiers.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    //   genericParameterCount:
-    //     The number of generic type parameters of the method.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. To be only used
-    //     when calling through COM interop, and only parameters that are passed by reference
-    //     are handled. The default binder does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the public method that matches the specified generic parameter
-    //     count, argument types and modifiers, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in the types array
-    //     is null.
-    //
-    //   T:System.ArgumentException:
-    //     genericParameterCount is negative.
+    /// <summary>
+    /// Searches for the specified public method whose parameters match the specified generic parameter count, argument types and modifiers.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public method to get.</param>
+    /// <param name="genericParameterCount">The number of generic type parameters of the method.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the public method that matches the specified generic parameter count, argument types and modifiers, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo? GetMethod(string name, int genericParameterCount, Type[] types, ParameterModifier[]? modifiers)
+    public OriginMethodInfo GetMethod(string name, int genericParameterCount, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified method, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the method to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified requirements, if
-    //     found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// Searches for the specified method, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the method to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo? GetMethod(string name, BindingFlags bindingAttr)
+    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr)
     {
-        throw null;
+        return Origin.GetMethod(name, bindingAttr) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified method whose parameters match the specified argument
-    //     types, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the method to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- Default to return null.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified requirements, if
-    //     found; otherwise, null.
+    /// <summary>
+    /// Searches for the specified method whose parameters match the specified argument types, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the method to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo? GetMethod(string name, BindingFlags bindingAttr, Type[] types)
+    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, Type[] types)
     {
-        throw null;
+        return Origin.GetMethod(name, bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified method whose parameters match the specified argument
-    //     types and modifiers, using the specified binding constraints and the specified
-    //     calling convention.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the method to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   callConvention:
-    //     The object that specifies the set of rules to use regarding the order and layout
-    //     of arguments, how the return value is passed, what registers are used for arguments,
-    //     and how the stack is cleaned up.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. To be only used
-    //     when calling through COM interop, and only parameters that are passed by reference
-    //     are handled. The default binder does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified requirements, if
-    //     found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional.
+    /// <summary>
+    /// Searches for the specified method whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.
+    /// </summary>
+    /// <param name="name">The string containing the name of the method to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
+    /// <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and how the stack is cleaned up.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo? GetMethod(string name, BindingFlags bindingAttr, Binder? binder, CallingConventions callConvention, Type[] types, ParameterModifier[]? modifiers)
+    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified method whose parameters match the specified argument
-    //     types and modifiers, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the method to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. To be only used
-    //     when calling through COM interop, and only parameters that are passed by reference
-    //     are handled. The default binder does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified requirements, if
-    //     found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional.
+    /// <summary>
+    /// Searches for the specified method whose parameters match the specified argument types and modifiers, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the method to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo? GetMethod(string name, BindingFlags bindingAttr, Binder? binder, Type[] types, ParameterModifier[]? modifiers)
+    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public method whose parameters match the specified
-    //     argument types.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    // Returns:
-    //     An object representing the public method whose parameters match the specified
-    //     argument types, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name and specified parameters.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional.
+    /// <summary>
+    /// Searches for the specified public method whose parameters match the specified argument types.
+    /// </summary>
+    /// <param name="name">The string containing the name of the method to get.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <returns>An object representing the public method whose parameters match the specified argument types, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and specified parameters.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo? GetMethod(string name, Type[] types)
+    public OriginMethodInfo GetMethod(string name, Type[] types)
     {
-        throw null;
+        return Origin.GetMethod(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public method whose parameters match the specified
-    //     argument types and modifiers.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public method to get.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of System.Type objects
-    //     (as provided by the System.Type.EmptyTypes field) to get a method that takes
-    //     no parameters.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. To be only used
-    //     when calling through COM interop, and only parameters that are passed by reference
-    //     are handled. The default binder does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the public method that matches the specified requirements,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name and specified parameters.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional.
+    /// <summary>
+    /// Searches for the specified public method whose parameters match the specified argument types and modifiers.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public method to get.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the public method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and specified parameters.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
+    /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo? GetMethod(string name, Type[] types, ParameterModifier[]? modifiers)
+    public OriginMethodInfo GetMethod(string name, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the specified method whose parameters
-    //     match the specified generic parameter count, argument types and modifiers, using
-    //     the specified binding constraints and the specified calling convention.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the method to get.
-    //
-    //   genericParameterCount:
-    //     The number of generic type parameters of the method.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   callConvention:
-    //     The object that specifies the set of rules to use regarding the order and layout
-    //     of arguments, how the return value is passed, what registers are used for arguments,
-    //     and what process cleans up the stack.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a method that takes no parameters.
-    //     -or- null. If types is null, arguments are not matched.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. The default binder
-    //     does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified generic parameter
-    //     count, argument types, modifiers, binding constraints and calling convention,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.NotSupportedException:
-    //     The method needs to be overriden and called in a derived class.
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    protected virtual MethodInfo? GetMethodImpl(string name, int genericParameterCount, BindingFlags bindingAttr, Binder? binder, CallingConventions callConvention, Type[]? types, ParameterModifier[]? modifiers)
-    {
-        throw null;
-    }
-
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the specified method whose parameters
-    //     match the specified argument types and modifiers, using the specified binding
-    //     constraints and the specified calling convention.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the method to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   callConvention:
-    //     The object that specifies the set of rules to use regarding the order and layout
-    //     of arguments, how the return value is passed, what registers are used for arguments,
-    //     and what process cleans up the stack.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the method to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a method that takes no parameters.
-    //     -or- null. If types is null, arguments are not matched.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. The default binder
-    //     does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the method that matches the specified requirements, if
-    //     found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional. -or- types and
-    //     modifiers do not have the same length.
-    //
-    //   T:System.NotSupportedException:
-    //     The current type is a System.Reflection.Emit.TypeBuilder or System.Reflection.Emit.GenericTypeParameterBuilder.
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    protected abstract MethodInfo? GetMethodImpl(string name, BindingFlags bindingAttr, Binder? binder, CallingConventions callConvention, Type[]? types, ParameterModifier[]? modifiers);
-
-    //
-    // Summary:
-    //     Returns all the public methods of the current System.Type.
-    //
-    // Returns:
-    //     An array of System.Reflection.MethodInfo objects representing all the public
-    //     methods defined for the current System.Type. -or- An empty array of type System.Reflection.MethodInfo,
-    //     if no public methods are defined for the current System.Type.
+    /// <summary>
+    /// Returns all the public methods of the current <see cref="Type"/>.
+    /// </summary>
+    /// <returns>An array of <see cref="OriginMethodInfo"/> objects representing all the public methods defined for the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMethodInfo"/>, if no public methods are defined for the current <see cref="Type"/>.</returns>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo[] GetMethods()
+    public OriginMethodInfo[] GetMethods()
     {
-        throw null;
+        return Origin.GetMethods();
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the methods defined for the
-    //     current System.Type, using the specified binding constraints.
-    //
-    // Parameters:
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return an empty array.
-    //
-    // Returns:
-    //     An array of System.Reflection.MethodInfo objects representing all methods defined
-    //     for the current System.Type that match the specified binding constraints. -or-
-    //     An empty array of type System.Reflection.MethodInfo, if no methods are defined
-    //     for the current System.Type, or if none of the defined methods match the binding
-    //     constraints.
+    /// <summary>
+    /// When overridden in a derived class, searches for the methods defined for the current <see cref="Type"/>, using the specified binding constraints.
+    /// </summary>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
+    /// <returns>An array of <see cref="OriginMethodInfo"/> objects representing all methods defined for the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginMethodInfo"/>, if no methods are defined for the current <see cref="Type"/>, or if none of the defined methods match the binding constraints.</returns>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public abstract MethodInfo[] GetMethods(BindingFlags bindingAttr);
+    public OriginMethodInfo[] GetMethods(BindingFlags bindingAttr)
+    {
+        return Origin.GetMethods(bindingAttr);
+    }
 
-    //
-    // Summary:
-    //     Searches for the public nested type with the specified name.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the nested type to get.
-    //
-    // Returns:
-    //     An object representing the public nested type with the specified name, if found;
-    //     otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// Searches for the public nested type with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the nested type to get.</param>
+    /// <returns>An object representing the public nested type with the specified name, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="NullReferenceException">Nested type not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes)]
-    public Type? GetNestedType(string name)
+    public Type GetNestedType(string name)
     {
-        throw null;
+        return new Type(Origin.GetNestedType(name) ?? throw new NullReferenceException("Nested type not found."));
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the specified nested type, using
-    //     the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the nested type to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    // Returns:
-    //     An object representing the nested type that matches the specified requirements,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// When overridden in a derived class, searches for the specified nested type, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the nested type to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <returns>An object representing the nested type that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="NullReferenceException">Nested type not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes | DynamicallyAccessedMemberTypes.NonPublicNestedTypes)]
-    public abstract Type? GetNestedType(string name, BindingFlags bindingAttr);
+    public Type GetNestedType(string name, BindingFlags bindingAttr)
+    {
+        return new Type(Origin.GetNestedType(name, bindingAttr) ?? throw new NullReferenceException("Nested type not found."));
+    }
 
-    //
-    // Summary:
-    //     Returns the public types nested in the current System.Type.
-    //
-    // Returns:
-    //     An array of System.Type objects representing the public types nested in the current
-    //     System.Type (the search is not recursive), or an empty array of type System.Type
-    //     if no public types are nested in the current System.Type.
+    /// <summary>
+    /// Returns the public types nested in the current <see cref="Type"/>.
+    /// </summary>
+    /// <returns>An array of <see cref="Type"/> objects representing the public types nested in the current <see cref="Type"/> (the search is not recursive), or an empty array of type <see cref="Type"/> if no public types are nested in the current <see cref="Type"/>.</returns>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes)]
     public Type[] GetNestedTypes()
     {
-        throw null;
+        return GetList(Origin.GetNestedTypes()).ToArray();
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the types nested in the current
-    //     System.Type, using the specified binding constraints.
-    //
-    // Parameters:
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    // Returns:
-    //     An array of System.Type objects representing all the types nested in the current
-    //     System.Type that match the specified binding constraints (the search is not recursive),
-    //     or an empty array of type System.Type, if no nested types are found that match
-    //     the binding constraints.
+    /// <summary>
+    /// When overridden in a derived class, searches for the types nested in the current <see cref="Type"/>, using the specified binding constraints.
+    /// </summary>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <returns>An array of <see cref="Type"/> objects representing all the types nested in the current <see cref="Type"/> that match the specified binding constraints (the search is not recursive), or an empty array of type <see cref="Type"/>, if no nested types are found that match the binding constraints.</returns>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes | DynamicallyAccessedMemberTypes.NonPublicNestedTypes)]
-    public abstract Type[] GetNestedTypes(BindingFlags bindingAttr);
-
-    //
-    // Summary:
-    //     Returns all the public properties of the current System.Type.
-    //
-    // Returns:
-    //     An array of System.Reflection.PropertyInfo objects representing all public properties
-    //     of the current System.Type. -or- An empty array of type System.Reflection.PropertyInfo,
-    //     if the current System.Type does not have public properties.
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    public PropertyInfo[] GetProperties()
+    public Type[] GetNestedTypes(BindingFlags bindingAttr)
     {
-        throw null;
+        return GetList(Origin.GetNestedTypes(bindingAttr)).ToArray();
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the properties of the current
-    //     System.Type, using the specified binding constraints.
-    //
-    // Parameters:
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return an empty array.
-    //
-    // Returns:
-    //     An array of objects representing all properties of the current System.Type that
-    //     match the specified binding constraints. -or- An empty array of type System.Reflection.PropertyInfo,
-    //     if the current System.Type does not have properties, or if none of the properties
-    //     match the binding constraints.
+    /// <summary>
+    /// Returns all the public properties of the current <see cref="Type"/>.
+    /// </summary>
+    /// <returns>An array of <see cref="OriginPropertyInfo"/> objects representing all public properties of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginPropertyInfo"/>, if the current <see cref="Type"/> does not have public properties.</returns>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+    public OriginPropertyInfo[] GetProperties()
+    {
+        return Origin.GetProperties();
+    }
+
+    /// <summary>
+    /// When overridden in a derived class, searches for the properties of the current <see cref="Type"/>, using the specified binding constraints.
+    /// </summary>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
+    /// <returns>An array of objects representing all properties of the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginPropertyInfo"/>, if the current <see cref="Type"/> does not have properties, or if none of the properties match the binding constraints.</returns>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
-    public abstract PropertyInfo[] GetProperties(BindingFlags bindingAttr);
-
-    //
-    // Summary:
-    //     Searches for the public property with the specified name.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public property to get.
-    //
-    // Returns:
-    //     An object representing the public property with the specified name, if found;
-    //     otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null.
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    public PropertyInfo? GetProperty(string name)
+    public OriginPropertyInfo[] GetProperties(BindingFlags bindingAttr)
     {
-        throw null;
+        return Origin.GetProperties(bindingAttr);
     }
 
-    //
-    // Summary:
-    //     Searches for the specified property, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the property to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    // Returns:
-    //     An object representing the property that matches the specified requirements,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null.
+    /// <summary>
+    /// Searches for the public property with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public property to get.</param>
+    /// <returns>An object representing the public property with the specified name, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+    public OriginPropertyInfo GetProperty(string name)
+    {
+        return Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found.");
+    }
+
+    /// <summary>
+    /// Searches for the specified property, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the property to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <returns>An object representing the property that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
-    public PropertyInfo? GetProperty(string name, BindingFlags bindingAttr)
+    public OriginPropertyInfo GetProperty(string name, BindingFlags bindingAttr)
     {
-        throw null;
+        return Origin.GetProperty(name, bindingAttr) ?? throw new NullReferenceException("Property not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified property whose parameters match the specified argument
-    //     types and modifiers, using the specified binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the property to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   returnType:
-    //     The return type of the property.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the indexed property to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a property that is not indexed.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. The default binder
-    //     does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the property that matches the specified requirements,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional. -or- types and
-    //     modifiers do not have the same length.
-    //
-    //   T:System.NullReferenceException:
-    //     An element of types is null.
+    /// <summary>
+    /// Searches for the specified property whose parameters match the specified argument types and modifiers, using the specified binding constraints.
+    /// </summary>
+    /// <param name="name">The string containing the name of the property to get.</param>
+    /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
+    /// <param name="returnType">The return type of the property.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the indexed property to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="Array.Empty{Type}()"/>) to get a property that is not indexed.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the property that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
-    public PropertyInfo? GetProperty(string name, BindingFlags bindingAttr, Binder? binder, Type? returnType, Type[] types, ParameterModifier[]? modifiers)
+    public OriginPropertyInfo GetProperty(string name, BindingFlags bindingAttr, OriginBinder binder, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the public property with the specified name and return type.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public property to get.
-    //
-    //   returnType:
-    //     The return type of the property.
-    //
-    // Returns:
-    //     An object representing the public property with the specified name, if found;
-    //     otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null, or returnType is null.
+    /// <summary>
+    /// Searches for the public property with the specified name and return type.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public property to get.</param>
+    /// <param name="returnType">The return type of the property.</param>
+    /// <returns>An object representing the public property with the specified name, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    public PropertyInfo? GetProperty(string name, Type? returnType)
+    public OriginPropertyInfo GetProperty(string name, Type returnType)
     {
-        throw null;
+        return Origin.GetProperty(name, returnType.Origin) ?? throw new NullReferenceException("Property not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public property whose parameters match the specified
-    //     argument types.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public property to get.
-    //
-    //   returnType:
-    //     The return type of the property.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the indexed property to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a property that is not indexed.
-    //
-    // Returns:
-    //     An object representing the public property whose parameters match the specified
-    //     argument types, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name and matching the specified
-    //     argument types.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional.
-    //
-    //   T:System.NullReferenceException:
-    //     An element of types is null.
+    /// <summary>
+    /// Searches for the specified public property whose parameters match the specified argument types.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public property to get.</param>
+    /// <param name="returnType">The return type of the property.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the indexed property to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="Array.Empty{Type}()"/>) to get a property that is not indexed.</param>
+    /// <returns>An object representing the public property whose parameters match the specified argument types, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    public PropertyInfo? GetProperty(string name, Type? returnType, Type[] types)
+    public OriginPropertyInfo GetProperty(string name, Type returnType, Type[] types)
     {
-        throw null;
+        return Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public property whose parameters match the specified
-    //     argument types and modifiers.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public property to get.
-    //
-    //   returnType:
-    //     The return type of the property.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the indexed property to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a property that is not indexed.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. The default binder
-    //     does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the public property that matches the specified requirements,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name and matching the specified
-    //     argument types and modifiers.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional. -or- types and
-    //     modifiers do not have the same length.
-    //
-    //   T:System.NullReferenceException:
-    //     An element of types is null.
+    /// <summary>
+    /// Searches for the specified public property whose parameters match the specified argument types and modifiers.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public property to get.</param>
+    /// <param name="returnType">The return type of the property.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the indexed property to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="Array.Empty{Type}()"/>) to get a property that is not indexed.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
+    /// <returns>An object representing the public property that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified argument types and modifiers.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    public PropertyInfo? GetProperty(string name, Type? returnType, Type[] types, ParameterModifier[]? modifiers)
+    public OriginPropertyInfo? GetProperty(string name, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
-        throw null;
+        return Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found.");
     }
 
-    //
-    // Summary:
-    //     Searches for the specified public property whose parameters match the specified
-    //     argument types.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the public property to get.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the indexed property to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a property that is not indexed.
-    //
-    // Returns:
-    //     An object representing the public property whose parameters match the specified
-    //     argument types, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name and matching the specified
-    //     argument types.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional.
-    //
-    //   T:System.NullReferenceException:
-    //     An element of types is null.
+    /// <summary>
+    /// Searches for the specified public property whose parameters match the specified argument types.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public property to get.</param>
+    /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the indexed property to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="Array.Empty{Type}()"/>) to get a property that is not indexed.</param>
+    /// <returns>An object representing the public property whose parameters match the specified argument types, if found; otherwise, throws an exception.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified argument types.</exception>
+    /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
+    /// <exception cref="NullReferenceException">Property not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    public PropertyInfo? GetProperty(string name, Type[] types)
+    public OriginPropertyInfo? GetProperty(string name, Type[] types)
     {
-        throw null;
+        return Origin.GetProperty(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found.");
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, searches for the specified property whose
-    //     parameters match the specified argument types and modifiers, using the specified
-    //     binding constraints.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the property to get.
-    //
-    //   bindingAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. -or- System.Reflection.BindingFlags.Default to return null.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded member, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder.
-    //
-    //   returnType:
-    //     The return type of the property.
-    //
-    //   types:
-    //     An array of System.Type objects representing the number, order, and type of the
-    //     parameters for the indexed property to get. -or- An empty array of the type System.Type
-    //     (that is, Type[] types = new Type[0]) to get a property that is not indexed.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the types array. The default binder
-    //     does not process this parameter.
-    //
-    // Returns:
-    //     An object representing the property that matches the specified requirements,
-    //     if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one property is found with the specified name and matching the specified
-    //     binding constraints.
-    //
-    //   T:System.ArgumentNullException:
-    //     name is null. -or- types is null. -or- One of the elements in types is null.
-    //
-    //   T:System.ArgumentException:
-    //     types is multidimensional. -or- modifiers is multidimensional. -or- types and
-    //     modifiers do not have the same length.
-    //
-    //   T:System.NotSupportedException:
-    //     The current type is a System.Reflection.Emit.TypeBuilder, System.Reflection.Emit.EnumBuilder,
-    //     or System.Reflection.Emit.GenericTypeParameterBuilder.
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
-    protected abstract PropertyInfo? GetPropertyImpl(string name, BindingFlags bindingAttr, Binder? binder, Type? returnType, Type[]? types, ParameterModifier[]? modifiers);
-
-    //
-    // Summary:
-    //     Gets the current System.Type.
-    //
-    // Returns:
-    //     The current System.Type.
-    //
-    // Exceptions:
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
+    /// <summary>
+    /// Gets the current <see cref="Type"/>.
+    /// </summary>
+    /// <returns>The current <see cref="Type"/>.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
     public new Type GetType()
     {
-        throw null;
+        return new Type(Origin.GetType());
     }
 
-    //
-    // Summary:
-    //     Gets the System.Type with the specified name, performing a case-sensitive search.
-    //
-    // Parameters:
-    //   typeName:
-    //     The assembly-qualified name of the type to get. See System.Type.AssemblyQualifiedName.
-    //     If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll,
-    //     it is sufficient to supply the type name qualified by its namespace.
-    //
-    // Returns:
-    //     The type with the specified name, if found; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.ArgumentException:
-    //     typeName represents a generic type that has a pointer type, a ByRef type, or
-    //     System.Void as one of its type arguments. -or- typeName represents a generic
-    //     type that has an incorrect number of type arguments. -or- typeName represents
-    //     a generic type, and one of its type arguments does not satisfy the constraints
-    //     for the corresponding type parameter.
-    //
-    //   T:System.TypeLoadException:
-    //     typeName represents an array of System.TypedReference.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded. Note:
-    //     In .NET for Windows Store apps or the Portable Class Library, catch the base
-    //     class exception, System.IO.IOException, instead.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- Version 2.0 or later
-    //     of the common language runtime is currently loaded, and the assembly was compiled
-    //     with a later version.
+    /// <summary>
+    /// Gets the <see cref="Type"/> with the specified name, performing a case-sensitive search.
+    /// </summary>
+    /// <param name="typeName">The assembly-qualified name of the type to get. See <see cref="Type.AssemblyQualifiedName"/>. If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, it is sufficient to supply the type name qualified by its namespace.</param>
+    /// <returns>The type with the specified name, if found; otherwise, thows an exception.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="ArgumentException"><paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- typeName represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
+    /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
+    /// <exception cref="NullReferenceException">Type not found.</exception>
     [RequiresUnreferencedCode("The type might be removed")]
-    public static Type? GetType(string typeName)
+    public static Type GetType(string typeName)
     {
-        throw null;
+        return new Type(OriginType.GetType(typeName) ?? throw new NullReferenceException("Type not found."));
     }
 
-    //
-    // Summary:
-    //     Gets the System.Type with the specified name, performing a case-sensitive search
-    //     and specifying whether to throw an exception if the type is not found.
-    //
-    // Parameters:
-    //   typeName:
-    //     The assembly-qualified name of the type to get. See System.Type.AssemblyQualifiedName.
-    //     If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll,
-    //     it is sufficient to supply the type name qualified by its namespace.
-    //
-    //   throwOnError:
-    //     true to throw an exception if the type cannot be found; false to return null.
-    //     Specifying false also suppresses some other exception conditions, but not all
-    //     of them. See the Exceptions section.
-    //
-    // Returns:
-    //     The type with the specified name. If the type is not found, the throwOnError
-    //     parameter specifies whether null is returned or an exception is thrown. In some
-    //     cases, an exception is thrown regardless of the value of throwOnError. See the
-    //     Exceptions section.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.TypeLoadException:
-    //     throwOnError is true and the type is not found. -or- throwOnError is true and
-    //     typeName contains invalid characters, such as an embedded tab. -or- throwOnError
-    //     is true and typeName is an empty string. -or- throwOnError is true and typeName
-    //     represents an array type with an invalid size. -or- typeName represents an array
-    //     of System.TypedReference.
-    //
-    //   T:System.ArgumentException:
-    //     throwOnError is true and typeName contains invalid syntax. For example, "MyType[,*,]".
-    //     -or- typeName represents a generic type that has a pointer type, a ByRef type,
-    //     or System.Void as one of its type arguments. -or- typeName represents a generic
-    //     type that has an incorrect number of type arguments. -or- typeName represents
-    //     a generic type, and one of its type arguments does not satisfy the constraints
-    //     for the corresponding type parameter.
-    //
-    //   T:System.IO.FileNotFoundException:
-    //     throwOnError is true and the assembly or one of its dependencies was not found.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded. Note:
-    //     In .NET for Windows Store apps or the Portable Class Library, catch the base
-    //     class exception, System.IO.IOException, instead.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- Version 2.0 or later
-    //     of the common language runtime is currently loaded, and the assembly was compiled
-    //     with a later version.
+    /// <summary>
+    /// Gets the <see cref="Type"/> with the specified name, performing a case-sensitive search and specifying exception to throw if the type is not found.
+    /// </summary>
+    /// <param name="typeName">The assembly-qualified name of the type to get. See <see cref="Type.AssemblyQualifiedName"/>. If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, it is sufficient to supply the type name qualified by its namespace.</param>
+    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax. For example, "MyType[,*,]". -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found.</exception>
+    /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
+    /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
     [RequiresUnreferencedCode("The type might be removed")]
-    public static Type? GetType(string typeName, bool throwOnError)
+    public static Type GetType(string typeName, bool throwOnError)
     {
-        throw null;
+        return new Type(OriginType.GetType(typeName, throwOnError) ?? throw new NullReferenceException("Type not found."));
     }
 
-    //
-    // Summary:
-    //     Gets the System.Type with the specified name, specifying whether to throw an
-    //     exception if the type is not found and whether to perform a case-sensitive search.
-    //
-    // Parameters:
-    //   typeName:
-    //     The assembly-qualified name of the type to get. See System.Type.AssemblyQualifiedName.
-    //     If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll,
-    //     it is sufficient to supply the type name qualified by its namespace.
-    //
-    //   throwOnError:
-    //     true to throw an exception if the type cannot be found; false to return null.
-    //     Specifying false also suppresses some other exception conditions, but not all
-    //     of them. See the Exceptions section.
-    //
-    //   ignoreCase:
-    //     true to perform a case-insensitive search for typeName, false to perform a case-sensitive
-    //     search for typeName.
-    //
-    // Returns:
-    //     The type with the specified name. If the type is not found, the throwOnError
-    //     parameter specifies whether null is returned or an exception is thrown. In some
-    //     cases, an exception is thrown regardless of the value of throwOnError. See the
-    //     Exceptions section.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.TypeLoadException:
-    //     throwOnError is true and the type is not found. -or- throwOnError is true and
-    //     typeName contains invalid characters, such as an embedded tab. -or- throwOnError
-    //     is true and typeName is an empty string. -or- throwOnError is true and typeName
-    //     represents an array type with an invalid size. -or- typeName represents an array
-    //     of System.TypedReference.
-    //
-    //   T:System.ArgumentException:
-    //     throwOnError is true and typeName contains invalid syntax. For example, "MyType[,*,]".
-    //     -or- typeName represents a generic type that has a pointer type, a ByRef type,
-    //     or System.Void as one of its type arguments. -or- typeName represents a generic
-    //     type that has an incorrect number of type arguments. -or- typeName represents
-    //     a generic type, and one of its type arguments does not satisfy the constraints
-    //     for the corresponding type parameter.
-    //
-    //   T:System.IO.FileNotFoundException:
-    //     throwOnError is true and the assembly or one of its dependencies was not found.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- Version 2.0 or later
-    //     of the common language runtime is currently loaded, and the assembly was compiled
-    //     with a later version.
+    /// <summary>
+    /// Gets the <see cref="Type"/> with the specified name, specifying whether to throw an exception if the type is not found and whether to perform a case-sensitive search.
+    /// </summary>
+    /// <param name="typeName">The assembly-qualified name of the type to get. See <see cref="Type.AssemblyQualifiedName"/>. If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, it is sufficient to supply the type name qualified by its namespace.</param>
+    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <param name="ignoreCase">true to perform a case-insensitive search for <paramref name="typeName"/>, false to perform a case-sensitive search for <paramref name="typeName"/>.</param>
+    /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax. For example, "MyType[,*,]". -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found.</exception>
+    /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded.</exception>
+    /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
     [RequiresUnreferencedCode("The type might be removed")]
-    public static Type? GetType(string typeName, bool throwOnError, bool ignoreCase)
+    public static Type GetType(string typeName, bool throwOnError, bool ignoreCase)
     {
-        throw null;
+        return new Type(OriginType.GetType(typeName, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
     }
 
-    //
-    // Summary:
-    //     Gets the type with the specified name, optionally providing custom methods to
-    //     resolve the assembly and the type.
-    //
-    // Parameters:
-    //   typeName:
-    //     The name of the type to get. If the typeResolver parameter is provided, the type
-    //     name can be any string that typeResolver is capable of resolving. If the assemblyResolver
-    //     parameter is provided or if standard type resolution is used, typeName must be
-    //     an assembly-qualified name (see System.Type.AssemblyQualifiedName), unless the
-    //     type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll,
-    //     in which case it is sufficient to supply the type name qualified by its namespace.
-    //
-    //   assemblyResolver:
-    //     A method that locates and returns the assembly that is specified in typeName.
-    //     The assembly name is passed to assemblyResolver as an System.Reflection.AssemblyName
-    //     object. If typeName does not contain the name of an assembly, assemblyResolver
-    //     is not called. If assemblyResolver is not supplied, standard assembly resolution
-    //     is performed. Caution Do not pass methods from unknown or untrusted callers.
-    //     Doing so could result in elevation of privilege for malicious code. Use only
-    //     methods that you provide or that you are familiar with.
-    //
-    //   typeResolver:
-    //     A method that locates and returns the type that is specified by typeName from
-    //     the assembly that is returned by assemblyResolver or by standard assembly resolution.
-    //     If no assembly is provided, the typeResolver method can provide one. The method
-    //     also takes a parameter that specifies whether to perform a case-insensitive search;
-    //     false is passed to that parameter. Caution Do not pass methods from unknown or
-    //     untrusted callers.
-    //
-    // Returns:
-    //     The type with the specified name, or null if the type is not found.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.ArgumentException:
-    //     An error occurs when typeName is parsed into a type name and an assembly name
-    //     (for example, when the simple type name includes an unescaped special character).
-    //     -or- typeName represents a generic type that has a pointer type, a ByRef type,
-    //     or System.Void as one of its type arguments. -or- typeName represents a generic
-    //     type that has an incorrect number of type arguments. -or- typeName represents
-    //     a generic type, and one of its type arguments does not satisfy the constraints
-    //     for the corresponding type parameter.
-    //
-    //   T:System.TypeLoadException:
-    //     typeName represents an array of System.TypedReference.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded. -or-
-    //     typeName contains an invalid assembly name. -or- typeName is a valid assembly
-    //     name without a type name.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- The assembly was compiled
-    //     with a later version of the common language runtime than the version that is
-    //     currently loaded.
+    /// <summary>
+    /// Gets the type with the specified name, optionally providing custom methods to resolve the assembly and the type.
+    /// </summary>
+    /// <param name="typeName">The name of the type to get. If the <paramref name="typeResolver"/> parameter is provided, the type name can be any string that <paramref name="typeResolver"/> is capable of resolving. If the <paramref name="assemblyResolver"/> parameter is provided or if standard type resolution is used, <paramref name="typeName"/> must be an assembly-qualified name (see <see cref="Type.AssemblyQualifiedName"/>), unless the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, in which case it is sufficient to supply the type name qualified by its namespace.</param>
+    /// <param name="assemblyResolver">A method that locates and returns the assembly that is specified in <paramref name="typeName"/>. The assembly name is passed to <paramref name="assemblyResolver"/> as an <see cref="OriginAssemblyName"/> object. If <paramref name="typeName"/> does not contain the name of an assembly, <paramref name="assemblyResolver"/> is not called. If <paramref name="assemblyResolver"/> is not supplied, standard assembly resolution is performed. Caution Do not pass methods from unknown or untrusted callers. Doing so could result in elevation of privilege for malicious code. Use only methods that you provide or that you are familiar with.</param>
+    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; false is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
+    /// <returns>The type with the specified name, or throws an exception if the type is not found.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
+    /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
+    /// <exception cref="NullReferenceException">Type not found.</exception>
     [RequiresUnreferencedCode("The type might be removed")]
-    public static Type? GetType(string typeName, Func<AssemblyName, Assembly?>? assemblyResolver, Func<Assembly?, string, bool, Type?>? typeResolver)
+    public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver)
     {
-        throw null;
+        System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
+        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : new Assembly(assembly), typeName, ignoreCase).Origin : null;
+
+        return new Type(OriginType.GetType(typeName, AssemblyResolver, TypeResolver) ?? throw new NullReferenceException("Type not found."));
     }
 
-    //
-    // Summary:
-    //     Gets the type with the specified name, specifying whether to throw an exception
-    //     if the type is not found, and optionally providing custom methods to resolve
-    //     the assembly and the type.
-    //
-    // Parameters:
-    //   typeName:
-    //     The name of the type to get. If the typeResolver parameter is provided, the type
-    //     name can be any string that typeResolver is capable of resolving. If the assemblyResolver
-    //     parameter is provided or if standard type resolution is used, typeName must be
-    //     an assembly-qualified name (see System.Type.AssemblyQualifiedName), unless the
-    //     type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll,
-    //     in which case it is sufficient to supply the type name qualified by its namespace.
-    //
-    //   assemblyResolver:
-    //     A method that locates and returns the assembly that is specified in typeName.
-    //     The assembly name is passed to assemblyResolver as an System.Reflection.AssemblyName
-    //     object. If typeName does not contain the name of an assembly, assemblyResolver
-    //     is not called. If assemblyResolver is not supplied, standard assembly resolution
-    //     is performed. Caution Do not pass methods from unknown or untrusted callers.
-    //     Doing so could result in elevation of privilege for malicious code. Use only
-    //     methods that you provide or that you are familiar with.
-    //
-    //   typeResolver:
-    //     A method that locates and returns the type that is specified by typeName from
-    //     the assembly that is returned by assemblyResolver or by standard assembly resolution.
-    //     If no assembly is provided, the method can provide one. The method also takes
-    //     a parameter that specifies whether to perform a case-insensitive search; false
-    //     is passed to that parameter. Caution Do not pass methods from unknown or untrusted
-    //     callers.
-    //
-    //   throwOnError:
-    //     true to throw an exception if the type cannot be found; false to return null.
-    //     Specifying false also suppresses some other exception conditions, but not all
-    //     of them. See the Exceptions section.
-    //
-    // Returns:
-    //     The type with the specified name. If the type is not found, the throwOnError
-    //     parameter specifies whether null is returned or an exception is thrown. In some
-    //     cases, an exception is thrown regardless of the value of throwOnError. See the
-    //     Exceptions section.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.TypeLoadException:
-    //     throwOnError is true and the type is not found. -or- throwOnError is true and
-    //     typeName contains invalid characters, such as an embedded tab. -or- throwOnError
-    //     is true and typeName is an empty string. -or- throwOnError is true and typeName
-    //     represents an array type with an invalid size. -or- typeName represents an array
-    //     of System.TypedReference.
-    //
-    //   T:System.ArgumentException:
-    //     An error occurs when typeName is parsed into a type name and an assembly name
-    //     (for example, when the simple type name includes an unescaped special character).
-    //     -or- throwOnError is true and typeName contains invalid syntax (for example,
-    //     "MyType[,*,]"). -or- typeName represents a generic type that has a pointer type,
-    //     a ByRef type, or System.Void as one of its type arguments. -or- typeName represents
-    //     a generic type that has an incorrect number of type arguments. -or- typeName
-    //     represents a generic type, and one of its type arguments does not satisfy the
-    //     constraints for the corresponding type parameter.
-    //
-    //   T:System.IO.FileNotFoundException:
-    //     throwOnError is true and the assembly or one of its dependencies was not found.
-    //     -or- typeName contains an invalid assembly name. -or- typeName is a valid assembly
-    //     name without a type name.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- The assembly was compiled
-    //     with a later version of the common language runtime than the version that is
-    //     currently loaded.
+    /// <summary>
+    /// Gets the type with the specified name, specifying whether to throw an exception if the type is not found, and optionally providing custom methods to resolve the assembly and the type.
+    /// </summary>
+    /// <param name="typeName">The name of the type to get. If the <paramref name="typeResolver"/> parameter is provided, the type name can be any string that <paramref name="typeResolver"/> is capable of resolving. If the <paramref name="assemblyResolver"/> parameter is provided or if standard type resolution is used, <paramref name="typeName"/> must be an assembly-qualified name (see <see cref="Type.AssemblyQualifiedName"/>), unless the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, in which case it is sufficient to supply the type name qualified by its namespace.</param>
+    /// <param name="assemblyResolver">A method that locates and returns the assembly that is specified in <paramref name="typeName"/>. The assembly name is passed to <paramref name="assemblyResolver"/> as an <see cref="OriginAssemblyName"/> object. If <paramref name="typeName"/> does not contain the name of an assembly, <paramref name="assemblyResolver"/> is not called. If <paramref name="assemblyResolver"/> is not supplied, standard assembly resolution is performed. Caution Do not pass methods from unknown or untrusted callers. Doing so could result in elevation of privilege for malicious code. Use only methods that you provide or that you are familiar with.</param>
+    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; false is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
+    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax (for example, "MyType[,*,]"). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
+    /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded.</exception>
+    /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
     [RequiresUnreferencedCode("The type might be removed")]
-    public static Type? GetType(string typeName, Func<AssemblyName, Assembly?>? assemblyResolver, Func<Assembly?, string, bool, Type?>? typeResolver, bool throwOnError)
+    public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver, bool throwOnError)
     {
-        throw null;
+        System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
+        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : new Assembly(assembly), typeName, ignoreCase).Origin : null;
+
+        return new Type(OriginType.GetType(typeName, AssemblyResolver, TypeResolver, throwOnError) ?? throw new NullReferenceException("Type not found."));
     }
 
-    //
-    // Summary:
-    //     Gets the type with the specified name, specifying whether to perform a case-sensitive
-    //     search and whether to throw an exception if the type is not found, and optionally
-    //     providing custom methods to resolve the assembly and the type.
-    //
-    // Parameters:
-    //   typeName:
-    //     The name of the type to get. If the typeResolver parameter is provided, the type
-    //     name can be any string that typeResolver is capable of resolving. If the assemblyResolver
-    //     parameter is provided or if standard type resolution is used, typeName must be
-    //     an assembly-qualified name (see System.Type.AssemblyQualifiedName), unless the
-    //     type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll,
-    //     in which case it is sufficient to supply the type name qualified by its namespace.
-    //
-    //   assemblyResolver:
-    //     A method that locates and returns the assembly that is specified in typeName.
-    //     The assembly name is passed to assemblyResolver as an System.Reflection.AssemblyName
-    //     object. If typeName does not contain the name of an assembly, assemblyResolver
-    //     is not called. If assemblyResolver is not supplied, standard assembly resolution
-    //     is performed. Caution Do not pass methods from unknown or untrusted callers.
-    //     Doing so could result in elevation of privilege for malicious code. Use only
-    //     methods that you provide or that you are familiar with.
-    //
-    //   typeResolver:
-    //     A method that locates and returns the type that is specified by typeName from
-    //     the assembly that is returned by assemblyResolver or by standard assembly resolution.
-    //     If no assembly is provided, the method can provide one. The method also takes
-    //     a parameter that specifies whether to perform a case-insensitive search; the
-    //     value of ignoreCase is passed to that parameter. Caution Do not pass methods
-    //     from unknown or untrusted callers.
-    //
-    //   throwOnError:
-    //     true to throw an exception if the type cannot be found; false to return null.
-    //     Specifying false also suppresses some other exception conditions, but not all
-    //     of them. See the Exceptions section.
-    //
-    //   ignoreCase:
-    //     true to perform a case-insensitive search for typeName, false to perform a case-sensitive
-    //     search for typeName.
-    //
-    // Returns:
-    //     The type with the specified name. If the type is not found, the throwOnError
-    //     parameter specifies whether null is returned or an exception is thrown. In some
-    //     cases, an exception is thrown regardless of the value of throwOnError. See the
-    //     Exceptions section.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.TypeLoadException:
-    //     throwOnError is true and the type is not found. -or- throwOnError is true and
-    //     typeName contains invalid characters, such as an embedded tab. -or- throwOnError
-    //     is true and typeName is an empty string. -or- throwOnError is true and typeName
-    //     represents an array type with an invalid size. -or- typeName represents an array
-    //     of System.TypedReference.
-    //
-    //   T:System.ArgumentException:
-    //     An error occurs when typeName is parsed into a type name and an assembly name
-    //     (for example, when the simple type name includes an unescaped special character).
-    //     -or- throwOnError is true and typeName contains invalid syntax (for example,
-    //     "MyType[,*,]"). -or- typeName represents a generic type that has a pointer type,
-    //     a ByRef type, or System.Void as one of its type arguments. -or- typeName represents
-    //     a generic type that has an incorrect number of type arguments. -or- typeName
-    //     represents a generic type, and one of its type arguments does not satisfy the
-    //     constraints for the corresponding type parameter.
-    //
-    //   T:System.IO.FileNotFoundException:
-    //     throwOnError is true and the assembly or one of its dependencies was not found.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded. -or-
-    //     typeName contains an invalid assembly name. -or- typeName is a valid assembly
-    //     name without a type name.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- The assembly was compiled
-    //     with a later version of the common language runtime than the version that is
-    //     currently loaded.
+    /// <summary>
+    /// Gets the type with the specified name, specifying whether to perform a case-sensitive search and whether to throw an exception if the type is not found, and optionally providing custom methods to resolve the assembly and the type.
+    /// </summary>
+    /// <param name="typeName">The name of the type to get. If the <paramref name="typeResolver"/> parameter is provided, the type name can be any string that <paramref name="typeResolver"/> is capable of resolving. If the <paramref name="assemblyResolver"/> parameter is provided or if standard type resolution is used, <paramref name="typeName"/> must be an assembly-qualified name (see <see cref="Type.AssemblyQualifiedName"/>), unless the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, in which case it is sufficient to supply the type name qualified by its namespace.</param>
+    /// <param name="assemblyResolver">A method that locates and returns the assembly that is specified in <paramref name="typeName"/>. The assembly name is passed to <paramref name="assemblyResolver"/> as an <see cref="OriginAssemblyName"/> object. If <paramref name="typeName"/> does not contain the name of an assembly, <paramref name="assemblyResolver"/> is not called. If <paramref name="assemblyResolver"/> is not supplied, standard assembly resolution is performed. Caution Do not pass methods from unknown or untrusted callers. Doing so could result in elevation of privilege for malicious code. Use only methods that you provide or that you are familiar with.</param>
+    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; false is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
+    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <param name="ignoreCase">true to perform a case-insensitive search for <paramref name="typeName"/>, false to perform a case-sensitive search for <paramref name="typeName"/>.</param>
+    /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax (for example, "MyType[,*,]"). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found.</exception>
+    /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
+    /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
     [RequiresUnreferencedCode("The type might be removed")]
-    public static Type? GetType(string typeName, Func<AssemblyName, Assembly?>? assemblyResolver, Func<Assembly?, string, bool, Type?>? typeResolver, bool throwOnError, bool ignoreCase)
+    public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver, bool throwOnError, bool ignoreCase)
     {
-        throw null;
+        System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
+        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : new Assembly(assembly), typeName, ignoreCase).Origin : null;
+
+        return new Type(OriginType.GetType(typeName, AssemblyResolver, TypeResolver, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
     }
 
-    //
-    // Summary:
-    //     Gets the types of the objects in the specified array.
-    //
-    // Parameters:
-    //   args:
-    //     An array of objects whose types to determine.
-    //
-    // Returns:
-    //     An array of System.Type objects representing the types of the corresponding elements
-    //     in args.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     args is null. -or- One or more of the elements in args is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     The class initializers are invoked and at least one throws an exception.
+    /// <summary>
+    /// Gets the types of the objects in the specified array.
+    /// </summary>
+    /// <param name="args">An array of objects whose types to determine.</param>
+    /// <returns>An array of <see cref="Type"/> objects representing the types of the corresponding elements in args.</returns>
+    /// <exception cref="TargetInvocationException">The class initializers are invoked and at least one throws an exception.</exception>
     public static Type[] GetTypeArray(object[] args)
     {
-        throw null;
+        return GetList(OriginType.GetTypeArray(args)).ToArray();
     }
 
-    //
-    // Summary:
-    //     Gets the underlying type code of the specified System.Type.
-    //
-    // Parameters:
-    //   type:
-    //     The type whose underlying type code to get.
-    //
-    // Returns:
-    //     The code of the underlying type, or System.TypeCode.Empty if type is null.
-    public static TypeCode GetTypeCode(Type? type)
+    /// <summary>
+    /// Gets the underlying type code of the specified <see cref="Type"/>.
+    /// </summary>
+    /// <param name="type">The type whose underlying type code to get.</param>
+    /// <returns>The code of the underlying type, or <see cref="TypeCode.Empty"/> if type is <see cref="Missing"/>.</returns>
+    public static TypeCode GetTypeCode(Type type)
     {
-        throw null;
+        return OriginType.GetTypeCode(type != Missing ? type.Origin : null);
     }
 
-    //
-    // Summary:
-    //     Returns the underlying type code of this System.Type instance.
-    //
-    // Returns:
-    //     The type code of the underlying type.
-    protected virtual TypeCode GetTypeCodeImpl()
+    /// <summary>
+    /// Gets the type associated with the specified class identifier (CLSID).
+    /// </summary>
+    /// <param name="clsid">The CLSID of the type to get.</param>
+    /// <returns>System.__ComObject regardless of whether the CLSID is valid.</returns>
+    /// <exception cref="NullReferenceException">Platform not supported.</exception>
+    public static Type GetTypeFromCLSID(Guid clsid)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromCLSID(clsid) ?? throw new NullReferenceException("Platform not supported."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified class identifier (CLSID).
-    //
-    // Parameters:
-    //   clsid:
-    //     The CLSID of the type to get.
-    //
-    // Returns:
-    //     System.__ComObject regardless of whether the CLSID is valid.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromCLSID(Guid clsid)
+    /// <summary>
+    /// Gets the type associated with the specified class identifier (CLSID), specifying which exception to throw if an error occurs while loading the type.
+    /// </summary>
+    /// <param name="clsid">The CLSID of the type to get.</param>
+    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw <see cref="NullReferenceException"/> if an error occurs.</param>
+    /// <returns>System.__ComObject regardless of whether the CLSID is valid.</returns>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform is not supported.</exception>
+    public static Type GetTypeFromCLSID(Guid clsid, bool throwOnError)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromCLSID(clsid, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified class identifier (CLSID), specifying
-    //     whether to throw an exception if an error occurs while loading the type.
-    //
-    // Parameters:
-    //   clsid:
-    //     The CLSID of the type to get.
-    //
-    //   throwOnError:
-    //     true to throw any exception that occurs. -or- false to ignore any exception that
-    //     occurs.
-    //
-    // Returns:
-    //     System.__ComObject regardless of whether the CLSID is valid.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromCLSID(Guid clsid, bool throwOnError)
+    /// <summary>
+    /// Gets the type associated with the specified class identifier (CLSID) from the specified server.
+    /// </summary>
+    /// <param name="clsid">The CLSID of the type to get.</param>
+    /// <param name="server">The server from which to load the type. If the server name is <see cref="string.Empty"/>, this method automatically reverts to the local machine.</param>
+    /// <returns>System.__ComObject regardless of whether the CLSID is valid.</returns>
+    /// <exception cref="NullReferenceException">Platform not supported.</exception>
+    public static Type GetTypeFromCLSID(Guid clsid, string server)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null) ?? throw new NullReferenceException("Platform not supported."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified class identifier (CLSID) from the
-    //     specified server.
-    //
-    // Parameters:
-    //   clsid:
-    //     The CLSID of the type to get.
-    //
-    //   server:
-    //     The server from which to load the type. If the server name is null, this method
-    //     automatically reverts to the local machine.
-    //
-    // Returns:
-    //     System.__ComObject regardless of whether the CLSID is valid.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromCLSID(Guid clsid, string? server)
+    /// <summary>
+    /// Gets the type associated with the specified class identifier (CLSID) from the specified server, specifying whether to throw an exception if an error occurs while loading the type.
+    /// </summary>
+    /// <param name="clsid">The CLSID of the type to get.</param>
+    /// <param name="server">The server from which to load the type. If the server name is <see cref="string.Empty"/>, this method automatically reverts to the local machine.</param>
+    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw <see cref="NullReferenceException"/> if an error occurs.</param>
+    /// <returns>System.__ComObject regardless of whether the CLSID is valid.</returns>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform is not supported.</exception>
+    public static Type GetTypeFromCLSID(Guid clsid, string server, bool throwOnError)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified class identifier (CLSID) from the
-    //     specified server, specifying whether to throw an exception if an error occurs
-    //     while loading the type.
-    //
-    // Parameters:
-    //   clsid:
-    //     The CLSID of the type to get.
-    //
-    //   server:
-    //     The server from which to load the type. If the server name is null, this method
-    //     automatically reverts to the local machine.
-    //
-    //   throwOnError:
-    //     true to throw any exception that occurs. -or- false to ignore any exception that
-    //     occurs.
-    //
-    // Returns:
-    //     System.__ComObject regardless of whether the CLSID is valid.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromCLSID(Guid clsid, string? server, bool throwOnError)
-    {
-        throw null;
-    }
-
-    //
-    // Summary:
-    //     Gets the type referenced by the specified type handle.
-    //
-    // Parameters:
-    //   handle:
-    //     The object that refers to the type.
-    //
-    // Returns:
-    //     The type referenced by the specified System.RuntimeTypeHandle, or null if the
-    //     System.RuntimeTypeHandle.Value property of handle is null.
-    //
-    // Exceptions:
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
+    /// <summary>
+    /// Gets the type referenced by the specified type handle.
+    /// </summary>
+    /// <param name="handle">The object that refers to the type.</param>
+    /// <returns>The type referenced by the specified <see cref="RuntimeTypeHandle"/>, or throws an exception if the <see cref="RuntimeTypeHandle.Value"/> property of handle is null.</returns>
+    /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="handle"/> value is null.</exception>
     public static Type GetTypeFromHandle(RuntimeTypeHandle handle)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromHandle(handle));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified program identifier (ProgID), returning
-    //     null if an error is encountered while loading the System.Type.
-    //
-    // Parameters:
-    //   progID:
-    //     The ProgID of the type to get.
-    //
-    // Returns:
-    //     The type associated with the specified ProgID, if progID is a valid entry in
-    //     the registry and a type is associated with it; otherwise, null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentException:
-    //     progID is null.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromProgID(string progID)
+    /// <summary>
+    /// Gets the type associated with the specified program identifier (ProgID), throwing an exception if an error is encountered while loading the <see cref="Type"/>.
+    /// </summary>
+    /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
+    /// <returns>The type associated with the specified ProgID, if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
+    /// <exception cref="NullReferenceException">Platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
+    public static Type GetTypeFromProgID(string progID)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromProgID(progID) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified program identifier (ProgID), specifying
-    //     whether to throw an exception if an error occurs while loading the type.
-    //
-    // Parameters:
-    //   progID:
-    //     The ProgID of the type to get.
-    //
-    //   throwOnError:
-    //     true to throw any exception that occurs. -or- false to ignore any exception that
-    //     occurs.
-    //
-    // Returns:
-    //     The type associated with the specified program identifier (ProgID), if progID
-    //     is a valid entry in the registry and a type is associated with it; otherwise,
-    //     null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentException:
-    //     progID is null.
-    //
-    //   T:System.Runtime.InteropServices.COMException:
-    //     The specified ProgID is not registered.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromProgID(string progID, bool throwOnError)
+    /// <summary>
+    /// Gets the type associated with the specified program identifier (ProgID), specifying whether to throw an exception if an error occurs while loading the type.
+    /// </summary>
+    /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
+    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
+    /// <returns>The type associated with the specified program identifier (ProgID), if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
+    /// <exception cref="COMException">The specified <paramref name="progID"/> is not registered.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
+    public static Type GetTypeFromProgID(string progID, bool throwOnError)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromProgID(progID, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified program identifier (progID) from
-    //     the specified server, returning null if an error is encountered while loading
-    //     the type.
-    //
-    // Parameters:
-    //   progID:
-    //     The progID of the type to get.
-    //
-    //   server:
-    //     The server from which to load the type. If the server name is null, this method
-    //     automatically reverts to the local machine.
-    //
-    // Returns:
-    //     The type associated with the specified program identifier (progID), if progID
-    //     is a valid entry in the registry and a type is associated with it; otherwise,
-    //     null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentException:
-    //     prodID is null.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromProgID(string progID, string? server)
+    /// <summary>
+    /// Gets the type associated with the specified program identifier (progID) from the specified server, throwing an exception if an error is encountered while loading the <see cref="Type"/>.
+    /// </summary>
+    /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
+    /// <param name="server">The server from which to load the type. If the server name is <see cref="string.Empty"/>, this method automatically reverts to the local machine.</param>
+    /// <returns>The type associated with the specified ProgID, if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
+    /// <exception cref="NullReferenceException">Platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
+    public static Type GetTypeFromProgID(string progID, string server)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
-    //
-    // Summary:
-    //     Gets the type associated with the specified program identifier (progID) from
-    //     the specified server, specifying whether to throw an exception if an error occurs
-    //     while loading the type.
-    //
-    // Parameters:
-    //   progID:
-    //     The progID of the System.Type to get.
-    //
-    //   server:
-    //     The server from which to load the type. If the server name is null, this method
-    //     automatically reverts to the local machine.
-    //
-    //   throwOnError:
-    //     true to throw any exception that occurs. -or- false to ignore any exception that
-    //     occurs.
-    //
-    // Returns:
-    //     The type associated with the specified program identifier (progID), if progID
-    //     is a valid entry in the registry and a type is associated with it; otherwise,
-    //     null.
-    //
-    // Exceptions:
-    //   T:System.ArgumentException:
-    //     progID is null.
-    //
-    //   T:System.Runtime.InteropServices.COMException:
-    //     The specified progID is not registered.
-    [SupportedOSPlatform("windows")]
-    public static Type? GetTypeFromProgID(string progID, string? server, bool throwOnError)
+    /// <summary>
+    /// Gets the type associated with the specified program identifier (progID) from the specified server, specifying whether to throw an exception if an error occurs while loading the type.
+    /// </summary>
+    /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
+    /// <param name="server">The server from which to load the type. If the server name is null, this method automatically reverts to the local machine.</param>
+    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
+    /// <returns>The type associated with the specified program identifier (ProgID), if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
+    /// <exception cref="COMException">The specified <paramref name="progID"/> is not registered.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
+    public static Type GetTypeFromProgID(string progID, string server, bool throwOnError)
     {
-        throw null;
+        return new Type(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
-    //
-    // Summary:
-    //     Gets the handle for the System.Type of a specified object.
-    //
-    // Parameters:
-    //   o:
-    //     The object for which to get the type handle.
-    //
-    // Returns:
-    //     The handle for the System.Type of the specified System.Object.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     o is null.
+    /// <summary>
+    /// Gets the handle for the <see cref="Type"/> of a specified object.
+    /// </summary>
+    /// <param name="o">The object for which to get the type handle.</param>
+    /// <returns>The handle for the <see cref="Type"/> of the specified <see cref="object"/>.</returns>
     public static RuntimeTypeHandle GetTypeHandle(object o)
     {
-        throw null;
+        return OriginType.GetTypeHandle(o);
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, implements the System.Type.HasElementType
-    //     property and determines whether the current System.Type encompasses or refers
-    //     to another type; that is, whether the current System.Type is an array, a pointer,
-    //     or is passed by reference.
-    //
-    // Returns:
-    //     true if the System.Type is an array, a pointer, or is passed by reference; otherwise,
-    //     false.
-    protected abstract bool HasElementTypeImpl();
-
-    //
-    // Summary:
-    //     Invokes the specified member, using the specified binding constraints and matching
-    //     the specified argument list.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the constructor, method, property, or field
-    //     member to invoke. -or- An empty string ("") to invoke the default member. -or-
-    //     For IDispatch members, a string representing the DispID, for example "[DispID=3]".
-    //
-    //   invokeAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. The access can be one of the BindingFlags such as Public, NonPublic,
-    //     Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified.
-    //     If the type of lookup is omitted, BindingFlags.Public | BindingFlags.Instance
-    //     | BindingFlags.Static are used.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder. Note that explicitly defining a System.Reflection.Binder
-    //     object may be required for successfully invoking method overloads with variable
-    //     arguments.
-    //
-    //   target:
-    //     The object on which to invoke the specified member.
-    //
-    //   args:
-    //     An array containing the arguments to pass to the member to invoke.
-    //
-    // Returns:
-    //     An object representing the return value of the invoked member.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     invokeAttr does not contain CreateInstance and name is null.
-    //
-    //   T:System.ArgumentException:
-    //     invokeAttr is not a valid System.Reflection.BindingFlags attribute. -or- invokeAttr
-    //     does not contain one of the following binding flags: InvokeMethod, CreateInstance,
-    //     GetField, SetField, GetProperty, or SetProperty. -or- invokeAttr contains CreateInstance
-    //     combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty.
-    //     -or- invokeAttr contains both GetField and SetField. -or- invokeAttr contains
-    //     both GetProperty and SetProperty. -or- invokeAttr contains InvokeMethod combined
-    //     with SetField or SetProperty. -or- invokeAttr contains SetField and args has
-    //     more than one element. -or- This method is called on a COM object and one of
-    //     the following binding flags was not passed in: BindingFlags.InvokeMethod, BindingFlags.GetProperty,
-    //     BindingFlags.SetProperty, BindingFlags.PutDispProperty, or BindingFlags.PutRefDispProperty.
-    //     -or- One of the named parameter arrays contains a string that is null.
-    //
-    //   T:System.MethodAccessException:
-    //     The specified member is a class initializer.
-    //
-    //   T:System.MissingFieldException:
-    //     The field or property cannot be found.
-    //
-    //   T:System.MissingMethodException:
-    //     No method can be found that matches the arguments in args. -or- The current System.Type
-    //     object represents a type that contains open type parameters, that is, System.Type.ContainsGenericParameters
-    //     returns true.
-    //
-    //   T:System.Reflection.TargetException:
-    //     The specified member cannot be invoked on target.
-    //
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method matches the binding criteria.
-    //
-    //   T:System.NotSupportedException:
-    //     The .NET Compact Framework does not currently support this method.
-    //
-    //   T:System.InvalidOperationException:
-    //     The method represented by name has one or more unspecified generic type parameters.
-    //     That is, the method's System.Reflection.MethodBase.ContainsGenericParameters
-    //     property returns true.
+    /// <summary>
+    /// Invokes the specified member, using the specified binding constraints and matching the specified argument list.
+    /// </summary>
+    /// <param name="name">The string containing the name of the constructor, method, property, or field member to invoke. -or- An empty string <see cref="string.Empty"/> to invoke the default member. -or- For IDispatch members, a string representing the DispID, for example "[DispID=3]".</param>
+    /// <param name="invokeAttr">A bitwise combination of the enumeration values that specify how the search is conducted. The access can be one of the <see cref="BindingFlags"/> such as Public, NonPublic, Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified. If the type of lookup is omitted, <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Instance"/> | <see cref="BindingFlags.Static"/> are used.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="OriginBinder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
+    /// <param name="target">The object on which to invoke the specified member.</param>
+    /// <param name="args">An array containing the arguments to pass to the member to invoke.</param>
+    /// <returns>An object representing the return value of the invoked member.</returns>
+    /// <exception cref="ArgumentException"><paramref name="invokeAttr"/> is not a valid <see cref="BindingFlags"/> attribute. -or- <paramref name="invokeAttr"/> does not contain one of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains CreateInstance combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains both GetField and SetField. -or- <paramref name="invokeAttr"/> contains both GetProperty and SetProperty. -or- <paramref name="invokeAttr"/> contains InvokeMethod combined with SetField or SetProperty. -or- <paramref name="invokeAttr"/> contains SetField and args has more than one element. -or- This method is called on a COM object and one of the following binding flags was not passed in: <see cref="BindingFlags.InvokeMethod"/>, <see cref="BindingFlags.GetProperty"/>, <see cref="BindingFlags.SetProperty"/>, <see cref="BindingFlags.PutDispProperty"/>, or <see cref="BindingFlags.PutRefDispProperty"/>.</exception>
+    /// <exception cref="MethodAccessException">The specified member is a class initializer.</exception>
+    /// <exception cref="MissingFieldException">The field or property cannot be found.</exception>
+    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
+    /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
+    /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
+    /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    public object? InvokeMember(string name, BindingFlags invokeAttr, OriginBinder? binder, object? target, object?[]? args)
+    public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args)
     {
+        return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args) ?? Void;
     }
 
-    //
-    // Summary:
-    //     Invokes the specified member, using the specified binding constraints and matching
-    //     the specified argument list and culture.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the constructor, method, property, or field
-    //     member to invoke. -or- An empty string ("") to invoke the default member. -or-
-    //     For IDispatch members, a string representing the DispID, for example "[DispID=3]".
-    //
-    //   invokeAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. The access can be one of the BindingFlags such as Public, NonPublic,
-    //     Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified.
-    //     If the type of lookup is omitted, BindingFlags.Public | BindingFlags.Instance
-    //     | BindingFlags.Static are used.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder. Note that explicitly defining a System.Reflection.Binder
-    //     object may be required for successfully invoking method overloads with variable
-    //     arguments.
-    //
-    //   target:
-    //     The object on which to invoke the specified member.
-    //
-    //   args:
-    //     An array containing the arguments to pass to the member to invoke.
-    //
-    //   culture:
-    //     The object representing the globalization locale to use, which may be necessary
-    //     for locale-specific conversions, such as converting a numeric System.String to
-    //     a System.Double. -or- A null reference (Nothing in Visual Basic) to use the current
-    //     thread's System.Globalization.CultureInfo.
-    //
-    // Returns:
-    //     An object representing the return value of the invoked member.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     invokeAttr does not contain CreateInstance and name is null.
-    //
-    //   T:System.ArgumentException:
-    //     invokeAttr is not a valid System.Reflection.BindingFlags attribute. -or- invokeAttr
-    //     does not contain one of the following binding flags: InvokeMethod, CreateInstance,
-    //     GetField, SetField, GetProperty, or SetProperty. -or- invokeAttr contains CreateInstance
-    //     combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty.
-    //     -or- invokeAttr contains both GetField and SetField. -or- invokeAttr contains
-    //     both GetProperty and SetProperty. -or- invokeAttr contains InvokeMethod combined
-    //     with SetField or SetProperty. -or- invokeAttr contains SetField and args has
-    //     more than one element. -or- This method is called on a COM object and one of
-    //     the following binding flags was not passed in: BindingFlags.InvokeMethod, BindingFlags.GetProperty,
-    //     BindingFlags.SetProperty, BindingFlags.PutDispProperty, or BindingFlags.PutRefDispProperty.
-    //     -or- One of the named parameter arrays contains a string that is null.
-    //
-    //   T:System.MethodAccessException:
-    //     The specified member is a class initializer.
-    //
-    //   T:System.MissingFieldException:
-    //     The field or property cannot be found.
-    //
-    //   T:System.MissingMethodException:
-    //     No method can be found that matches the arguments in args. -or- The current System.Type
-    //     object represents a type that contains open type parameters, that is, System.Type.ContainsGenericParameters
-    //     returns true.
-    //
-    //   T:System.Reflection.TargetException:
-    //     The specified member cannot be invoked on target.
-    //
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method matches the binding criteria.
-    //
-    //   T:System.InvalidOperationException:
-    //     The method represented by name has one or more unspecified generic type parameters.
-    //     That is, the method's System.Reflection.MethodBase.ContainsGenericParameters
-    //     property returns true.
+    /// <summary>
+    /// Invokes the specified member, using the specified binding constraints and matching the specified argument list and culture.
+    /// </summary>
+    /// <param name="name">The string containing the name of the constructor, method, property, or field member to invoke. -or- An empty string <see cref="string.Empty"/> to invoke the default member. -or- For IDispatch members, a string representing the DispID, for example "[DispID=3]".</param>
+    /// <param name="invokeAttr">A bitwise combination of the enumeration values that specify how the search is conducted. The access can be one of the <see cref="BindingFlags"/> such as Public, NonPublic, Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified. If the type of lookup is omitted, <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Instance"/> | <see cref="BindingFlags.Static"/> are used.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="OriginBinder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
+    /// <param name="target">The object on which to invoke the specified member.</param>
+    /// <param name="args">An array containing the arguments to pass to the member to invoke.</param>
+    /// <param name="culture">The object representing the globalization locale to use, which may be necessary for locale-specific conversions, such as converting a numeric <see cref="string"/> to a <see cref="double"/>. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired.</param>
+    /// <returns>An object representing the return value of the invoked member.</returns>
+    /// <exception cref="ArgumentException"><paramref name="invokeAttr"/> is not a valid <see cref="BindingFlags"/> attribute. -or- <paramref name="invokeAttr"/> does not contain one of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains CreateInstance combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains both GetField and SetField. -or- <paramref name="invokeAttr"/> contains both GetProperty and SetProperty. -or- <paramref name="invokeAttr"/> contains InvokeMethod combined with SetField or SetProperty. -or- <paramref name="invokeAttr"/> contains SetField and args has more than one element. -or- This method is called on a COM object and one of the following binding flags was not passed in: <see cref="BindingFlags.InvokeMethod"/>, <see cref="BindingFlags.GetProperty"/>, <see cref="BindingFlags.SetProperty"/>, <see cref="BindingFlags.PutDispProperty"/>, or <see cref="BindingFlags.PutRefDispProperty"/>.</exception>
+    /// <exception cref="MethodAccessException">The specified member is a class initializer.</exception>
+    /// <exception cref="MissingFieldException">The field or property cannot be found.</exception>
+    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
+    /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
+    /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
+    /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    public object? InvokeMember(string name, BindingFlags invokeAttr, OriginBinder? binder, object? target, object?[]? args, CultureInfo? culture)
+    public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args, CultureInfo culture)
     {
+        return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args, culture) ?? Void;
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, invokes the specified member, using the specified
-    //     binding constraints and matching the specified argument list, modifiers and culture.
-    //
-    // Parameters:
-    //   name:
-    //     The string containing the name of the constructor, method, property, or field
-    //     member to invoke. -or- An empty string ("") to invoke the default member. -or-
-    //     For IDispatch members, a string representing the DispID, for example "[DispID=3]".
-    //
-    //   invokeAttr:
-    //     A bitwise combination of the enumeration values that specify how the search is
-    //     conducted. The access can be one of the BindingFlags such as Public, NonPublic,
-    //     Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified.
-    //     If the type of lookup is omitted, BindingFlags.Public | BindingFlags.Instance
-    //     | BindingFlags.Static are used.
-    //
-    //   binder:
-    //     An object that defines a set of properties and enables binding, which can involve
-    //     selection of an overloaded method, coercion of argument types, and invocation
-    //     of a member through reflection. -or- A null reference (Nothing in Visual Basic),
-    //     to use the System.Type.DefaultBinder. Note that explicitly defining a System.Reflection.Binder
-    //     object may be required for successfully invoking method overloads with variable
-    //     arguments.
-    //
-    //   target:
-    //     The object on which to invoke the specified member.
-    //
-    //   args:
-    //     An array containing the arguments to pass to the member to invoke.
-    //
-    //   modifiers:
-    //     An array of System.Reflection.ParameterModifier objects representing the attributes
-    //     associated with the corresponding element in the args array. A parameter's associated
-    //     attributes are stored in the member's signature. The default binder processes
-    //     this parameter only when calling a COM component.
-    //
-    //   culture:
-    //     The System.Globalization.CultureInfo object representing the globalization locale
-    //     to use, which may be necessary for locale-specific conversions, such as converting
-    //     a numeric String to a Double. -or- A null reference (Nothing in Visual Basic)
-    //     to use the current thread's System.Globalization.CultureInfo.
-    //
-    //   namedParameters:
-    //     An array containing the names of the parameters to which the values in the args
-    //     array are passed.
-    //
-    // Returns:
-    //     An object representing the return value of the invoked member.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     invokeAttr does not contain CreateInstance and name is null.
-    //
-    //   T:System.ArgumentException:
-    //     args and modifiers do not have the same length. -or- invokeAttr is not a valid
-    //     System.Reflection.BindingFlags attribute. -or- invokeAttr does not contain one
-    //     of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField,
-    //     GetProperty, or SetProperty. -or- invokeAttr contains CreateInstance combined
-    //     with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- invokeAttr
-    //     contains both GetField and SetField. -or- invokeAttr contains both GetProperty
-    //     and SetProperty. -or- invokeAttr contains InvokeMethod combined with SetField
-    //     or SetProperty. -or- invokeAttr contains SetField and args has more than one
-    //     element. -or- The named parameter array is larger than the argument array. -or-
-    //     This method is called on a COM object and one of the following binding flags
-    //     was not passed in: BindingFlags.InvokeMethod, BindingFlags.GetProperty, BindingFlags.SetProperty,
-    //     BindingFlags.PutDispProperty, or BindingFlags.PutRefDispProperty. -or- One of
-    //     the named parameter arrays contains a string that is null.
-    //
-    //   T:System.MethodAccessException:
-    //     The specified member is a class initializer.
-    //
-    //   T:System.MissingFieldException:
-    //     The field or property cannot be found.
-    //
-    //   T:System.MissingMethodException:
-    //     No method can be found that matches the arguments in args. -or- No member can
-    //     be found that has the argument names supplied in namedParameters. -or- The current
-    //     System.Type object represents a type that contains open type parameters, that
-    //     is, System.Type.ContainsGenericParameters returns true.
-    //
-    //   T:System.Reflection.TargetException:
-    //     The specified member cannot be invoked on target.
-    //
-    //   T:System.Reflection.AmbiguousMatchException:
-    //     More than one method matches the binding criteria.
-    //
-    //   T:System.InvalidOperationException:
-    //     The method represented by name has one or more unspecified generic type parameters.
-    //     That is, the method's System.Reflection.MethodBase.ContainsGenericParameters
-    //     property returns true.
+    /// <summary>
+    /// When overridden in a derived class, invokes the specified member, using the specified binding constraints and matching the specified argument list, modifiers and culture.
+    /// </summary>
+    /// <param name="name">The string containing the name of the constructor, method, property, or field member to invoke. -or- An empty string <see cref="string.Empty"/> to invoke the default member. -or- For IDispatch members, a string representing the DispID, for example "[DispID=3]".</param>
+    /// <param name="invokeAttr">A bitwise combination of the enumeration values that specify how the search is conducted. The access can be one of the <see cref="BindingFlags"/> such as Public, NonPublic, Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified. If the type of lookup is omitted, <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Instance"/> | <see cref="BindingFlags.Static"/> are used.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="OriginBinder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
+    /// <param name="target">The object on which to invoke the specified member.</param>
+    /// <param name="args">An array containing the arguments to pass to the member to invoke.</param>
+    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the args array. A parameter's associated attributes are stored in the member's signature. The default binder processes this parameter only when calling a COM component.</param>
+    /// <param name="culture">The object representing the globalization locale to use, which may be necessary for locale-specific conversions, such as converting a numeric <see cref="string"/> to a <see cref="double"/>. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired.</param>
+    /// <param name="namedParameters">An array containing the names of the parameters to which the values in the <paramref name="args"/> array are passed.</param>
+    /// <returns>An object representing the return value of the invoked member.</returns>
+    /// <exception cref="ArgumentException"><paramref name="invokeAttr"/> is not a valid <see cref="BindingFlags"/> attribute. -or- <paramref name="invokeAttr"/> does not contain one of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains CreateInstance combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains both GetField and SetField. -or- <paramref name="invokeAttr"/> contains both GetProperty and SetProperty. -or- <paramref name="invokeAttr"/> contains InvokeMethod combined with SetField or SetProperty. -or- <paramref name="invokeAttr"/> contains SetField and args has more than one element. -or- This method is called on a COM object and one of the following binding flags was not passed in: <see cref="BindingFlags.InvokeMethod"/>, <see cref="BindingFlags.GetProperty"/>, <see cref="BindingFlags.SetProperty"/>, <see cref="BindingFlags.PutDispProperty"/>, or <see cref="BindingFlags.PutRefDispProperty"/>.</exception>
+    /// <exception cref="MethodAccessException">The specified member is a class initializer.</exception>
+    /// <exception cref="MissingFieldException">The field or property cannot be found.</exception>
+    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
+    /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
+    /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    public object? InvokeMember(string name, BindingFlags invokeAttr, OriginBinder? binder, object? target, object?[]? args, OriginParameterModifier[]? modifiers, CultureInfo? culture, string[]? namedParameters)
+    public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args, OriginParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
     {
+        return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args, modifiers, culture, namedParameters) ?? Void;
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, implements the System.Type.IsArray property
-    //     and determines whether the System.Type is an array.
-    //
-    // Returns:
-    //     true if the System.Type is an array; otherwise, false.
-    protected abstract bool IsArrayImpl();
-
-    //
-    // Summary:
-    //     Determines whether an instance of a specified type c can be assigned to a variable
-    //     of the current type.
-    //
-    // Parameters:
-    //   c:
-    //     The type to compare with the current type.
-    //
-    // Returns:
-    //     true if any of the following conditions is true: - c and the current instance
-    //     represent the same type. - c is derived either directly or indirectly from the
-    //     current instance. c is derived directly from the current instance if it inherits
-    //     from the current instance; c is derived indirectly from the current instance
-    //     if it inherits from a succession of one or more classes that inherit from the
-    //     current instance. - The current instance is an interface that c implements. -
-    //     c is a generic type parameter, and the current instance represents one of the
-    //     constraints of c. - c represents a value type, and the current instance represents
-    //     Nullable<c> (Nullable(Of c) in Visual Basic). false if none of these conditions
-    //     are true, or if c is null.
-    public virtual bool IsAssignableFrom([NotNullWhen(true)] Type? c)
+    /// <summary>
+    /// Determines whether an instance of a specified type <paramref name="c"/> can be assigned to a variable of the current type.
+    /// </summary>
+    /// <param name="c">The type to compare with the current type.</param>
+    /// <returns>true if any of the following conditions is true: - <paramref name="c"/> and the current instance represent the same type. - <paramref name="c"/> is derived either directly or indirectly from the current instance. <paramref name="c"/> is derived directly from the current instance if it inherits from the current instance; <paramref name="c"/> is derived indirectly from the current instance if it inherits from a succession of one or more classes that inherit from the current instance. - The current instance is an interface that <paramref name="c"/> implements. - <paramref name="c"/> is a generic type parameter, and the current instance represents one of the constraints of <paramref name="c"/>. - <paramref name="c"/> represents a value type, and the current instance represents <see cref="System.Nullable{c}"/>. false if none of these conditions are true.</returns>
+    public bool IsAssignableFrom(Type c)
     {
-        throw null;
+        return Origin.IsAssignableFrom(c.Origin);
     }
 
-    //
-    // Summary:
-    //     Determines whether the current type can be assigned to a variable of the specified
-    //     targetType.
-    //
-    // Parameters:
-    //   targetType:
-    //     The type to compare with the current type.
-    //
-    // Returns:
-    //     true if any of the following conditions is true: - The current instance and targetType
-    //     represent the same type. - The current type is derived either directly or indirectly
-    //     from targetType. The current type is derived directly from targetType if it inherits
-    //     from targetType; the current type is derived indirectly from targetType if it
-    //     inherits from a succession of one or more classes that inherit from targetType.
-    //     - targetType is an interface that the current type implements. - The current
-    //     type is a generic type parameter, and targetType represents one of the constraints
-    //     of the current type. - The current type represents a value type, and targetType
-    //     represents Nullable<c> (Nullable(Of c) in Visual Basic). false if none of these
-    //     conditions are true, or if targetType is null.
-    public bool IsAssignableTo([NotNullWhen(true)] Type? targetType)
+    /// <summary>
+    /// Determines whether the current type can be assigned to a variable of the specified <paramref name="targetType"/>.
+    /// </summary>
+    /// <param name="targetType">The type to compare with the current type.</param>
+    /// <returns>true if any of the following conditions is true: - The current instance and <paramref name="targetType"/> represent the same type. - The current type is derived either directly or indirectly from <paramref name="targetType"/>. The current type is derived directly from <paramref name="targetType"/> if it inherits from <paramref name="targetType"/>; the current type is derived indirectly from <paramref name="targetType"/> if it inherits from a succession of one or more classes that inherit from <paramref name="targetType"/>. - <paramref name="targetType"/> is an interface that the current type implements. - The current type is a generic type parameter, and <paramref name="targetType"/> represents one of the constraints of the current type. - The current type represents a value type, and <paramref name="targetType"/> represents <see cref="System.Nullable{c}"/>. false if none of these conditions are true.</returns>
+    public bool IsAssignableTo(Type targetType)
     {
-        throw null;
+        return Origin.IsAssignableTo(targetType.Origin);
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, implements the System.Type.IsByRef property
-    //     and determines whether the System.Type is passed by reference.
-    //
-    // Returns:
-    //     true if the System.Type is passed by reference; otherwise, false.
-    protected abstract bool IsByRefImpl();
-
-    //
-    // Summary:
-    //     When overridden in a derived class, implements the System.Type.IsCOMObject property
-    //     and determines whether the System.Type is a COM object.
-    //
-    // Returns:
-    //     true if the System.Type is a COM object; otherwise, false.
-    protected abstract bool IsCOMObjectImpl();
-
-    //
-    // Summary:
-    //     Implements the System.Type.IsContextful property and determines whether the System.Type
-    //     can be hosted in a context.
-    //
-    // Returns:
-    //     true if the System.Type can be hosted in a context; otherwise, false.
-    protected virtual bool IsContextfulImpl()
+    /// <summary>
+    /// Returns a value that indicates whether the specified value exists in the current enumeration type.
+    /// </summary>
+    /// <param name="value">The value to be tested.</param>
+    /// <returns>true if the specified value is a member of the current enumeration type; otherwise, false.</returns>
+    /// <exception cref="ArgumentException">The current type is not an enumeration.</exception>
+    /// <exception cref="InvalidOperationException"><paramref name="value"/> is of a type that cannot be the underlying type of an enumeration.</exception>
+    public bool IsEnumDefined(object value)
     {
-        throw null;
+        return Origin.IsEnumDefined(value);
     }
 
-    //
-    // Summary:
-    //     Returns a value that indicates whether the specified value exists in the current
-    //     enumeration type.
-    //
-    // Parameters:
-    //   value:
-    //     The value to be tested.
-    //
-    // Returns:
-    //     true if the specified value is a member of the current enumeration type; otherwise,
-    //     false.
-    //
-    // Exceptions:
-    //   T:System.ArgumentException:
-    //     The current type is not an enumeration.
-    //
-    //   T:System.ArgumentNullException:
-    //     value is null.
-    //
-    //   T:System.InvalidOperationException:
-    //     value is of a type that cannot be the underlying type of an enumeration.
-    public virtual bool IsEnumDefined(object value)
+    /// <summary>
+    /// Determines whether two COM types have the same identity and are eligible for type equivalence.
+    /// </summary>
+    /// <param name="other">The COM type that is tested for equivalence with the current type.</param>
+    /// <returns>true if the COM types are equivalent; otherwise, false. This method also returns false if one type is in an assembly that is loaded for execution, and the other is in an assembly that is loaded into the reflection-only context.</returns>
+    public bool IsEquivalentTo(Type other)
     {
-        throw null;
+        return Origin.IsEquivalentTo(other.Origin);
     }
 
-    //
-    // Summary:
-    //     Determines whether two COM types have the same identity and are eligible for
-    //     type equivalence.
-    //
-    // Parameters:
-    //   other:
-    //     The COM type that is tested for equivalence with the current type.
-    //
-    // Returns:
-    //     true if the COM types are equivalent; otherwise, false. This method also returns
-    //     false if one type is in an assembly that is loaded for execution, and the other
-    //     is in an assembly that is loaded into the reflection-only context.
-    public virtual bool IsEquivalentTo([NotNullWhen(true)] Type? other)
+    /// <summary>
+    /// Determines whether the specified object is an instance of the current <see cref="Type"/>.
+    /// </summary>
+    /// <param name="o">The object to compare with the current type.</param>
+    /// <returns>true if the current <see cref="Type"/> is in the inheritance hierarchy of the object represented by <paramref name="o"/>, or if the current <see cref="Type"/> is an interface that <paramref name="o"/> implements. false if neither of these conditions is the case or if the current <see cref="Type"/> is an open generic type (that is, <see cref="Type.ContainsGenericParameters"/> returns true).</returns>
+    public bool IsInstanceOfType(object o)
     {
-        throw null;
+        return Origin.IsInstanceOfType(o);
     }
 
-    //
-    // Summary:
-    //     Determines whether the specified object is an instance of the current System.Type.
-    //
-    // Parameters:
-    //   o:
-    //     The object to compare with the current type.
-    //
-    // Returns:
-    //     true if the current Type is in the inheritance hierarchy of the object represented
-    //     by o, or if the current Type is an interface that o implements. false if neither
-    //     of these conditions is the case, if o is null, or if the current Type is an open
-    //     generic type (that is, System.Type.ContainsGenericParameters returns true).
-    public virtual bool IsInstanceOfType([NotNullWhen(true)] object? o)
+    /// <summary>
+    /// Determines whether the current <see cref="Type"/> derives from the specified <see cref="Type"/>.
+    /// </summary>
+    /// <param name="c">The type to compare with the current type.</param>
+    /// <returns>true if the current <see cref="Type"/> derives from <paramref name="c"/>; otherwise, false. This method also returns false if <paramref name="c"/> and the current <see cref="Type"/> are equal.</returns>
+    public bool IsSubclassOf(Type c)
     {
-        throw null;
+        return Origin.IsSubclassOf(c.Origin);
     }
 
-    //
-    // Summary:
-    //     Implements the System.Type.IsMarshalByRef property and determines whether the
-    //     System.Type is marshaled by reference.
-    //
-    // Returns:
-    //     true if the System.Type is marshaled by reference; otherwise, false.
-    protected virtual bool IsMarshalByRefImpl()
+    /// <summary>
+    /// Returns a <see cref="Type"/> object representing a one-dimensional array of the current type, with a lower bound of zero.
+    /// </summary>
+    /// <returns>A <see cref="Type"/> object representing a one-dimensional array of the current type, with a lower bound of zero.</returns>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
+    public Type MakeArrayType()
     {
-        throw null;
+        return new Type(Origin.MakeArrayType());
     }
 
-    //
-    // Summary:
-    //     When overridden in a derived class, implements the System.Type.IsPointer property
-    //     and determines whether the System.Type is a pointer.
-    //
-    // Returns:
-    //     true if the System.Type is a pointer; otherwise, false.
-    protected abstract bool IsPointerImpl();
-
-    //
-    // Summary:
-    //     When overridden in a derived class, implements the System.Type.IsPrimitive property
-    //     and determines whether the System.Type is one of the primitive types.
-    //
-    // Returns:
-    //     true if the System.Type is one of the primitive types; otherwise, false.
-    protected abstract bool IsPrimitiveImpl();
-
-    //
-    // Summary:
-    //     Determines whether the current System.Type derives from the specified System.Type.
-    //
-    // Parameters:
-    //   c:
-    //     The type to compare with the current type.
-    //
-    // Returns:
-    //     true if the current Type derives from c; otherwise, false. This method also returns
-    //     false if c and the current Type are equal.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     c is null.
-    public virtual bool IsSubclassOf(Type c)
+    /// <summary>
+    /// Returns a <see cref="Type"/> object representing an array of the current type, with the specified number of dimensions.
+    /// </summary>
+    /// <param name="rank">The number of dimensions for the array. This number must be less than or equal to 32.</param>
+    /// <returns>An object representing an array of the current type, with the specified number of dimensions.</returns>
+    /// <exception cref="IndexOutOfRangeException"><paramref name="rank"/> is invalid. For example, 0 or negative.</exception>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true. -or- <paramref name="rank"/> is greater than 32.</exception>
+    public Type MakeArrayType(int rank)
     {
-        throw null;
+        return new Type(Origin.MakeArrayType(rank));
     }
 
-    //
-    // Summary:
-    //     Implements the System.Type.IsValueType property and determines whether the System.Type
-    //     is a value type; that is, not a class or an interface.
-    //
-    // Returns:
-    //     true if the System.Type is a value type; otherwise, false.
-    protected virtual bool IsValueTypeImpl()
+    /// <summary>
+    /// Returns a <see cref="Type"/> object that represents the current type when passed as a ref parameter.
+    /// </summary>
+    /// <returns>A <see cref="Type"/> object that represents the current type when passed as a ref parameter.</returns>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
+    public Type MakeByRefType()
     {
-        throw null;
+        return new Type(Origin.MakeByRefType());
     }
 
-    //
-    // Summary:
-    //     Returns a System.Type object representing a one-dimensional array of the current
-    //     type, with a lower bound of zero.
-    //
-    // Returns:
-    //     A System.Type object representing a one-dimensional array of the current type,
-    //     with a lower bound of zero.
-    //
-    // Exceptions:
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class. Derived classes must provide
-    //     an implementation.
-    //
-    //   T:System.TypeLoadException:
-    //     The current type is System.TypedReference. -or- The current type is a ByRef type.
-    //     That is, System.Type.IsByRef returns true.
-    public virtual Type MakeArrayType()
-    {
-        throw null;
-    }
-
-    //
-    // Summary:
-    //     Returns a System.Type object representing an array of the current type, with
-    //     the specified number of dimensions.
-    //
-    // Parameters:
-    //   rank:
-    //     The number of dimensions for the array. This number must be less than or equal
-    //     to 32.
-    //
-    // Returns:
-    //     An object representing an array of the current type, with the specified number
-    //     of dimensions.
-    //
-    // Exceptions:
-    //   T:System.IndexOutOfRangeException:
-    //     rank is invalid. For example, 0 or negative.
-    //
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class.
-    //
-    //   T:System.TypeLoadException:
-    //     The current type is System.TypedReference. -or- The current type is a ByRef type.
-    //     That is, System.Type.IsByRef returns true. -or- rank is greater than 32.
-    public virtual Type MakeArrayType(int rank)
-    {
-        throw null;
-    }
-
-    //
-    // Summary:
-    //     Returns a System.Type object that represents the current type when passed as
-    //     a ref parameter (ByRef parameter in Visual Basic).
-    //
-    // Returns:
-    //     A System.Type object that represents the current type when passed as a ref parameter
-    //     (ByRef parameter in Visual Basic).
-    //
-    // Exceptions:
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class.
-    //
-    //   T:System.TypeLoadException:
-    //     The current type is System.TypedReference. -or- The current type is a ByRef type.
-    //     That is, System.Type.IsByRef returns true.
-    public virtual Type MakeByRefType()
-    {
-        throw null;
-    }
-
-    //
-    // Summary:
-    //     Returns a signature type object that can be passed into the Type[] array parameter
-    //     of a Overload:System.Type.GetMethod method to represent a generic parameter reference.
-    //
-    // Parameters:
-    //   position:
-    //     The typed parameter position.
-    //
-    // Returns:
-    //     A signature type object that can be passed into the Type[] array parameter of
-    //     a Overload:System.Type.GetMethod method to represent a generic parameter reference.
-    //
-    // Exceptions:
-    //   T:System.ArgumentOutOfRangeException:
-    //     position is negative.
+    /// <summary>
+    /// Returns a signature type object that can be passed into the <see cref="Type"/>[] array parameter of a Overload:System.Type.GetMethod method to represent a generic parameter reference.
+    /// </summary>
+    /// <param name="position">The typed parameter position.</param>
+    /// <returns>A signature type object that can be passed into the <see cref="Type"/>[] array parameter of a Overload:System.Type.GetMethod method to represent a generic parameter reference.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="position"/> is negative.</exception>
     public static Type MakeGenericMethodParameter(int position)
     {
-        throw null;
+        return new Type(OriginType.MakeGenericMethodParameter(position));
     }
 
-    //
-    // Summary:
-    //     Creates a generic signature type, which allows third party reimplementations
-    //     of Reflection to fully support the use of signature types in querying type members.
-    //
-    // Parameters:
-    //   genericTypeDefinition:
-    //     The generic type definition.
-    //
-    //   typeArguments:
-    //     An array of type arguments.
-    //
-    // Returns:
-    //     A generic signature type.
+    /// <summary>
+    /// Creates a generic signature type, which allows third party reimplementations of Reflection to fully support the use of signature types in querying type members.
+    /// </summary>
+    /// <param name="genericTypeDefinition">The generic type definition.</param>
+    /// <param name="typeArguments">An array of type arguments.</param>
+    /// <returns>A generic signature type.</returns>
     public static Type MakeGenericSignatureType(Type genericTypeDefinition, params Type[] typeArguments)
     {
-        throw null;
+        return new Type(OriginType.MakeGenericSignatureType(genericTypeDefinition.Origin, GetOriginList(typeArguments).ToArray()));
     }
 
-    //
-    // Summary:
-    //     Substitutes the elements of an array of types for the type parameters of the
-    //     current generic type definition and returns a System.Type object representing
-    //     the resulting constructed type.
-    //
-    // Parameters:
-    //   typeArguments:
-    //     An array of types to be substituted for the type parameters of the current generic
-    //     type.
-    //
-    // Returns:
-    //     A System.Type representing the constructed type formed by substituting the elements
-    //     of typeArguments for the type parameters of the current generic type.
-    //
-    // Exceptions:
-    //   T:System.InvalidOperationException:
-    //     The current type does not represent a generic type definition. That is, System.Type.IsGenericTypeDefinition
-    //     returns false.
-    //
-    //   T:System.ArgumentNullException:
-    //     typeArguments is null. -or- Any element of typeArguments is null.
-    //
-    //   T:System.ArgumentException:
-    //     The number of elements in typeArguments is not the same as the number of type
-    //     parameters in the current generic type definition. -or- Any element of typeArguments
-    //     does not satisfy the constraints specified for the corresponding type parameter
-    //     of the current generic type. -or- typeArguments contains an element that is a
-    //     pointer type (System.Type.IsPointer returns true), a by-ref type (System.Type.IsByRef
-    //     returns true), or System.Void.
-    //
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class. Derived classes must provide
-    //     an implementation.
+    /// <summary>
+    /// Substitutes the elements of an array of types for the type parameters of the current generic type definition and returns a <see cref="Type"/> object representing the resulting constructed type.
+    /// </summary>
+    /// <param name="typeArguments">An array of types to be substituted for the type parameters of the current generic type.</param>
+    /// <returns>A <see cref="Type"/> representing the constructed type formed by substituting the elements of <paramref name="typeArguments"/> for the type parameters of the current generic type.</returns>
+    /// <exception cref="InvalidOperationException">The current type does not represent a generic type definition. That is, <see cref="IsGenericTypeDefinition"/> returns false.</exception>
+    /// <exception cref="ArgumentException">The number of elements in <paramref name="typeArguments"/> is not the same as the number of type parameters in the current generic type definition. -or- Any element of <paramref name="typeArguments"/> does not satisfy the constraints specified for the corresponding type parameter of the current generic type. -or- <paramref name="typeArguments"/> contains an element that is a pointer type (<see cref="IsPointer"/> returns true), a by-ref type (<see cref="IsByRef"/> returns true), or <see cref="System.Void"/>.</exception>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
     [RequiresUnreferencedCode("If some of the generic arguments are annotated (either with DynamicallyAccessedMembersAttribute, or generic constraints), trimming can't validate that the requirements of those annotations are met.")]
-    public virtual Type MakeGenericType(params Type[] typeArguments)
+    public Type MakeGenericType(params Type[] typeArguments)
     {
-        throw null;
+        return new Type(Origin.MakeGenericType(GetOriginList(typeArguments).ToArray()));
     }
 
-    //
-    // Summary:
-    //     Returns a System.Type object that represents a pointer to the current type.
-    //
-    // Returns:
-    //     A System.Type object that represents a pointer to the current type.
-    //
-    // Exceptions:
-    //   T:System.NotSupportedException:
-    //     The invoked method is not supported in the base class.
-    //
-    //   T:System.TypeLoadException:
-    //     The current type is System.TypedReference. -or- The current type is a ByRef type.
-    //     That is, System.Type.IsByRef returns true.
-    public virtual Type MakePointerType()
+    /// <summary>
+    /// Returns a <see cref="Type"/> object that represents a pointer to the current type.
+    /// </summary>
+    /// <returns>A <see cref="Type"/> object that represents a pointer to the current type.</returns>
+    /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
+    public Type MakePointerType()
     {
-        throw null;
+        return new Type(Origin.MakePointerType());
     }
 
-    //
-    // Summary:
-    //     Indicates whether two System.Type objects are equal.
-    //
-    // Parameters:
-    //   left:
-    //     The first object to compare.
-    //
-    //   right:
-    //     The second object to compare.
-    //
-    // Returns:
-    //     true if left is equal to right; otherwise, false.
-    [NullableContext(2)]
-    public static bool operator ==(Type? left, Type? right)
+    /// <summary>
+    /// Indicates whether two <see cref="Type"/> objects are equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    public static bool operator ==(Type left, Type right)
     {
-        throw null;
+        return left.Origin == right.Origin;
     }
 
-    //
-    // Summary:
-    //     Indicates whether two System.Type objects are not equal.
-    //
-    // Parameters:
-    //   left:
-    //     The first object to compare.
-    //
-    //   right:
-    //     The second object to compare.
-    //
-    // Returns:
-    //     true if left is not equal to right; otherwise, false.
-    [NullableContext(2)]
-    public static bool operator !=(Type? left, Type? right)
+    /// <summary>
+    /// Indicates whether two <see cref="Type"/> objects are not equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    public static bool operator !=(Type left, Type right)
     {
-        throw null;
+        return left.Origin != right.Origin;
     }
 
-    //
-    // Summary:
-    //     Gets the System.Type with the specified name, specifying whether to perform a
-    //     case-sensitive search and whether to throw an exception if the type is not found.
-    //     The type is loaded for reflection only, not for execution.
-    //
-    // Parameters:
-    //   typeName:
-    //     The assembly-qualified name of the System.Type to get.
-    //
-    //   throwIfNotFound:
-    //     true to throw a System.TypeLoadException if the type cannot be found; false to
-    //     return null if the type cannot be found. Specifying false also suppresses some
-    //     other exception conditions, but not all of them. See the Exceptions section.
-    //
-    //   ignoreCase:
-    //     true to perform a case-insensitive search for typeName; false to perform a case-sensitive
-    //     search for typeName.
-    //
-    // Returns:
-    //     The type with the specified name, if found; otherwise, null. If the type is not
-    //     found, the throwIfNotFound parameter specifies whether null is returned or an
-    //     exception is thrown. In some cases, an exception is thrown regardless of the
-    //     value of throwIfNotFound. See the Exceptions section.
-    //
-    // Exceptions:
-    //   T:System.ArgumentNullException:
-    //     typeName is null.
-    //
-    //   T:System.Reflection.TargetInvocationException:
-    //     A class initializer is invoked and throws an exception.
-    //
-    //   T:System.TypeLoadException:
-    //     throwIfNotFound is true and the type is not found. -or- throwIfNotFound is true
-    //     and typeName contains invalid characters, such as an embedded tab. -or- throwIfNotFound
-    //     is true and typeName is an empty string. -or- throwIfNotFound is true and typeName
-    //     represents an array type with an invalid size. -or- typeName represents an array
-    //     of System.TypedReference objects.
-    //
-    //   T:System.ArgumentException:
-    //     typeName does not include the assembly name. -or- throwIfNotFound is true and
-    //     typeName contains invalid syntax; for example, "MyType[,*,]". -or- typeName represents
-    //     a generic type that has a pointer type, a ByRef type, or System.Void as one of
-    //     its type arguments. -or- typeName represents a generic type that has an incorrect
-    //     number of type arguments. -or- typeName represents a generic type, and one of
-    //     its type arguments does not satisfy the constraints for the corresponding type
-    //     parameter.
-    //
-    //   T:System.IO.FileNotFoundException:
-    //     throwIfNotFound is true and the assembly or one of its dependencies was not found.
-    //
-    //   T:System.IO.FileLoadException:
-    //     The assembly or one of its dependencies was found, but could not be loaded.
-    //
-    //   T:System.BadImageFormatException:
-    //     The assembly or one of its dependencies is not valid. -or- The assembly was compiled
-    //     with a later version of the common language runtime than the version that is
-    //     currently loaded.
-    //
-    //   T:System.PlatformNotSupportedException:
-    //     .NET Core and .NET 5+ only: In all cases.
-    [Obsolete("ReflectionOnly loading is not supported and throws PlatformNotSupportedException.", DiagnosticId = "SYSLIB0018", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-    public static Type? ReflectionOnlyGetType(string typeName, bool throwIfNotFound, bool ignoreCase)
-    {
-        throw null;
-    }
-
-    //
-    // Summary:
-    //     Returns a String representing the name of the current Type.
-    //
-    // Returns:
-    //     A System.String representing the name of the current System.Type.
+    /// <summary>
+    /// Returns a String representing the name of the current Type.
+    /// </summary>
+    /// <returns>A System.String representing the name of the current System.Type.</returns>
     public override string ToString()
     {
-        throw null;
+        return Origin.ToString();
     }
 }
