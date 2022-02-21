@@ -10,5 +10,10 @@ public partial class Type
     /// <summary>
     /// Represents a missing value in the <see cref="Type"/> information. This field is read-only.
     /// </summary>
-    public static readonly Type Missing = new Type((OriginType)OriginType.Missing);
+    public static readonly Type Missing = new((OriginType)OriginType.Missing);
+
+    private static Type GetInstanceOfMissing()
+    {
+        return Missing;
+    }
 }

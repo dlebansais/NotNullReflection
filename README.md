@@ -6,6 +6,7 @@ Proxy for System.Reflection with no null references whatsoever.
 
 + `System.Reflexion.Assembly`
 + `System.Reflexion.AssemblyName`
++ `System.Type`
 
 ## Supported frameworks
 
@@ -15,7 +16,7 @@ Proxy for System.Reflection with no null references whatsoever.
 + .Net 5.0
 + .Net 6.0
 
-64-bits platform only, nullable enabled, C# 10.
+x64 platform only, nullable enabled, C# 10.
 
 
 

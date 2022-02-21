@@ -15,5 +15,5 @@ public partial class Type
     /// <summary>
     /// Gets the default type resolver delegate.
     /// </summary>
-    public static Func<Assembly, string, bool, Type> DefaultTypeResolver { get; } = (Assembly assembly, string typeName, bool ignoreCase) => Missing;
+    public static Func<Assembly, string, bool, Type> DefaultTypeResolver { get; } = (Assembly assembly, string typeName, bool ignoreCase) => GetInstanceOfMissing();
 }

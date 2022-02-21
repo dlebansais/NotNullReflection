@@ -305,6 +305,7 @@ public partial class Type
         }
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether the type is a byref-like structure.
     /// </summary>
@@ -316,6 +317,7 @@ public partial class Type
             return Origin.IsByRefLike;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is a class or a delegate; that is, not a value type or interface.
@@ -389,6 +391,7 @@ public partial class Type
         }
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a type parameter in the definition of a generic method.
     /// </summary>
@@ -400,6 +403,7 @@ public partial class Type
             return Origin.IsGenericMethodParameter;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a type parameter in the definition of a generic type or method.
@@ -437,6 +441,7 @@ public partial class Type
         }
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a type parameter in the definition of a generic type.
     /// </summary>
@@ -448,6 +453,7 @@ public partial class Type
             return Origin.IsGenericTypeParameter;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> has a <see cref="ComImportAttribute"/> attribute applied, indicating that it was imported from a COM type library.
@@ -689,6 +695,7 @@ public partial class Type
         }
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether the type is a signature type.
     /// </summary>
@@ -700,6 +707,7 @@ public partial class Type
             return Origin.IsSignatureType;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the type has a name that requires special handling.
@@ -713,6 +721,7 @@ public partial class Type
         }
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether the type is an array type that can represent only a single-dimensional array with a zero lower bound.
     /// </summary>
@@ -736,6 +745,7 @@ public partial class Type
             return Origin.IsTypeDefinition;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the string format attribute UnicodeClass is selected for the <see cref="Type"/>.
@@ -761,6 +771,7 @@ public partial class Type
         }
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Gets a value indicating whether the type is an array type that can represent a multi-dimensional array or an array with an arbitrary lower bound.
     /// </summary>
@@ -772,6 +783,7 @@ public partial class Type
             return Origin.IsVariableBoundArray;
         }
     }
+#endif
 
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> can be accessed by code outside the assembly.
@@ -916,7 +928,9 @@ public partial class Type
     /// <param name="filterCriteria">The search criteria that determines whether an interface should be included in the returned array.</param>
     /// <returns>An array of <see cref="Type"/> objects representing a filtered list of the interfaces implemented or inherited by the current System.Type, or an empty array if no interfaces matching the filter are implemented or inherited by the current <see cref="Type"/>.</returns>
     /// <exception cref="TargetInvocationException">A static initializer is invoked and throws an exception.</exception>
+#if NET6_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
     public Type[] FindInterfaces(TypeFilter filter, object filterCriteria)
     {
         return GetList(Origin.FindInterfaces(filter, filterCriteria)).ToArray();
@@ -930,7 +944,9 @@ public partial class Type
     /// <param name="filter">The delegate that does the comparisons, returning true if the member currently being inspected matches the <paramref name="filterCriteria"/> and false otherwise.</param>
     /// <param name="filterCriteria">The search criteria that determines whether a member is returned in the array of <see cref="OriginMemberInfo"/> objects. The fields of <see cref="FieldAttributes"/>, <see cref="MethodAttributes"/>, and <see cref="MethodImplAttributes"/> can be used in conjunction with the <see cref="OriginType.FilterAttribute"/> delegate supplied by this class.</param>
     /// <returns>A filtered array of <see cref="OriginMemberInfo"/> objects of the specified member type. -or- An empty array if the current <see cref="Type"/> does not have members of type <paramref name="memberType"/> that match the filter criteria.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
     public virtual OriginMemberInfo[] FindMembers(MemberTypes memberType, BindingFlags bindingAttr, MemberFilter filter, object filterCriteria)
     {
         return Origin.FindMembers(memberType, bindingAttr, filter, filterCriteria);
@@ -947,6 +963,7 @@ public partial class Type
         return Origin.GetArrayRank();
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Searches for a constructor whose parameters match the specified argument types, using the specified binding constraints.
     /// </summary>
@@ -959,6 +976,7 @@ public partial class Type
     {
         return Origin.GetConstructor(bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
     }
+#endif
 
     /// <summary>
     /// Searches for a constructor whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.
@@ -971,7 +989,9 @@ public partial class Type
     /// <returns>An object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
+#endif
     public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
@@ -987,7 +1007,9 @@ public partial class Type
     /// <returns>A <see cref="OriginConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
+#endif
     public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
@@ -1000,7 +1022,9 @@ public partial class Type
     /// <returns>An object representing the public instance constructor whose parameters match the types in the parameter type array, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
     public OriginConstructorInfo GetConstructor(Type[] types)
     {
         return Origin.GetConstructor(GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
@@ -1010,7 +1034,9 @@ public partial class Type
     /// Returns all the public constructors defined for the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="OriginConstructorInfo"/> objects representing all the public instance constructors defined for the current <see cref="Type"/>, but not including the type initializer (static constructor). If no public instance constructors are defined for the current <see cref="Type"/>, or if the current <see cref="Type"/> represents a type parameter in the definition of a generic type or generic method, an empty array of type <see cref="OriginConstructorInfo"/> is returned.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
     public OriginConstructorInfo[] GetConstructors()
     {
         return Origin.GetConstructors();
@@ -1021,7 +1047,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginConstructorInfo"/> objects representing all constructors defined for the current <see cref="Type"/> that match the specified binding constraints, including the type initializer if it is defined. Returns an empty array of type <see cref="OriginConstructorInfo"/> if no constructors are defined for the current <see cref="Type"/>, if none of the defined constructors match the binding constraints, or if the current <see cref="Type"/> represents a type parameter in the definition of a generic type or generic method.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
+#endif
     public OriginConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
     {
         return Origin.GetConstructors(bindingAttr);
@@ -1031,7 +1059,9 @@ public partial class Type
     /// Searches for the members defined for the current <see cref="Type"/> whose <see cref="OriginDefaultMemberAttribute"/> is set.
     /// </summary>
     /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all default members of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMemberInfo"/>, if the current <see cref="Type"/> does not have default members.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
+#endif
     public OriginMemberInfo[] GetDefaultMembers()
     {
         return Origin.GetDefaultMembers();
@@ -1095,7 +1125,9 @@ public partial class Type
     /// <param name="name">The string containing the name of an event that is declared or inherited by the current <see cref="Type"/>.</param>
     /// <returns>The object representing the specified public event that is declared or inherited by the current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Event not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents)]
+#endif
     public OriginEventInfo GetEvent(string name)
     {
         return Origin.GetEvent(name) ?? throw new NullReferenceException("Event not found.");
@@ -1108,7 +1140,9 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <returns>The object representing the specified event that is declared or inherited by the current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Event not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents)]
+#endif
     public OriginEventInfo GetEvent(string name, BindingFlags bindingAttr)
     {
         return Origin.GetEvent(name, bindingAttr) ?? throw new NullReferenceException("Event not found.");
@@ -1118,7 +1152,9 @@ public partial class Type
     /// Returns all the public events that are declared or inherited by the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="OriginEventInfo"/> objects representing all the public events which are declared or inherited by the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginEventInfo"/>, if the current <see cref="Type"/> does not have public events.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents)]
+#endif
     public OriginEventInfo[] GetEvents()
     {
         return Origin.GetEvents();
@@ -1129,7 +1165,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginEventInfo"/> objects representing all events that are declared or inherited by the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginEventInfo"/>, if the current <see cref="Type"/> does not have events, or if none of the events match the binding constraints.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents)]
+#endif
     public OriginEventInfo[] GetEvents(BindingFlags bindingAttr)
     {
         return Origin.GetEvents(bindingAttr);
@@ -1142,7 +1180,9 @@ public partial class Type
     /// <returns>An object representing the public field with the specified name, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NotSupportedException">This <see cref="Type"/> object is a <see cref="TypeBuilder"/> whose <see cref="TypeBuilder.CreateType"/> method has not yet been called.</exception>
     /// <exception cref="NullReferenceException">Field not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)]
+#endif
     public OriginFieldInfo GetField(string name)
     {
         return Origin.GetField(name) ?? throw new NullReferenceException("Field not found.");
@@ -1155,7 +1195,9 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <returns>An object representing the field that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Field not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields)]
+#endif
     public OriginFieldInfo GetField(string name, BindingFlags bindingAttr)
     {
         return Origin.GetField(name, bindingAttr) ?? throw new NullReferenceException("Field not found.");
@@ -1165,7 +1207,9 @@ public partial class Type
     /// Returns all the public fields of the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="OriginFieldInfo"/> objects representing all the public fields defined for the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginFieldInfo"/>, if no public fields are defined for the current <see cref="Type"/>.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)]
+#endif
     public OriginFieldInfo[] GetFields()
     {
         return Origin.GetFields();
@@ -1176,7 +1220,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginFieldInfo"/> objects representing all fields defined for the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginFieldInfo"/>, if no fields are defined for the current <see cref="Type"/>, or if none of the defined fields match the binding constraints.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields)]
+#endif
     public OriginFieldInfo[] GetFields(BindingFlags bindingAttr)
     {
         return Origin.GetFields(bindingAttr);
@@ -1229,8 +1275,10 @@ public partial class Type
     /// <returns>An object representing the interface with the specified name, implemented or inherited by the current The current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">The current <see cref="Type"/> represents a type that implements the same generic interface with different type arguments.</exception>
     /// <exception cref="NullReferenceException">Interface not found.</exception>
+#if NET6_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
     public Type GetInterface(string name)
     {
         return new Type(Origin.GetInterface(name) ?? throw new NullReferenceException("Interface not found."));
@@ -1244,8 +1292,10 @@ public partial class Type
     /// <returns>An object representing the interface with the specified name, implemented or inherited by the current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">The current <see cref="Type"/> represents a type that implements the same generic interface with different type arguments.</exception>
     /// <exception cref="NullReferenceException">Interface not found.</exception>
+#if NET6_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
     public Type GetInterface(string name, bool ignoreCase)
     {
         return new Type(Origin.GetInterface(name, ignoreCase) ?? throw new NullReferenceException("Interface not found."));
@@ -1259,7 +1309,11 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="interfaceType"/> is not implemented by the current type. -or- The <paramref name="interfaceType"/> argument does not refer to an interface. -or- The current instance of <paramref name="interfaceType"/> argument is an open generic type; that is, the <see cref="Type.ContainsGenericParameters"/> property returns true. -or- <paramref name="interfaceType"/> is a generic interface, and the current type is an array type.</exception>
     /// <exception cref="InvalidOperationException">The current <see cref="Type"/> represents a generic type parameter; that is, <see cref="Type.IsGenericParameter"/> is true.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
-    public virtual InterfaceMapping GetInterfaceMap([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] Type interfaceType)
+    public virtual InterfaceMapping GetInterfaceMap(
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
+#endif
+        Type interfaceType)
     {
         return Origin.GetInterfaceMap(interfaceType.Origin);
     }
@@ -1269,7 +1323,9 @@ public partial class Type
     /// </summary>
     /// <returns>An array of <see cref="Type"/> objects representing all the interfaces implemented or inherited by the current <see cref="Type"/>. -or- An empty array of type <see cref="Type"/>, if no interfaces are implemented or inherited by the current <see cref="Type"/>.</returns>
     /// <exception cref="TargetInvocationException">A static initializer is invoked and throws an exception.</exception>
+#if NET6_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
+#endif
     public Type[] GetInterfaces()
     {
         return GetList(Origin.GetInterfaces()).ToArray();
@@ -1280,7 +1336,9 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the public members to get.</param>
     /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
+#endif
     public OriginMemberInfo[] GetMember(string name)
     {
         return Origin.GetMember(name);
@@ -1292,7 +1350,9 @@ public partial class Type
     /// <param name="name">The string containing the name of the members to get.</param>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
+#endif
     public OriginMemberInfo[] GetMember(string name, BindingFlags bindingAttr)
     {
         return Origin.GetMember(name, bindingAttr);
@@ -1306,12 +1366,15 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing the public members with the specified name, if found; otherwise, an empty array.</returns>
     /// <exception cref="NotSupportedException">A derived class must provide an implementation.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
+#endif
     public OriginMemberInfo[] GetMember(string name, MemberTypes type, BindingFlags bindingAttr)
     {
         return Origin.GetMember(name, type, bindingAttr);
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Searches for the <see cref="OriginMemberInfo"/> on the current <see cref="Type"/> that matches the specified <see cref="OriginMemberInfo"/>.
     /// </summary>
@@ -1322,12 +1385,15 @@ public partial class Type
     {
         return Origin.GetMemberWithSameMetadataDefinitionAs(member);
     }
+#endif
 
     /// <summary>
     /// Returns all the public members of the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all the public members of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMemberInfo"/>, if the current <see cref="Type"/> does not have public members.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)2731)]
+#endif
     public OriginMemberInfo[] GetMembers()
     {
         return Origin.GetMembers();
@@ -1338,7 +1404,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginMemberInfo"/> objects representing all members defined for the current System.Type that match the specified binding constraints. -or- An empty array if no members are defined for the current <see cref="Type"/>, or if none of the defined members match the binding constraints.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)8191)]
+#endif
     public OriginMemberInfo[] GetMembers(BindingFlags bindingAttr)
     {
         return Origin.GetMembers(bindingAttr);
@@ -1351,12 +1419,15 @@ public partial class Type
     /// <returns>An object that represents the public method with the specified name, if found; otherwise, null.</returns>
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
+#endif
     public OriginMethodInfo GetMethod(string name)
     {
         return Origin.GetMethod(name) ?? throw new NullReferenceException("Method not found.");
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Searches for the specified method whose parameters match the specified generic parameter count, argument types and modifiers, using the specified binding constraints and the specified calling convention.
     /// </summary>
@@ -1424,6 +1495,7 @@ public partial class Type
     {
         return Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
     }
+#endif
 
     /// <summary>
     /// Searches for the specified method, using the specified binding constraints.
@@ -1433,12 +1505,15 @@ public partial class Type
     /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
+#endif
     public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr)
     {
         return Origin.GetMethod(name, bindingAttr) ?? throw new NullReferenceException("Method not found.");
     }
 
+#if NET6_0_OR_GREATER
     /// <summary>
     /// Searches for the specified method whose parameters match the specified argument types, using the specified binding constraints.
     /// </summary>
@@ -1452,6 +1527,7 @@ public partial class Type
     {
         return Origin.GetMethod(name, bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
     }
+#endif
 
     /// <summary>
     /// Searches for the specified method whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.
@@ -1466,7 +1542,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
+#endif
     public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
@@ -1484,7 +1562,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
+#endif
     public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
@@ -1499,7 +1579,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and specified parameters.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
+#endif
     public OriginMethodInfo GetMethod(string name, Type[] types)
     {
         return Origin.GetMethod(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
@@ -1515,7 +1597,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and specified parameters.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
+#endif
     public OriginMethodInfo GetMethod(string name, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
@@ -1525,7 +1609,9 @@ public partial class Type
     /// Returns all the public methods of the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="OriginMethodInfo"/> objects representing all the public methods defined for the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMethodInfo"/>, if no public methods are defined for the current <see cref="Type"/>.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
+#endif
     public OriginMethodInfo[] GetMethods()
     {
         return Origin.GetMethods();
@@ -1536,7 +1622,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of <see cref="OriginMethodInfo"/> objects representing all methods defined for the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginMethodInfo"/>, if no methods are defined for the current <see cref="Type"/>, or if none of the defined methods match the binding constraints.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
+#endif
     public OriginMethodInfo[] GetMethods(BindingFlags bindingAttr)
     {
         return Origin.GetMethods(bindingAttr);
@@ -1548,7 +1636,9 @@ public partial class Type
     /// <param name="name">The string containing the name of the nested type to get.</param>
     /// <returns>An object representing the public nested type with the specified name, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Nested type not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes)]
+#endif
     public Type GetNestedType(string name)
     {
         return new Type(Origin.GetNestedType(name) ?? throw new NullReferenceException("Nested type not found."));
@@ -1561,7 +1651,9 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <returns>An object representing the nested type that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Nested type not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes | DynamicallyAccessedMemberTypes.NonPublicNestedTypes)]
+#endif
     public Type GetNestedType(string name, BindingFlags bindingAttr)
     {
         return new Type(Origin.GetNestedType(name, bindingAttr) ?? throw new NullReferenceException("Nested type not found."));
@@ -1571,7 +1663,9 @@ public partial class Type
     /// Returns the public types nested in the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="Type"/> objects representing the public types nested in the current <see cref="Type"/> (the search is not recursive), or an empty array of type <see cref="Type"/> if no public types are nested in the current <see cref="Type"/>.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes)]
+#endif
     public Type[] GetNestedTypes()
     {
         return GetList(Origin.GetNestedTypes()).ToArray();
@@ -1582,7 +1676,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <returns>An array of <see cref="Type"/> objects representing all the types nested in the current <see cref="Type"/> that match the specified binding constraints (the search is not recursive), or an empty array of type <see cref="Type"/>, if no nested types are found that match the binding constraints.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicNestedTypes | DynamicallyAccessedMemberTypes.NonPublicNestedTypes)]
+#endif
     public Type[] GetNestedTypes(BindingFlags bindingAttr)
     {
         return GetList(Origin.GetNestedTypes(bindingAttr)).ToArray();
@@ -1592,7 +1688,9 @@ public partial class Type
     /// Returns all the public properties of the current <see cref="Type"/>.
     /// </summary>
     /// <returns>An array of <see cref="OriginPropertyInfo"/> objects representing all public properties of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginPropertyInfo"/>, if the current <see cref="Type"/> does not have public properties.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
     public OriginPropertyInfo[] GetProperties()
     {
         return Origin.GetProperties();
@@ -1603,7 +1701,9 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
     /// <returns>An array of objects representing all properties of the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginPropertyInfo"/>, if the current <see cref="Type"/> does not have properties, or if none of the properties match the binding constraints.</returns>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
+#endif
     public OriginPropertyInfo[] GetProperties(BindingFlags bindingAttr)
     {
         return Origin.GetProperties(bindingAttr);
@@ -1616,7 +1716,9 @@ public partial class Type
     /// <returns>An object representing the public property with the specified name, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
     public OriginPropertyInfo GetProperty(string name)
     {
         return Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found.");
@@ -1630,7 +1732,9 @@ public partial class Type
     /// <returns>An object representing the property that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
+#endif
     public OriginPropertyInfo GetProperty(string name, BindingFlags bindingAttr)
     {
         return Origin.GetProperty(name, bindingAttr) ?? throw new NullReferenceException("Property not found.");
@@ -1649,7 +1753,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
+#endif
     public OriginPropertyInfo GetProperty(string name, BindingFlags bindingAttr, OriginBinder binder, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found.");
@@ -1663,7 +1769,9 @@ public partial class Type
     /// <returns>An object representing the public property with the specified name, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
     public OriginPropertyInfo GetProperty(string name, Type returnType)
     {
         return Origin.GetProperty(name, returnType.Origin) ?? throw new NullReferenceException("Property not found.");
@@ -1679,7 +1787,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
     public OriginPropertyInfo GetProperty(string name, Type returnType, Type[] types)
     {
         return Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found.");
@@ -1696,7 +1806,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified argument types and modifiers.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
     public OriginPropertyInfo? GetProperty(string name, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
         return Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found.");
@@ -1711,7 +1823,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified argument types.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional.</exception>
     /// <exception cref="NullReferenceException">Property not found.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
     public OriginPropertyInfo? GetProperty(string name, Type[] types)
     {
         return Origin.GetProperty(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found.");
@@ -1738,7 +1852,9 @@ public partial class Type
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
     /// <exception cref="NullReferenceException">Type not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
+#endif
     public static Type GetType(string typeName)
     {
         return new Type(OriginType.GetType(typeName) ?? throw new NullReferenceException("Type not found."));
@@ -1757,7 +1873,9 @@ public partial class Type
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
+#endif
     public static Type GetType(string typeName, bool throwOnError)
     {
         return new Type(OriginType.GetType(typeName, throwOnError) ?? throw new NullReferenceException("Type not found."));
@@ -1777,7 +1895,9 @@ public partial class Type
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
+#endif
     public static Type GetType(string typeName, bool throwOnError, bool ignoreCase)
     {
         return new Type(OriginType.GetType(typeName, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
@@ -1796,7 +1916,9 @@ public partial class Type
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="NullReferenceException">Type not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
+#endif
     public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver)
     {
         System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
@@ -1820,7 +1942,9 @@ public partial class Type
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
+#endif
     public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver, bool throwOnError)
     {
         System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
@@ -1845,7 +1969,9 @@ public partial class Type
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
+#endif
     public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver, bool throwOnError, bool ignoreCase)
     {
         System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
@@ -2012,7 +2138,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
     /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
     public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args)
     {
         return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args) ?? Void;
@@ -2036,7 +2164,9 @@ public partial class Type
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
     /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
     public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args, CultureInfo culture)
     {
         return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args, culture) ?? Void;
@@ -2061,7 +2191,9 @@ public partial class Type
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
+#if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
     public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args, OriginParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
     {
         return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args, modifiers, culture, namedParameters) ?? Void;
@@ -2077,6 +2209,7 @@ public partial class Type
         return Origin.IsAssignableFrom(c.Origin);
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Determines whether the current type can be assigned to a variable of the specified <paramref name="targetType"/>.
     /// </summary>
@@ -2086,6 +2219,7 @@ public partial class Type
     {
         return Origin.IsAssignableTo(targetType.Origin);
     }
+#endif
 
     /// <summary>
     /// Returns a value that indicates whether the specified value exists in the current enumeration type.
@@ -2164,6 +2298,7 @@ public partial class Type
         return new Type(Origin.MakeByRefType());
     }
 
+#if NET5_0_OR_GREATER
     /// <summary>
     /// Returns a signature type object that can be passed into the <see cref="Type"/>[] array parameter of a Overload:System.Type.GetMethod method to represent a generic parameter reference.
     /// </summary>
@@ -2185,6 +2320,7 @@ public partial class Type
     {
         return new Type(OriginType.MakeGenericSignatureType(genericTypeDefinition.Origin, GetOriginList(typeArguments).ToArray()));
     }
+#endif
 
     /// <summary>
     /// Substitutes the elements of an array of types for the type parameters of the current generic type definition and returns a <see cref="Type"/> object representing the resulting constructed type.
@@ -2194,7 +2330,9 @@ public partial class Type
     /// <exception cref="InvalidOperationException">The current type does not represent a generic type definition. That is, <see cref="IsGenericTypeDefinition"/> returns false.</exception>
     /// <exception cref="ArgumentException">The number of elements in <paramref name="typeArguments"/> is not the same as the number of type parameters in the current generic type definition. -or- Any element of <paramref name="typeArguments"/> does not satisfy the constraints specified for the corresponding type parameter of the current generic type. -or- <paramref name="typeArguments"/> contains an element that is a pointer type (<see cref="IsPointer"/> returns true), a by-ref type (<see cref="IsByRef"/> returns true), or <see cref="System.Void"/>.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
+#if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("If some of the generic arguments are annotated (either with DynamicallyAccessedMembersAttribute, or generic constraints), trimming can't validate that the requirements of those annotations are met.")]
+#endif
     public Type MakeGenericType(params Type[] typeArguments)
     {
         return new Type(Origin.MakeGenericType(GetOriginList(typeArguments).ToArray()));
