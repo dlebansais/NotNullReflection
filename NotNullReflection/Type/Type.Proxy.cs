@@ -110,7 +110,7 @@ public partial class Type
     /// Gets a value indicating whether the current <see cref="Type"/> object has type parameters that have not been replaced by specific types.
     /// </summary>
     /// <returns>true if the <see cref="Type"/> object is itself a generic type parameter or has type parameters for which specific types have not been supplied; otherwise, false.</returns>
-    public virtual bool ContainsGenericParameters
+    public bool ContainsGenericParameters
     {
         get
         {
@@ -946,7 +946,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-    public virtual MemberInfo[] FindMembers(MemberTypes memberType, BindingFlags bindingAttr, MemberFilter filter, object filterCriteria)
+    public MemberInfo[] FindMembers(MemberTypes memberType, BindingFlags bindingAttr, MemberFilter filter, object filterCriteria)
     {
         return MemberInfo.GetList(Origin.FindMembers(memberType, bindingAttr, filter, filterCriteria)).ToArray();
     }
@@ -1242,7 +1242,7 @@ public partial class Type
     /// </summary>
     /// <returns>An array of <see cref="Type"/> objects that represent the constraints on the current generic type parameter.</returns>
     /// <exception cref="InvalidOperationException">The current <see cref="Type"/> object is not a generic type parameter. That is, the <see cref="Type.IsGenericParameter"/> property returns false.</exception>
-    public virtual Type[] GetGenericParameterConstraints()
+    public Type[] GetGenericParameterConstraints()
     {
         return GetList(Origin.GetGenericParameterConstraints()).ToArray();
     }
@@ -1253,7 +1253,7 @@ public partial class Type
     /// <returns>A <see cref="Type"/> object representing a generic type from which the current type can be constructed.</returns>
     /// <exception cref="InvalidOperationException">The current type is not a generic type. That is, <see cref="Type.IsGenericType"/> returns false.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
-    public virtual Type GetGenericTypeDefinition()
+    public Type GetGenericTypeDefinition()
     {
         return new Type(Origin.GetGenericTypeDefinition());
     }
@@ -1308,7 +1308,7 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="interfaceType"/> is not implemented by the current type. -or- The <paramref name="interfaceType"/> argument does not refer to an interface. -or- The current instance of <paramref name="interfaceType"/> argument is an open generic type; that is, the <see cref="Type.ContainsGenericParameters"/> property returns true. -or- <paramref name="interfaceType"/> is a generic interface, and the current type is an array type.</exception>
     /// <exception cref="InvalidOperationException">The current <see cref="Type"/> represents a generic type parameter; that is, <see cref="Type.IsGenericParameter"/> is true.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
-    public virtual InterfaceMapping GetInterfaceMap(
+    public InterfaceMapping GetInterfaceMap(
 #if NET5_0_OR_GREATER
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif

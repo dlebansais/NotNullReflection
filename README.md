@@ -7,6 +7,8 @@ Proxy for System.Reflection with no null references whatsoever.
 + `System.Reflexion.Assembly`
 + `System.Reflexion.AssemblyName`
 + `System.Reflexion.MemberInfo`
++ `System.Reflexion.MethodBase`
++ `System.Reflexion.MethodInfo`
 + `System.Type`
 
 ## Supported frameworks

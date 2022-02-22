@@ -32,7 +32,7 @@ public partial class Assembly
     /// Gets a collection that contains this assembly's custom attributes.
     /// </summary>
     /// <returns>A collection that contains this assembly's custom attributes.</returns>
-    public virtual IEnumerable<OriginCustomAttributeData> CustomAttributes
+    public IEnumerable<OriginCustomAttributeData> CustomAttributes
     {
         get
         {
@@ -44,7 +44,7 @@ public partial class Assembly
     /// Gets a collection of the types defined in this assembly.
     /// </summary>
     /// <returns>A collection of the types defined in this assembly.</returns>
-    public virtual IEnumerable<OriginTypeInfo> DefinedTypes
+    public IEnumerable<OriginTypeInfo> DefinedTypes
     {
 #if NET5_0_OR_GREATER
         [RequiresUnreferencedCode("Types might be removed")]
@@ -60,7 +60,7 @@ public partial class Assembly
     /// </summary>
     /// <returns>An object that represents the entry point of this assembly. If no entry point is found (for example, the assembly is a DLL), this method throws an exception.</returns>
     /// <exception cref="NullReferenceException">Assembly doesn't have an entry point.</exception>
-    public virtual OriginMethodInfo EntryPoint
+    public OriginMethodInfo EntryPoint
     {
         get
         {
@@ -72,7 +72,7 @@ public partial class Assembly
     /// Gets a collection of the public types defined in this assembly that are visible outside the assembly.
     /// </summary>
     /// <returns>A collection of the public types defined in this assembly that are visible outside the assembly.</returns>
-    public virtual IEnumerable<Type> ExportedTypes
+    public IEnumerable<Type> ExportedTypes
     {
 #if NET5_0_OR_GREATER
         [RequiresUnreferencedCode("Types might be removed")]
@@ -88,7 +88,7 @@ public partial class Assembly
     /// </summary>
     /// <returns>The display name of the assembly.</returns>
     /// <exception cref="NullReferenceException">Assembly doesn't have a display name.</exception>
-    public virtual string FullName
+    public string FullName
     {
         get
         {
@@ -100,7 +100,7 @@ public partial class Assembly
     /// Gets the host context with which the assembly was loaded.
     /// </summary>
     /// <returns>A <see cref="long"/> value that indicates the host context with which the assembly was loaded, if any.</returns>
-    public virtual long HostContext
+    public long HostContext
     {
         get
         {
@@ -112,7 +112,7 @@ public partial class Assembly
     /// Gets a string representing the version of the common language runtime (CLR) saved in the file containing the manifest.
     /// </summary>
     /// <returns>The CLR version folder name. This is not a full path.</returns>
-    public virtual string ImageRuntimeVersion
+    public string ImageRuntimeVersion
     {
         get
         {
@@ -125,7 +125,7 @@ public partial class Assembly
     /// Gets a value indicating whether this assembly is held in a collectible System.Runtime.Loader.AssemblyLoadContext.
     /// </summary>
     /// <returns>true if this assembly is held in a collectible System.Runtime.Loader.AssemblyLoadContext; otherwise, false.</returns>
-    public virtual bool IsCollectible
+    public bool IsCollectible
     {
         get
         {
@@ -138,7 +138,7 @@ public partial class Assembly
     /// Gets a value indicating whether the current assembly was generated dynamically in the current process by using reflection emit.
     /// </summary>
     /// <returns>true if the current assembly was generated dynamically in the current process; otherwise, false.</returns>
-    public virtual bool IsDynamic
+    public bool IsDynamic
     {
         get
         {
@@ -163,7 +163,7 @@ public partial class Assembly
     /// </summary>
     /// <returns>The location of the loaded file that contains the manifest. If the assembly is loaded from a byte array, such as when using <see cref="OriginAssembly.Load(byte[])"/>, the value returned is an empty string ("").</returns>
     /// <exception cref="NotSupportedException">The current assembly is a dynamic assembly, represented by a <see cref="AssemblyBuilder"/> object.</exception>
-    public virtual string Location
+    public string Location
     {
         get
         {
@@ -175,7 +175,7 @@ public partial class Assembly
     /// Gets the module that contains the manifest for the current assembly.
     /// </summary>
     /// <returns>The module that contains the manifest for the assembly.</returns>
-    public virtual OriginModule ManifestModule
+    public OriginModule ManifestModule
     {
         get
         {
@@ -187,7 +187,7 @@ public partial class Assembly
     /// Gets a collection that contains the modules in this assembly.
     /// </summary>
     /// <returns>A collection that contains the modules in this assembly.</returns>
-    public virtual IEnumerable<OriginModule> Modules
+    public IEnumerable<OriginModule> Modules
     {
         get
         {
@@ -199,7 +199,7 @@ public partial class Assembly
     /// Gets a value indicating whether this assembly was loaded into the reflection-only context.
     /// </summary>
     /// <returns>true if the assembly was loaded into the reflection-only context, rather than the execution context; otherwise, false.</returns>
-    public virtual bool ReflectionOnly
+    public bool ReflectionOnly
     {
         get
         {
@@ -211,7 +211,7 @@ public partial class Assembly
     /// Gets a value that indicates which set of security rules the common language runtime (CLR) enforces for this assembly.
     /// </summary>
     /// <returns>The security rule set that the CLR enforces for this assembly.</returns>
-    public virtual SecurityRuleSet SecurityRuleSet
+    public SecurityRuleSet SecurityRuleSet
     {
         get
         {
@@ -222,7 +222,7 @@ public partial class Assembly
     /// <summary>
     /// Occurs when the common language runtime class loader cannot resolve a reference to an internal module of an assembly through normal means.
     /// </summary>
-    public virtual event OriginModuleResolveEventHandler ModuleResolve
+    public event OriginModuleResolveEventHandler ModuleResolve
     {
         add
         {
@@ -302,7 +302,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
 #endif
-    public virtual object CreateInstance(string typeName, bool ignoreCase, BindingFlags bindingAttr, OriginBinder binder, object[] args, CultureInfo culture)
+    public object CreateInstance(string typeName, bool ignoreCase, BindingFlags bindingAttr, OriginBinder binder, object[] args, CultureInfo culture)
     {
         return Origin.CreateInstance(typeName, ignoreCase, bindingAttr, binder != DefaultBinder ? binder : null, args, culture, null) ?? throw new NullReferenceException($"{nameof(typeName)} is not found");
     }
@@ -348,7 +348,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="inherit">This argument is ignored for objects of type <see cref="OriginAssembly"/>.</param>
     /// <returns>An array that contains the custom attributes for this assembly.</returns>
-    public virtual object[] GetCustomAttributes(bool inherit)
+    public object[] GetCustomAttributes(bool inherit)
     {
         return Origin.GetCustomAttributes(inherit);
     }
@@ -360,7 +360,7 @@ public partial class Assembly
     /// <param name="inherit">This argument is ignored for objects of type <see cref="OriginAssembly"/>.</param>
     /// <returns>An array that contains the custom attributes for this assembly as specified by attributeType.</returns>
     /// <exception cref="ArgumentException"><paramref name="attributeType"/> is not a runtime type.</exception>
-    public virtual object[] GetCustomAttributes(Type attributeType, bool inherit)
+    public object[] GetCustomAttributes(Type attributeType, bool inherit)
     {
         return Origin.GetCustomAttributes(attributeType.Origin, inherit);
     }
@@ -369,7 +369,7 @@ public partial class Assembly
     /// Returns information about the attributes that have been applied to the current <see cref="OriginAssembly"/>, expressed as <see cref="OriginCustomAttributeData"/> objects.
     /// </summary>
     /// <returns>A generic list of <see cref="OriginCustomAttributeData"/> objects representing data about the attributes that have been applied to the current assembly.</returns>
-    public virtual IList<OriginCustomAttributeData> GetCustomAttributesData()
+    public IList<OriginCustomAttributeData> GetCustomAttributesData()
     {
         return Origin.GetCustomAttributesData();
     }
@@ -404,7 +404,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type[] GetExportedTypes()
+    public Type[] GetExportedTypes()
     {
         return Type.GetList(Origin.GetExportedTypes()).ToArray();
     }
@@ -421,7 +421,7 @@ public partial class Assembly
 #if NET6_0_OR_GREATER
     [RequiresAssemblyFiles("This member throws an exception for assemblies embedded in a single-file app")]
 #endif
-    public virtual FileStream GetFile(string name)
+    public FileStream GetFile(string name)
     {
         return Origin.GetFile(name) ?? throw new FileNotFoundException($"{nameof(name)} was not found.");
     }
@@ -436,7 +436,7 @@ public partial class Assembly
 #if NET6_0_OR_GREATER
     [RequiresAssemblyFiles("This member throws an exception for assemblies embedded in a single-file app")]
 #endif
-    public virtual FileStream[] GetFiles()
+    public FileStream[] GetFiles()
     {
         return Origin.GetFiles();
     }
@@ -452,7 +452,7 @@ public partial class Assembly
 #if NET6_0_OR_GREATER
     [RequiresAssemblyFiles("This member throws an exception for assemblies embedded in a single-file app")]
 #endif
-    public virtual FileStream[] GetFiles(bool getResourceModules)
+    public FileStream[] GetFiles(bool getResourceModules)
     {
         return Origin.GetFiles(getResourceModules);
     }
@@ -465,7 +465,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type[] GetForwardedTypes()
+    public Type[] GetForwardedTypes()
     {
         return Type.GetList(Origin.GetForwardedTypes()).ToArray();
     }
@@ -494,7 +494,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="getResourceModules">true to include resource modules; otherwise, false.</param>
     /// <returns>An array of modules.</returns>
-    public virtual OriginModule[] GetLoadedModules(bool getResourceModules)
+    public OriginModule[] GetLoadedModules(bool getResourceModules)
     {
         return Origin.GetLoadedModules(getResourceModules);
     }
@@ -506,7 +506,7 @@ public partial class Assembly
     /// <returns>An object that is populated with information about the resource's topology; this method throws an exception if the resource is not found.</returns>
     /// <exception cref="ArgumentException">The <paramref name="resourceName"/> parameter is an empty string ("").</exception>
     /// <exception cref="NullReferenceException">Resource not found.</exception>
-    public virtual OriginManifestResourceInfo GetManifestResourceInfo(string resourceName)
+    public OriginManifestResourceInfo GetManifestResourceInfo(string resourceName)
     {
         return Origin.GetManifestResourceInfo(resourceName) ?? throw new NullReferenceException("Resource not found.");
     }
@@ -515,7 +515,7 @@ public partial class Assembly
     /// Returns the names of all the resources in this assembly.
     /// </summary>
     /// <returns>An array that contains the names of all the resources.</returns>
-    public virtual string[] GetManifestResourceNames()
+    public string[] GetManifestResourceNames()
     {
         return Origin.GetManifestResourceNames();
     }
@@ -531,7 +531,7 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="name"/> is not a valid assembly.</exception>
     /// <exception cref="NotImplementedException">Resource length is greater than <see cref="long.MaxValue"/>.</exception>
     /// <exception cref="NullReferenceException">No resources were specified during compilation or the resource is not visible to the caller.</exception>
-    public virtual Stream GetManifestResourceStream(string name)
+    public Stream GetManifestResourceStream(string name)
     {
         return Origin.GetManifestResourceStream(name) ?? throw new NullReferenceException("No resources were specified during compilation or the resource is not visible to the caller.");
     }
@@ -548,7 +548,7 @@ public partial class Assembly
     /// <exception cref="BadImageFormatException"><paramref name="name"/> is not a valid assembly.</exception>
     /// <exception cref="NotImplementedException">Resource length is greater than <see cref="long.MaxValue"/>.</exception>
     /// <exception cref="NullReferenceException">No resources were specified during compilation or the resource is not visible to the caller.</exception>
-    public virtual Stream GetManifestResourceStream(Type type, string name)
+    public Stream GetManifestResourceStream(Type type, string name)
     {
         return Origin.GetManifestResourceStream(type.Origin, name) ?? throw new NullReferenceException("No resources were specified during compilation or the resource is not visible to the caller.");
     }
@@ -563,7 +563,7 @@ public partial class Assembly
     /// <exception cref="FileNotFoundException"><paramref name="name"/> was not found.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> is not a valid assembly.</exception>
     /// <exception cref="NullReferenceException">Module not found.</exception>
-    public virtual OriginModule GetModule(string name)
+    public OriginModule GetModule(string name)
     {
         return Origin.GetModule(name) ?? throw new NullReferenceException("Module not found.");
     }
@@ -583,7 +583,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="getResourceModules">true to include resource modules; otherwise, false.</param>
     /// <returns>An array of modules.</returns>
-    public virtual OriginModule[] GetModules(bool getResourceModules)
+    public OriginModule[] GetModules(bool getResourceModules)
     {
         return Origin.GetModules(getResourceModules);
     }
@@ -592,7 +592,7 @@ public partial class Assembly
     /// Gets a <see cref="AssemblyName"/> for this assembly.
     /// </summary>
     /// <returns>An object that contains the fully parsed display name for this assembly.</returns>
-    public virtual AssemblyName GetName()
+    public AssemblyName GetName()
     {
         return new AssemblyName(Origin.GetName());
     }
@@ -602,7 +602,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="copiedName">true to set the <see cref="OriginAssembly.CodeBase"/> to the location of the assembly after it was shadow copied; false to set <see cref="OriginAssembly.CodeBase"/> to the original location.</param>
     /// <returns>An object that contains the fully parsed display name for this assembly.</returns>
-    public virtual AssemblyName GetName(bool copiedName)
+    public AssemblyName GetName(bool copiedName)
     {
         return new AssemblyName(Origin.GetName(copiedName));
     }
@@ -612,7 +612,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="info">The object to be populated with serialization information.</param>
     /// <param name="context">The destination context of the serialization.</param>
-    public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         Origin.GetObjectData(info, context);
     }
@@ -624,7 +624,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly references might be removed")]
 #endif
-    public virtual AssemblyName[] GetReferencedAssemblies()
+    public AssemblyName[] GetReferencedAssemblies()
     {
         return Enumerable.ToArray(AssemblyName.GetList(Origin.GetReferencedAssemblies()));
     }
@@ -637,7 +637,7 @@ public partial class Assembly
     /// <exception cref="FileNotFoundException">The assembly cannot be found.</exception>
     /// <exception cref="FileLoadException">The satellite assembly with a matching file name was found, but the <see cref="CultureInfo"/> did not match the one specified.</exception>
     /// <exception cref="BadImageFormatException">The satellite assembly is not a valid assembly.</exception>
-    public virtual Assembly GetSatelliteAssembly(CultureInfo culture)
+    public Assembly GetSatelliteAssembly(CultureInfo culture)
     {
         OriginAssembly SatelliteOrigin = Origin.GetSatelliteAssembly(culture);
         return new Assembly(SatelliteOrigin);
@@ -652,7 +652,7 @@ public partial class Assembly
     /// <exception cref="FileLoadException">The satellite assembly with a matching file name was found, but the <see cref="CultureInfo"/> or the version did not match the one specified.</exception>
     /// <exception cref="FileNotFoundException">The assembly cannot be found.</exception>
     /// <exception cref="BadImageFormatException">The satellite assembly is not a valid assembly.</exception>
-    public virtual Assembly GetSatelliteAssembly(CultureInfo culture, Version version)
+    public Assembly GetSatelliteAssembly(CultureInfo culture, Version version)
     {
         OriginAssembly SatelliteOrigin = Origin.GetSatelliteAssembly(culture, version);
         return new Assembly(SatelliteOrigin);
@@ -673,7 +673,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type GetType(string name)
+    public Type GetType(string name)
     {
         return new Type(Origin.GetType(name) ?? throw new NullReferenceException("Class was not found."));
     }
@@ -696,7 +696,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type GetType(string name, bool throwOnError)
+    public Type GetType(string name, bool throwOnError)
     {
         return new Type(Origin.GetType(name, throwOnError) ?? throw new NullReferenceException("Type cannot be found."));
     }
@@ -720,7 +720,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type GetType(string name, bool throwOnError, bool ignoreCase)
+    public Type GetType(string name, bool throwOnError, bool ignoreCase)
     {
         return new Type(Origin.GetType(name, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type cannot be found."));
     }
@@ -733,7 +733,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
-    public virtual Type[] GetTypes()
+    public Type[] GetTypes()
     {
         OriginType[] Result;
 
@@ -762,7 +762,7 @@ public partial class Assembly
     /// <param name="inherit">This argument is ignored for objects of this type.</param>
     /// <returns>true if the attribute has been applied to the assembly; otherwise, false.</returns>
     /// <exception cref="ArgumentException"><paramref name="attributeType"/> uses an invalid type.</exception>
-    public virtual bool IsDefined(Type attributeType, bool inherit)
+    public bool IsDefined(Type attributeType, bool inherit)
     {
         return Origin.IsDefined(attributeType.Origin, inherit);
     }
@@ -928,7 +928,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded module depends on might be removed")]
 #endif
-    public virtual OriginModule LoadModule(string moduleName, byte[] rawModule, byte[] rawSymbolStore)
+    public OriginModule LoadModule(string moduleName, byte[] rawModule, byte[] rawSymbolStore)
     {
         return Origin.LoadModule(moduleName, rawModule, rawSymbolStore);
     }

@@ -18,7 +18,7 @@ public partial class MemberInfo
     /// Gets a collection that contains this member's custom attributes.
     /// </summary>
     /// <returns>A collection that contains this member's custom attributes.</returns>
-    public virtual IEnumerable<CustomAttributeData> CustomAttributes
+    public IEnumerable<CustomAttributeData> CustomAttributes
     {
         get
         {
@@ -57,7 +57,7 @@ public partial class MemberInfo
     /// Gets a <see cref="MemberTypes"/> value indicating the type of the member - method, constructor, event, and so on.
     /// </summary>
     /// <returns>A <see cref="MemberTypes"/> value indicating the type of member.</returns>
-    public MemberTypes MemberType
+    public virtual MemberTypes MemberType
     {
         get
         {
