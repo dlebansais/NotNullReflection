@@ -12,7 +12,7 @@ public partial class AssemblyName : ICloneable
     /// Initializes a new instance of the <see cref="AssemblyName"/> class.
     /// </summary>
     /// <param name="origin">The origin assembly name.</param>
-    public AssemblyName(OriginAssemblyName origin)
+    internal AssemblyName(OriginAssemblyName origin)
     {
         Origin = origin;
     }

@@ -11,7 +11,7 @@ public partial class MemberInfo
     /// Initializes a new instance of the <see cref="MemberInfo"/> class.
     /// </summary>
     /// <param name="origin">The origin member information.</param>
-    public MemberInfo(OriginMemberInfo origin)
+    internal MemberInfo(OriginMemberInfo origin)
     {
         Origin = origin;
     }

@@ -11,7 +11,7 @@ public partial class Assembly
     /// Initializes a new instance of the <see cref="Assembly"/> class.
     /// </summary>
     /// <param name="origin">The origin assembly.</param>
-    public Assembly(OriginAssembly origin)
+    internal Assembly(OriginAssembly origin)
     {
         Origin = origin;
     }

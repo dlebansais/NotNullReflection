@@ -11,7 +11,7 @@ public partial class PropertyInfo : MemberInfo
     /// Initializes a new instance of the <see cref="PropertyInfo"/> class.
     /// </summary>
     /// <param name="origin">The origin property information.</param>
-    public PropertyInfo(OriginPropertyInfo origin)
+    internal PropertyInfo(OriginPropertyInfo origin)
         : base(origin)
     {
         Origin = origin;

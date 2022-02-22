@@ -11,7 +11,7 @@ public partial class MethodBase : MemberInfo
     /// Initializes a new instance of the <see cref="MethodBase"/> class.
     /// </summary>
     /// <param name="origin">The origin member information.</param>
-    public MethodBase(OriginMethodBase origin)
+    internal MethodBase(OriginMethodBase origin)
         : base(origin)
     {
         Origin = origin;
