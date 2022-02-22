@@ -31,7 +31,7 @@ public partial class MemberInfo
     /// </summary>
     /// <returns>The <see cref="Type"/> object for the class that declares this member.</returns>
     /// <exception cref="NullReferenceException">Declaring type doesn't exist.</exception>
-    public Type DeclaringType
+    public virtual Type DeclaringType
     {
         get
         {
@@ -108,7 +108,7 @@ public partial class MemberInfo
     /// </summary>
     /// <returns>The Type object through which this <see cref="MemberInfo"/> object was obtained.</returns>
     /// <exception cref="NullReferenceException">Reflected type doesn't exist.</exception>
-    public Type ReflectedType
+    public virtual Type ReflectedType
     {
         get
         {

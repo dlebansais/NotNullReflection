@@ -32,14 +32,12 @@ using CallingConventions = System.Reflection.CallingConventions;
 using OriginType = System.Type;
 using OriginAssembly = System.Reflection.Assembly;
 using OriginAssemblyName = System.Reflection.AssemblyName;
-using OriginMethodBase = System.Reflection.MethodBase;
 using OriginBinder = System.Reflection.Binder;
 using OriginParameterModifier = System.Reflection.ParameterModifier;
 using OriginModule = System.Reflection.Module;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
-using OriginMethodInfo = System.Reflection.MethodInfo;
 using OriginPropertyInfo = System.Reflection.PropertyInfo;
 using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
@@ -119,15 +117,15 @@ public partial class Type
     }
 
     /// <summary>
-    /// Gets a <see cref="OriginMethodBase"/> that represents the declaring method, if the current <see cref="Type"/> represents a type parameter of a generic method.
+    /// Gets a <see cref="MethodBase"/> that represents the declaring method, if the current <see cref="Type"/> represents a type parameter of a generic method.
     /// </summary>
-    /// <returns>If the current <see cref="Type"/> represents a type parameter of a generic method, a <see cref="OriginMethodBase"/> that represents declaring method; otherwise, throws an exception.</returns>
+    /// <returns>If the current <see cref="Type"/> represents a type parameter of a generic method, a <see cref="MethodBase"/> that represents declaring method; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Type doesn't have a declaring methods.</exception>
-    public OriginMethodBase DeclaringMethod
+    public MethodBase DeclaringMethod
     {
         get
         {
-            return Origin.DeclaringMethod ?? throw new NullReferenceException("Type doesn't have a declaring methods.");
+            return new MethodBase(Origin.DeclaringMethod ?? throw new NullReferenceException("Type doesn't have a declaring methods."));
         }
     }
 
@@ -136,7 +134,7 @@ public partial class Type
     /// </summary>
     /// <returns>A <see cref="Type"/> object representing the enclosing type, if the current type is a nested type; or the generic type definition, if the current type is a type parameter of a generic type; or the type that declares the generic method, if the current type is a type parameter of a generic method; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Type doesn't have a declaring type.</exception>
-    public Type DeclaringType
+    public override Type DeclaringType
     {
         get
         {
@@ -800,7 +798,7 @@ public partial class Type
     /// Gets a <see cref="MemberTypes"/> value indicating that this member is a type or a nested type.
     /// </summary>
     /// <returns>A <see cref="MemberTypes"/> value indicating that this member is a type or a nested type.</returns>
-    public MemberTypes MemberType
+    public override MemberTypes MemberType
     {
         get
         {
@@ -812,7 +810,7 @@ public partial class Type
     /// Gets the module (the DLL) in which the current <see cref="Type"/> is defined.
     /// </summary>
     /// <returns>The module in which the current <see cref="Type"/> is defined.</returns>
-    public OriginModule Module
+    public new OriginModule Module
     {
         get
         {
@@ -838,7 +836,7 @@ public partial class Type
     /// </summary>
     /// <returns>The Type object through which this <see cref="Type"/> object was obtained.</returns>
     /// <exception cref="NullReferenceException">Type doesn't have a reflected type.</exception>
-    public Type ReflectedType
+    public override Type ReflectedType
     {
         get
         {
@@ -1421,9 +1419,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 #endif
-    public OriginMethodInfo GetMethod(string name)
+    public MethodInfo GetMethod(string name)
     {
-        return Origin.GetMethod(name) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name) ?? throw new NullReferenceException("Method not found."));
     }
 
 #if NET5_0_OR_GREATER
@@ -1441,9 +1439,9 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public OriginMethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1459,9 +1457,9 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public OriginMethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1474,9 +1472,9 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public OriginMethodInfo GetMethod(string name, int genericParameterCount, Type[] types)
+    public MethodInfo GetMethod(string name, int genericParameterCount, Type[] types)
     {
-        return Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1490,9 +1488,9 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public OriginMethodInfo GetMethod(string name, int genericParameterCount, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, int genericParameterCount, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 #endif
 
@@ -1507,9 +1505,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif
-    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr)
+    public MethodInfo GetMethod(string name, BindingFlags bindingAttr)
     {
-        return Origin.GetMethod(name, bindingAttr) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, bindingAttr) ?? throw new NullReferenceException("Method not found."));
     }
 
 #if NET6_0_OR_GREATER
@@ -1522,9 +1520,9 @@ public partial class Type
     /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, Type[] types)
+    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, Type[] types)
     {
-        return Origin.GetMethod(name, bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
     }
 #endif
 
@@ -1544,9 +1542,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif
-    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1564,9 +1562,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif
-    public OriginMethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1581,9 +1579,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 #endif
-    public OriginMethodInfo GetMethod(string name, Type[] types)
+    public MethodInfo GetMethod(string name, Type[] types)
     {
-        return Origin.GetMethod(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1599,34 +1597,34 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 #endif
-    public OriginMethodInfo GetMethod(string name, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found.");
+        return new MethodInfo(Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
     /// Returns all the public methods of the current <see cref="Type"/>.
     /// </summary>
-    /// <returns>An array of <see cref="OriginMethodInfo"/> objects representing all the public methods defined for the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginMethodInfo"/>, if no public methods are defined for the current <see cref="Type"/>.</returns>
+    /// <returns>An array of <see cref="MethodInfo"/> objects representing all the public methods defined for the current <see cref="Type"/>. -or- An empty array of type <see cref="MethodInfo"/>, if no public methods are defined for the current <see cref="Type"/>.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 #endif
-    public OriginMethodInfo[] GetMethods()
+    public MethodInfo[] GetMethods()
     {
-        return Origin.GetMethods();
+        return MethodInfo.GetList(Origin.GetMethods()).ToArray();
     }
 
     /// <summary>
     /// When overridden in a derived class, searches for the methods defined for the current <see cref="Type"/>, using the specified binding constraints.
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of <see cref="OriginMethodInfo"/> objects representing all methods defined for the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginMethodInfo"/>, if no methods are defined for the current <see cref="Type"/>, or if none of the defined methods match the binding constraints.</returns>
+    /// <returns>An array of <see cref="MethodInfo"/> objects representing all methods defined for the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="MethodInfo"/>, if no methods are defined for the current <see cref="Type"/>, or if none of the defined methods match the binding constraints.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif
-    public OriginMethodInfo[] GetMethods(BindingFlags bindingAttr)
+    public MethodInfo[] GetMethods(BindingFlags bindingAttr)
     {
-        return Origin.GetMethods(bindingAttr);
+        return MethodInfo.GetList(Origin.GetMethods(bindingAttr)).ToArray();
     }
 
     /// <summary>
@@ -2136,7 +2134,7 @@ public partial class Type
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
-    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns true.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
@@ -2162,7 +2160,7 @@ public partial class Type
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
-    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns true.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
@@ -2189,7 +2187,7 @@ public partial class Type
     /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
-    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="OriginMethodBase.ContainsGenericParameters"/> property returns true.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns true.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif

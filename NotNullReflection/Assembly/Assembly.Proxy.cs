@@ -13,7 +13,6 @@ using System.Linq;
 using OriginAssembly = System.Reflection.Assembly;
 using OriginCustomAttributeData = System.Reflection.CustomAttributeData;
 using OriginTypeInfo = System.Reflection.TypeInfo;
-using OriginMethodInfo = System.Reflection.MethodInfo;
 using OriginModule = System.Reflection.Module;
 using BindingFlags = System.Reflection.BindingFlags;
 using OriginBinder = System.Reflection.Binder;
@@ -60,11 +59,11 @@ public partial class Assembly
     /// </summary>
     /// <returns>An object that represents the entry point of this assembly. If no entry point is found (for example, the assembly is a DLL), this method throws an exception.</returns>
     /// <exception cref="NullReferenceException">Assembly doesn't have an entry point.</exception>
-    public OriginMethodInfo EntryPoint
+    public MethodInfo EntryPoint
     {
         get
         {
-            return Origin.EntryPoint ?? throw new NullReferenceException("Assembly doesn't have an entry point.");
+            return new MethodInfo(Origin.EntryPoint ?? throw new NullReferenceException("Assembly doesn't have an entry point."));
         }
     }
 

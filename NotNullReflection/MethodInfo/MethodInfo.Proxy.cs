@@ -1,20 +1,15 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using MemberTypes = System.Reflection.MemberTypes;
-using CustomAttributeData = System.Reflection.CustomAttributeData;
-using NullReferenceException = System.NullReferenceException;
 using NotSupportedException = System.NotSupportedException;
 using NotImplementedException = System.NotImplementedException;
 using InvalidOperationException = System.InvalidOperationException;
 using ArgumentException = System.ArgumentException;
-using TypeLoadException = System.TypeLoadException;
-using OriginModule = System.Reflection.Module;
-using OriginMethodInfo = System.Reflection.MethodInfo;
 using OriginParameterInfo = System.Reflection.ParameterInfo;
 using ICustomAttributeProvider = System.Reflection.ICustomAttributeProvider;
 using Delegate = System.Delegate;
-using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Discovers the attributes of a method and provides access to method metadata.
