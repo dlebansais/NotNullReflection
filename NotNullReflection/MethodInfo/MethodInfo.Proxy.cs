@@ -14,7 +14,7 @@ using Delegate = System.Delegate;
 /// <summary>
 /// Discovers the attributes of a method and provides access to method metadata.
 /// </summary>
-public partial class MethodInfo : MethodBase
+public partial class MethodInfo
 {
     /// <summary>
     /// Gets a <see cref="MemberTypes"/> value indicating that this member is a method.

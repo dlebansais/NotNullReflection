@@ -4,11 +4,11 @@ Proxy for System.Reflection with no null references whatsoever.
 
 ## Supported types
 
-+ `System.Reflexion.Assembly`
-+ `System.Reflexion.AssemblyName`
-+ `System.Reflexion.MemberInfo`
-+ `System.Reflexion.MethodBase`
-+ `System.Reflexion.MethodInfo`
++ `System.Reflection.Assembly`
++ `System.Reflection.AssemblyName`
++ `System.Reflection.MemberInfo`
++ `System.Reflection.MethodBase`
++ `System.Reflection.MethodInfo`
 + `System.Type`
 
 ## Supported frameworks
