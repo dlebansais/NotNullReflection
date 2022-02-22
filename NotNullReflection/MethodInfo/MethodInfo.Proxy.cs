@@ -116,11 +116,9 @@ public partial class MethodInfo
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
     /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
-#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     public override bool Equals(object obj)
-#pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     {
-        return obj is MethodInfo AsMethodInfo ? Origin.Equals(AsMethodInfo.Origin) : false;
+        return obj is MethodInfo AsMethodInfo && Origin.Equals(AsMethodInfo.Origin);
     }
 
     /// <summary>

@@ -125,7 +125,7 @@ public partial class MemberInfo
     public override bool Equals(object obj)
 #pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     {
-        return obj is MemberInfo AsMemberInfo ? Origin.Equals(AsMemberInfo.Origin) : false;
+        return obj is MemberInfo AsMemberInfo && Origin.Equals(AsMemberInfo.Origin);
     }
 
     /// <summary>

@@ -9,6 +9,7 @@ Proxy for System.Reflection with no null references whatsoever.
 + `System.Reflection.MemberInfo`
 + `System.Reflection.MethodBase`
 + `System.Reflection.MethodInfo`
++ `System.Reflection.PropertyInfo`
 + `System.Type`
 
 ## Supported frameworks

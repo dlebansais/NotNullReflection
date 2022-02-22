@@ -322,12 +322,12 @@ public partial class Assembly
     /// Determines whether this assembly and the specified object are equal.
     /// </summary>
     /// <param name="o">The object to compare with this instance.</param>
-    /// <returns>true if o is equal to this instance; otherwise, false.</returns>
+    /// <returns>true if <paramref name="o"/> is equal to this instance; otherwise, false.</returns>
 #pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     public override bool Equals(object o)
 #pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     {
-        return o is Assembly AsAssembly ? Origin.Equals(AsAssembly.Origin) : false;
+        return o is Assembly AsAssembly && Origin.Equals(AsAssembly.Origin);
     }
 
     /// <summary>

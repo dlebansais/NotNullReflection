@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
-using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Emit;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using System.Reflection.Emit;
 using NullReferenceException = System.NullReferenceException;
 using InvalidOperationException = System.NullReferenceException;
 using NotSupportedException = System.NotSupportedException;
@@ -38,7 +40,6 @@ using OriginModule = System.Reflection.Module;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
-using OriginPropertyInfo = System.Reflection.PropertyInfo;
 using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TypeFilter = System.Reflection.TypeFilter;
@@ -46,8 +47,6 @@ using MemberFilter = System.Reflection.MemberFilter;
 using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
 using TargetException = System.Reflection.TargetException;
 using InterfaceMapping = System.Reflection.InterfaceMapping;
-using System.IO;
-using System.Runtime.Versioning;
 
 /// <summary>
 /// Represents type declarations: class types, interface types, array types, value types, enumeration types, type parameters, generic type definitions, and open or closed constructed generic types.
@@ -901,9 +900,7 @@ public partial class Type
     /// </summary>
     /// <param name="o">The object whose underlying system type is to be compared with the underlying system type of the current <see cref="Type"/>. For the comparison to succeed, <paramref name="o"/> must be able to be cast or converted to an object of type <see cref="Type"/>.</param>
     /// <returns>true if the underlying system type of <paramref name="o"/> is the same as the underlying system type of the current S<see cref="Type"/>; otherwise, false. This method also returns false if <paramref name="o"/> cannot be cast or converted to a <see cref="Type"/> object.</returns>
-#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     public override bool Equals(object o)
-#pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     {
         return o is Type AsType && Origin.Equals(AsType.Origin);
     }
@@ -1684,26 +1681,26 @@ public partial class Type
     /// <summary>
     /// Returns all the public properties of the current <see cref="Type"/>.
     /// </summary>
-    /// <returns>An array of <see cref="OriginPropertyInfo"/> objects representing all public properties of the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginPropertyInfo"/>, if the current <see cref="Type"/> does not have public properties.</returns>
+    /// <returns>An array of <see cref="PropertyInfo"/> objects representing all public properties of the current <see cref="Type"/>. -or- An empty array of type <see cref="PropertyInfo"/>, if the current <see cref="Type"/> does not have public properties.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public OriginPropertyInfo[] GetProperties()
+    public PropertyInfo[] GetProperties()
     {
-        return Origin.GetProperties();
+        return PropertyInfo.GetList(Origin.GetProperties()).ToArray();
     }
 
     /// <summary>
     /// When overridden in a derived class, searches for the properties of the current <see cref="Type"/>, using the specified binding constraints.
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of objects representing all properties of the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginPropertyInfo"/>, if the current <see cref="Type"/> does not have properties, or if none of the properties match the binding constraints.</returns>
+    /// <returns>An array of objects representing all properties of the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="PropertyInfo"/>, if the current <see cref="Type"/> does not have properties, or if none of the properties match the binding constraints.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
 #endif
-    public OriginPropertyInfo[] GetProperties(BindingFlags bindingAttr)
+    public PropertyInfo[] GetProperties(BindingFlags bindingAttr)
     {
-        return Origin.GetProperties(bindingAttr);
+        return PropertyInfo.GetList(Origin.GetProperties(bindingAttr)).ToArray();
     }
 
     /// <summary>
@@ -1716,9 +1713,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public OriginPropertyInfo GetProperty(string name)
+    public PropertyInfo GetProperty(string name)
     {
-        return Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1732,9 +1729,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
 #endif
-    public OriginPropertyInfo GetProperty(string name, BindingFlags bindingAttr)
+    public PropertyInfo GetProperty(string name, BindingFlags bindingAttr)
     {
-        return Origin.GetProperty(name, bindingAttr) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name, bindingAttr) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1753,9 +1750,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
 #endif
-    public OriginPropertyInfo GetProperty(string name, BindingFlags bindingAttr, OriginBinder binder, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
+    public PropertyInfo GetProperty(string name, BindingFlags bindingAttr, OriginBinder binder, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1769,9 +1766,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public OriginPropertyInfo GetProperty(string name, Type returnType)
+    public PropertyInfo GetProperty(string name, Type returnType)
     {
-        return Origin.GetProperty(name, returnType.Origin) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name, returnType.Origin) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1787,9 +1784,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public OriginPropertyInfo GetProperty(string name, Type returnType, Type[] types)
+    public PropertyInfo GetProperty(string name, Type returnType, Type[] types)
     {
-        return Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1806,9 +1803,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public OriginPropertyInfo? GetProperty(string name, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
+    public PropertyInfo GetProperty(string name, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1823,9 +1820,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public OriginPropertyInfo? GetProperty(string name, Type[] types)
+    public PropertyInfo GetProperty(string name, Type[] types)
     {
-        return Origin.GetProperty(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found.");
+        return new PropertyInfo(Origin.GetProperty(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>

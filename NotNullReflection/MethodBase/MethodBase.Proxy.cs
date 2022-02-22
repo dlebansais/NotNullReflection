@@ -326,11 +326,9 @@ public partial class MethodBase
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
     /// <returns>true if obj equals the type and value of this instance; otherwise, false.</returns>
-#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     public override bool Equals(object obj)
-#pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     {
-        return obj is MethodBase AsMethodBase ? Origin.Equals(AsMethodBase.Origin) : false;
+        return obj is MethodBase AsMethodBase && Origin.Equals(AsMethodBase.Origin);
     }
 
     /// <summary>
