@@ -37,9 +37,9 @@ using OriginAssemblyName = System.Reflection.AssemblyName;
 using OriginBinder = System.Reflection.Binder;
 using OriginParameterModifier = System.Reflection.ParameterModifier;
 using OriginModule = System.Reflection.Module;
-using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
+using OriginPropertyInfo = System.Reflection.PropertyInfo;
 using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TypeFilter = System.Reflection.TypeFilter;
@@ -875,11 +875,11 @@ public partial class Type
     /// </summary>
     /// <returns>An object that contains the name of the class constructor for the <see cref="Type"/>.</returns>
     /// <exception cref="NullReferenceException">Type doesn't have a type initializer.</exception>
-    public OriginConstructorInfo TypeInitializer
+    public ConstructorInfo TypeInitializer
     {
         get
         {
-            return Origin.TypeInitializer ?? throw new NullReferenceException("Type doesn't have a type initializer.");
+            return new ConstructorInfo(Origin.TypeInitializer ?? throw new NullReferenceException("Type doesn't have a type initializer."));
         }
     }
 
@@ -963,12 +963,12 @@ public partial class Type
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters. -or- <see cref="OriginType.EmptyTypes"/>.</param>
-    /// <returns>A <see cref="OriginConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <returns>A <see cref="ConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
-    public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, Type[] types)
+    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, Type[] types)
     {
-        return Origin.GetConstructor(bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
+        return new ConstructorInfo(Origin.GetConstructor(bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 #endif
 
@@ -986,9 +986,9 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
 #endif
-    public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
+    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
+        return new ConstructorInfo(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 
     /// <summary>
@@ -998,15 +998,15 @@ public partial class Type
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. -or- A null reference (Nothing in Visual Basic), to use the System.Type.DefaultBinder.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters. -or- <see cref="OriginType.EmptyTypes"/>.</param>
     /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
-    /// <returns>A <see cref="OriginConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
+    /// <returns>A <see cref="ConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
 #endif
-    public OriginConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
+    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
+        return new ConstructorInfo(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 
     /// <summary>
@@ -1019,34 +1019,34 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
 #endif
-    public OriginConstructorInfo GetConstructor(Type[] types)
+    public ConstructorInfo GetConstructor(Type[] types)
     {
-        return Origin.GetConstructor(GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements.");
+        return new ConstructorInfo(Origin.GetConstructor(GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 
     /// <summary>
     /// Returns all the public constructors defined for the current <see cref="Type"/>.
     /// </summary>
-    /// <returns>An array of <see cref="OriginConstructorInfo"/> objects representing all the public instance constructors defined for the current <see cref="Type"/>, but not including the type initializer (static constructor). If no public instance constructors are defined for the current <see cref="Type"/>, or if the current <see cref="Type"/> represents a type parameter in the definition of a generic type or generic method, an empty array of type <see cref="OriginConstructorInfo"/> is returned.</returns>
+    /// <returns>An array of <see cref="ConstructorInfo"/> objects representing all the public instance constructors defined for the current <see cref="Type"/>, but not including the type initializer (static constructor). If no public instance constructors are defined for the current <see cref="Type"/>, or if the current <see cref="Type"/> represents a type parameter in the definition of a generic type or generic method, an empty array of type <see cref="ConstructorInfo"/> is returned.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
 #endif
-    public OriginConstructorInfo[] GetConstructors()
+    public ConstructorInfo[] GetConstructors()
     {
-        return Origin.GetConstructors();
+        return ConstructorInfo.GetList(Origin.GetConstructors()).ToArray();
     }
 
     /// <summary>
     /// When overridden in a derived class, searches for the constructors defined for the current <see cref="Type"/>, using the specified <see cref="BindingFlags"/>.
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of <see cref="OriginConstructorInfo"/> objects representing all constructors defined for the current <see cref="Type"/> that match the specified binding constraints, including the type initializer if it is defined. Returns an empty array of type <see cref="OriginConstructorInfo"/> if no constructors are defined for the current <see cref="Type"/>, if none of the defined constructors match the binding constraints, or if the current <see cref="Type"/> represents a type parameter in the definition of a generic type or generic method.</returns>
+    /// <returns>An array of <see cref="ConstructorInfo"/> objects representing all constructors defined for the current <see cref="Type"/> that match the specified binding constraints, including the type initializer if it is defined. Returns an empty array of type <see cref="ConstructorInfo"/> if no constructors are defined for the current <see cref="Type"/>, if none of the defined constructors match the binding constraints, or if the current <see cref="Type"/> represents a type parameter in the definition of a generic type or generic method.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
 #endif
-    public OriginConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
+    public ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
     {
-        return Origin.GetConstructors(bindingAttr);
+        return ConstructorInfo.GetList(Origin.GetConstructors(bindingAttr)).ToArray();
     }
 
     /// <summary>
@@ -1716,6 +1716,30 @@ public partial class Type
     public PropertyInfo GetProperty(string name)
     {
         return new PropertyInfo(Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found."));
+    }
+
+    /// <summary>
+    /// Determines whether the current type has a public property with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public property to look for.</param>
+    /// <param name="property">The property upon return.</param>
+    /// <returns>true if found; otherwise, false.</returns>
+    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
+#if NET5_0_OR_GREATER
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+#endif
+    public bool IsProperty(string name, out PropertyInfo property)
+    {
+        if (Origin.GetProperty(name) is OriginPropertyInfo OriginProperty)
+        {
+            property = new PropertyInfo(OriginProperty);
+            return true;
+        }
+        else
+        {
+            property = null!;
+            return false;
+        }
     }
 
     /// <summary>

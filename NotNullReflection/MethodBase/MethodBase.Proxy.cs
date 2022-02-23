@@ -18,7 +18,6 @@ using MethodAccessException = System.MethodAccessException;
 using MemberAccessException = System.MemberAccessException;
 using RuntimeTypeHandle = System.RuntimeTypeHandle;
 using OriginMethodBase = System.Reflection.MethodBase;
-using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 using OriginParameterInfo = System.Reflection.ParameterInfo;
 using TargetException = System.Reflection.TargetException;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
@@ -108,7 +107,7 @@ public partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is a constructor.
     /// </summary>
-    /// <returns>true if this method is a constructor represented by a <see cref="OriginConstructorInfo"/> object (see note in Remarks about <see cref="ConstructorBuilder"/> objects); otherwise, false.</returns>
+    /// <returns>true if this method is a constructor represented by a <see cref="ConstructorInfo"/> object (see note in Remarks about <see cref="ConstructorBuilder"/> objects); otherwise, false.</returns>
     public bool IsConstructor
     {
         get
@@ -350,7 +349,7 @@ public partial class MethodBase
     /// Returns an array of <see cref="Type"/> objects that represent the type arguments of a generic method or the type parameters of a generic method definition.
     /// </summary>
     /// <returns>An array of <see cref="Type"/> objects that represent the type arguments of a generic method or the type parameters of a generic method definition. Returns an empty array if the current method is not a generic method.</returns>
-    /// <exception cref="NotSupportedException">The current object is a <see cref="OriginConstructorInfo"/>. Generic constructors are not supported in the .NET Framework version 2.0. This exception is the default behavior if this method is not overridden in a derived class.</exception>
+    /// <exception cref="NotSupportedException">The current object is a <see cref="ConstructorInfo"/>. Generic constructors are not supported in the .NET Framework version 2.0. This exception is the default behavior if this method is not overridden in a derived class.</exception>
     public virtual Type[] GetGenericArguments()
     {
         return Type.GetList(Origin.GetGenericArguments()).ToArray();
