@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using NotSupportedException = System.NotSupportedException;
 using OriginMemberInfo = System.Reflection.MemberInfo;
+using OriginEventInfo = System.Reflection.EventInfo;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 using OriginMethodInfo = System.Reflection.MethodInfo;
 using OriginPropertyInfo = System.Reflection.PropertyInfo;
@@ -31,6 +32,9 @@ public abstract partial class MemberInfo
             {
                 case OriginConstructorInfo AsConstructorInfo:
                     NewInstance = ConstructorInfo.CreateNew(AsConstructorInfo);
+                    break;
+                case OriginEventInfo AsEventInfo:
+                    NewInstance = EventInfo.CreateNew(AsEventInfo);
                     break;
                 case OriginMethodInfo AsMethodInfo:
                     NewInstance = MethodInfo.CreateNew(AsMethodInfo);

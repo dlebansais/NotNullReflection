@@ -7,6 +7,7 @@ Proxy for System.Reflection with no null references whatsoever.
 + `System.Reflection.Assembly`
 + `System.Reflection.AssemblyName`
 + `System.Reflection.ConstructorInfo`
++ `System.Reflection.EventInfo`
 + `System.Reflection.MemberInfo`
 + `System.Reflection.MethodBase`
 + `System.Reflection.MethodInfo`

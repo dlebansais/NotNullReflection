@@ -937,7 +937,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="left">The assembly to compare to right.</param>
     /// <param name="right">The assembly to compare to left.</param>
-    /// <returns>true if left is equal to right; otherwise, false.</returns>
+    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
     public static bool operator ==(Assembly left, Assembly right)
     {
         return left.Origin == right.Origin;
@@ -948,7 +948,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="left">The assembly to compare to right.</param>
     /// <param name="right">The assembly to compare to left.</param>
-    /// <returns>true if left is not equal to right; otherwise, false.</returns>
+    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
     public static bool operator !=(Assembly left, Assembly right)
     {
         return left.Origin != right.Origin;

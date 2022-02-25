@@ -47,7 +47,7 @@ public partial class ConstructorInfo
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
     /// <returns>true if obj equals the type and value of this instance; otherwise, false.</returns>
-    public override bool Equals(object? obj)
+    public override bool Equals(object obj)
     {
         return obj is ConstructorInfo AsConstructorInfo && Origin.Equals(AsConstructorInfo.Origin);
     }
