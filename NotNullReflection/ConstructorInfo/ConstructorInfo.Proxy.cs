@@ -2,18 +2,18 @@
 
 using System.Globalization;
 using System.Security;
-using TypedReference = System.TypedReference;
-using RuntimeArgumentHandle = System.RuntimeArgumentHandle;
-using NotSupportedException = System.NotSupportedException;
 using ArgumentException = System.ArgumentException;
-using MethodAccessException = System.MethodAccessException;
+using Binder = System.Reflection.Binder;
+using BindingFlags = System.Reflection.BindingFlags;
 using MemberAccessException = System.MemberAccessException;
 using MemberTypes = System.Reflection.MemberTypes;
-using BindingFlags = System.Reflection.BindingFlags;
+using MethodAccessException = System.MethodAccessException;
+using NotSupportedException = System.NotSupportedException;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
-using OriginBinder = System.Reflection.Binder;
-using TargetParameterCountException = System.Reflection.TargetParameterCountException;
+using RuntimeArgumentHandle = System.RuntimeArgumentHandle;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
+using TargetParameterCountException = System.Reflection.TargetParameterCountException;
+using TypedReference = System.TypedReference;
 
 /// <summary>
 /// Discovers the attributes of a class constructor and provides access to constructor metadata.
@@ -93,7 +93,7 @@ public partial class ConstructorInfo
     /// <exception cref="SecurityException">The caller does not have the necessary code access permission.</exception>
     /// <exception cref="MemberAccessException">The class is abstract. -or- The constructor is a class initializer.</exception>
     /// <exception cref="MethodAccessException">The constructor is private or protected, and the caller lacks System.Security.Permissions.ReflectionPermissionFlag.MemberAccess.</exception>
-    public object Invoke(BindingFlags invokeAttr, OriginBinder binder, object[] parameters, CultureInfo culture)
+    public object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
     {
         return Origin.Invoke(invokeAttr, binder != Assembly.DefaultBinder ? binder : null, parameters, culture);
     }

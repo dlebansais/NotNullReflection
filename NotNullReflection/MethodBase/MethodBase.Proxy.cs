@@ -1,30 +1,30 @@
 ﻿namespace NotNullReflection;
 
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection.Emit;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using MethodAttributes = System.Reflection.MethodAttributes;
+using System.Linq;
+using System.Reflection.Emit;
+using ArgumentException = System.ArgumentException;
+using Binder = System.Reflection.Binder;
+using BindingFlags = System.Reflection.BindingFlags;
 using CallingConventions = System.Reflection.CallingConventions;
-using MethodImplAttributes = System.Reflection.MethodImplAttributes;
-using NullReferenceException = System.NullReferenceException;
-using NotSupportedException = System.NotSupportedException;
-using RuntimeMethodHandle = System.RuntimeMethodHandle;
 using Exception = System.Exception;
 using InvalidOperationException = System.InvalidOperationException;
-using ArgumentException = System.ArgumentException;
-using MethodAccessException = System.MethodAccessException;
 using MemberAccessException = System.MemberAccessException;
-using RuntimeTypeHandle = System.RuntimeTypeHandle;
+using MethodAccessException = System.MethodAccessException;
+using MethodAttributes = System.Reflection.MethodAttributes;
+using MethodBody = System.Reflection.MethodBody;
+using MethodImplAttributes = System.Reflection.MethodImplAttributes;
+using NotSupportedException = System.NotSupportedException;
+using NullReferenceException = System.NullReferenceException;
 using OriginMethodBase = System.Reflection.MethodBase;
 using OriginParameterInfo = System.Reflection.ParameterInfo;
+using RuntimeMethodHandle = System.RuntimeMethodHandle;
+using RuntimeTypeHandle = System.RuntimeTypeHandle;
 using TargetException = System.Reflection.TargetException;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TargetParameterCountException = System.Reflection.TargetParameterCountException;
-using MethodBody = System.Reflection.MethodBody;
-using BindingFlags = System.Reflection.BindingFlags;
-using OriginBinder = System.Reflection.Binder;
 
 /// <summary>
 /// Provides information about methods and constructors.
@@ -454,7 +454,7 @@ public abstract partial class MethodBase
     /// <exception cref="TargetInvocationException">The invoked method or constructor throws an exception.</exception>
     /// <exception cref="MethodAccessException">The caller does not have permission to execute the method or constructor that is represented by the current instance.</exception>
     /// <exception cref="InvalidOperationException">The type that declares the method is an open generic type. That is, the <see cref="Type.ContainsGenericParameters"/> property returns true for the declaring type.</exception>
-    public object Invoke(object obj, BindingFlags invokeAttr, OriginBinder binder, object[] parameters, CultureInfo culture)
+    public object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
     {
         return Origin.Invoke(obj != Type.Void ? obj : null, invokeAttr, binder != Assembly.DefaultBinder ? binder : null, parameters.Length > 0 ? parameters : null, culture) ?? Type.Void;
     }

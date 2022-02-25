@@ -2,9 +2,9 @@
 
 using System.Collections.Generic;
 using NotSupportedException = System.NotSupportedException;
-using OriginMemberInfo = System.Reflection.MemberInfo;
-using OriginEventInfo = System.Reflection.EventInfo;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
+using OriginEventInfo = System.Reflection.EventInfo;
+using OriginMemberInfo = System.Reflection.MemberInfo;
 using OriginMethodInfo = System.Reflection.MethodInfo;
 using OriginPropertyInfo = System.Reflection.PropertyInfo;
 using OriginType = System.Type;

@@ -4,48 +4,47 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Reflection.Emit;
-using NullReferenceException = System.NullReferenceException;
-using InvalidOperationException = System.NullReferenceException;
-using NotSupportedException = System.NotSupportedException;
+using System.Runtime.InteropServices;
+using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
 using ArgumentException = System.ArgumentException;
-using TypeLoadException = System.TypeLoadException;
-using BadImageFormatException = System.BadImageFormatException;
-using MethodAccessException = System.MethodAccessException;
-using MissingFieldException = System.MissingFieldException;
-using MissingMethodException = System.MissingMethodException;
-using IndexOutOfRangeException = System.IndexOutOfRangeException;
 using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
-using Guid = System.Guid;
 using Array = System.Array;
-using TypedReference = System.TypedReference;
-using TypeCode = System.TypeCode;
-using RuntimeTypeHandle = System.RuntimeTypeHandle;
-using TypeAttributes = System.Reflection.TypeAttributes;
+using BadImageFormatException = System.BadImageFormatException;
+using Binder = System.Reflection.Binder;
+using BindingFlags = System.Reflection.BindingFlags;
+using CallingConventions = System.Reflection.CallingConventions;
+using DefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using FieldAttributes = System.Reflection.FieldAttributes;
+using GenericParameterAttributes = System.Reflection.GenericParameterAttributes;
+using Guid = System.Guid;
+using IndexOutOfRangeException = System.IndexOutOfRangeException;
+using InterfaceMapping = System.Reflection.InterfaceMapping;
+using InvalidOperationException = System.NullReferenceException;
+using MemberFilter = System.Reflection.MemberFilter;
+using MemberTypes = System.Reflection.MemberTypes;
+using MethodAccessException = System.MethodAccessException;
 using MethodAttributes = System.Reflection.MethodAttributes;
 using MethodImplAttributes = System.Reflection.MethodImplAttributes;
-using BindingFlags = System.Reflection.BindingFlags;
-using GenericParameterAttributes = System.Reflection.GenericParameterAttributes;
-using MemberTypes = System.Reflection.MemberTypes;
-using CallingConventions = System.Reflection.CallingConventions;
-using OriginType = System.Type;
+using MissingFieldException = System.MissingFieldException;
+using MissingMethodException = System.MissingMethodException;
+using NotSupportedException = System.NotSupportedException;
+using NullReferenceException = System.NullReferenceException;
 using OriginAssembly = System.Reflection.Assembly;
 using OriginAssemblyName = System.Reflection.AssemblyName;
-using OriginBinder = System.Reflection.Binder;
-using OriginParameterModifier = System.Reflection.ParameterModifier;
-using OriginModule = System.Reflection.Module;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
-using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
-using TargetInvocationException = System.Reflection.TargetInvocationException;
-using TypeFilter = System.Reflection.TypeFilter;
-using MemberFilter = System.Reflection.MemberFilter;
-using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
+using OriginModule = System.Reflection.Module;
+using OriginType = System.Type;
+using ParameterModifier = System.Reflection.ParameterModifier;
+using RuntimeTypeHandle = System.RuntimeTypeHandle;
 using TargetException = System.Reflection.TargetException;
-using InterfaceMapping = System.Reflection.InterfaceMapping;
+using TargetInvocationException = System.Reflection.TargetInvocationException;
+using TypeAttributes = System.Reflection.TypeAttributes;
+using TypeCode = System.TypeCode;
+using TypedReference = System.TypedReference;
+using TypeFilter = System.Reflection.TypeFilter;
+using TypeLoadException = System.TypeLoadException;
 
 /// <summary>
 /// Represents type declarations: class types, interface types, array types, value types, enumeration types, type parameters, generic type definitions, and open or closed constructed generic types.
@@ -141,10 +140,10 @@ public partial class Type
     }
 
     /// <summary>
-    /// Gets a reference to the default binder, which implements internal rules for selecting the appropriate members to be called by <see cref="InvokeMember(string,BindingFlags,OriginBinder,object,object[],OriginParameterModifier[],CultureInfo,string[])"/>.
+    /// Gets a reference to the default binder, which implements internal rules for selecting the appropriate members to be called by <see cref="InvokeMember(string,BindingFlags,Binder,object,object[],ParameterModifier[],CultureInfo,string[])"/>.
     /// </summary>
     /// <returns>A reference to the default binder used by the system.</returns>
-    public static OriginBinder DefaultBinder
+    public static Binder DefaultBinder
     {
         get
         {
@@ -978,14 +977,14 @@ public partial class Type
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and the stack is cleaned up.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters..</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>An object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
 #endif
-    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
+    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
     {
         return ConstructorInfo.CreateNew(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
@@ -996,14 +995,14 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. -or- A null reference (Nothing in Visual Basic), to use the System.Type.DefaultBinder.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters. -or- <see cref="OriginType.EmptyTypes"/>.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>A <see cref="ConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
     /// <exception cref="NullReferenceException">No constructor found that matches the specified requirements.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
 #endif
-    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
+    public ConstructorInfo GetConstructor(BindingFlags bindingAttr, Binder binder, Type[] types, ParameterModifier[] modifiers)
     {
         return ConstructorInfo.CreateNew(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
@@ -1049,7 +1048,7 @@ public partial class Type
     }
 
     /// <summary>
-    /// Searches for the members defined for the current <see cref="Type"/> whose <see cref="OriginDefaultMemberAttribute"/> is set.
+    /// Searches for the members defined for the current <see cref="Type"/> whose <see cref="DefaultMemberAttribute"/> is set.
     /// </summary>
     /// <returns>An array of <see cref="MemberInfo"/> objects representing all default members of the current <see cref="Type"/>. -or- An empty array of type <see cref="MemberInfo"/>, if the current <see cref="Type"/> does not have default members.</returns>
 #if NET5_0_OR_GREATER
@@ -1430,12 +1429,12 @@ public partial class Type
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and how the stack is cleaned up.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
     /// <returns>An object representing the method that matches the specified generic parameter count, argument types, modifiers, binding constraints and calling convention, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
     {
         return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
@@ -1448,12 +1447,12 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
     /// <returns>An object representing the method that matches the specified generic parameter count, argument types, modifiers and binding constraints, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-    public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, Binder binder, Type[] types, ParameterModifier[] modifiers)
     {
         return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
@@ -1479,12 +1478,12 @@ public partial class Type
     /// <param name="name">The string containing the name of the public method to get.</param>
     /// <param name="genericParameterCount">The number of generic type parameters of the method.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
     /// <returns>An object representing the public method that matches the specified generic parameter count, argument types and modifiers, if found; otherwise, throws an exception.</returns>
     /// <exception cref="ArgumentException"><paramref name="genericParameterCount"/> is negative.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-    public MethodInfo GetMethod(string name, int genericParameterCount, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, int genericParameterCount, Type[] types, ParameterModifier[] modifiers)
     {
         return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
@@ -1530,7 +1529,7 @@ public partial class Type
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and how the stack is cleaned up.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
     /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
@@ -1538,7 +1537,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif
-    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
     {
         return MethodInfo.CreateNew(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
@@ -1550,7 +1549,7 @@ public partial class Type
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
     /// <returns>An object representing the method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
@@ -1558,7 +1557,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
 #endif
-    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, BindingFlags bindingAttr, Binder binder, Type[] types, ParameterModifier[] modifiers)
     {
         return MethodInfo.CreateNew(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
@@ -1585,7 +1584,7 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the public method to get.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the method to get. -or- An empty array of <see cref="Type"/> objects (as provided by the System.Type.EmptyTypes field) to get a method that takes no parameters.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. To be only used when calling through COM interop, and only parameters that are passed by reference are handled. The default binder does not process this parameter.</param>
     /// <returns>An object representing the public method that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name and specified parameters.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional.</exception>
@@ -1593,7 +1592,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 #endif
-    public MethodInfo GetMethod(string name, Type[] types, OriginParameterModifier[] modifiers)
+    public MethodInfo GetMethod(string name, Type[] types, ParameterModifier[] modifiers)
     {
         return MethodInfo.CreateNew(Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
@@ -1741,7 +1740,7 @@ public partial class Type
     /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="returnType">The return type of the property.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the indexed property to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="Array.Empty{Type}()"/>) to get a property that is not indexed.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>An object representing the property that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified binding constraints.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
@@ -1749,7 +1748,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
 #endif
-    public PropertyInfo GetProperty(string name, BindingFlags bindingAttr, OriginBinder binder, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
+    public PropertyInfo GetProperty(string name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers)
     {
         return PropertyInfo.CreateNew(Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
     }
@@ -1794,7 +1793,7 @@ public partial class Type
     /// <param name="name">The string containing the name of the public property to get.</param>
     /// <param name="returnType">The return type of the property.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the indexed property to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="Array.Empty{Type}()"/>) to get a property that is not indexed.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>An object representing the public property that matches the specified requirements, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name and matching the specified argument types and modifiers.</exception>
     /// <exception cref="ArgumentException"><paramref name="types"/> is multidimensional. -or- <paramref name="modifiers"/> is multidimensional. -or- <paramref name="types"/> and <paramref name="modifiers"/> do not have the same length.</exception>
@@ -1802,7 +1801,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 #endif
-    public PropertyInfo GetProperty(string name, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
+    public PropertyInfo GetProperty(string name, Type returnType, Type[] types, ParameterModifier[] modifiers)
     {
         return PropertyInfo.CreateNew(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
     }
@@ -2119,7 +2118,7 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the constructor, method, property, or field member to invoke. -or- An empty string <see cref="string.Empty"/> to invoke the default member. -or- For IDispatch members, a string representing the DispID, for example "[DispID=3]".</param>
     /// <param name="invokeAttr">A bitwise combination of the enumeration values that specify how the search is conducted. The access can be one of the <see cref="BindingFlags"/> such as Public, NonPublic, Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified. If the type of lookup is omitted, <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Instance"/> | <see cref="BindingFlags.Static"/> are used.</param>
-    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="OriginBinder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="Binder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
     /// <param name="target">The object on which to invoke the specified member.</param>
     /// <param name="args">An array containing the arguments to pass to the member to invoke.</param>
     /// <returns>An object representing the return value of the invoked member.</returns>
@@ -2134,7 +2133,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-    public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args)
+    public object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args)
     {
         return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args) ?? Void;
     }
@@ -2144,7 +2143,7 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the constructor, method, property, or field member to invoke. -or- An empty string <see cref="string.Empty"/> to invoke the default member. -or- For IDispatch members, a string representing the DispID, for example "[DispID=3]".</param>
     /// <param name="invokeAttr">A bitwise combination of the enumeration values that specify how the search is conducted. The access can be one of the <see cref="BindingFlags"/> such as Public, NonPublic, Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified. If the type of lookup is omitted, <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Instance"/> | <see cref="BindingFlags.Static"/> are used.</param>
-    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="OriginBinder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="Binder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
     /// <param name="target">The object on which to invoke the specified member.</param>
     /// <param name="args">An array containing the arguments to pass to the member to invoke.</param>
     /// <param name="culture">The object representing the globalization locale to use, which may be necessary for locale-specific conversions, such as converting a numeric <see cref="string"/> to a <see cref="double"/>. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired.</param>
@@ -2160,7 +2159,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-    public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args, CultureInfo culture)
+    public object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, CultureInfo culture)
     {
         return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args, culture) ?? Void;
     }
@@ -2170,10 +2169,10 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the constructor, method, property, or field member to invoke. -or- An empty string <see cref="string.Empty"/> to invoke the default member. -or- For IDispatch members, a string representing the DispID, for example "[DispID=3]".</param>
     /// <param name="invokeAttr">A bitwise combination of the enumeration values that specify how the search is conducted. The access can be one of the <see cref="BindingFlags"/> such as Public, NonPublic, Private, InvokeMethod, GetField, and so on. The type of lookup need not be specified. If the type of lookup is omitted, <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Instance"/> | <see cref="BindingFlags.Static"/> are used.</param>
-    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="OriginBinder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. Note that explicitly defining a <see cref="Binder"/> object may be required for successfully invoking method overloads with variable arguments.</param>
     /// <param name="target">The object on which to invoke the specified member.</param>
     /// <param name="args">An array containing the arguments to pass to the member to invoke.</param>
-    /// <param name="modifiers">An array of <see cref="OriginParameterModifier"/> objects representing the attributes associated with the corresponding element in the args array. A parameter's associated attributes are stored in the member's signature. The default binder processes this parameter only when calling a COM component.</param>
+    /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the args array. A parameter's associated attributes are stored in the member's signature. The default binder processes this parameter only when calling a COM component.</param>
     /// <param name="culture">The object representing the globalization locale to use, which may be necessary for locale-specific conversions, such as converting a numeric <see cref="string"/> to a <see cref="double"/>. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired.</param>
     /// <param name="namedParameters">An array containing the names of the parameters to which the values in the <paramref name="args"/> array are passed.</param>
     /// <returns>An object representing the return value of the invoked member.</returns>
@@ -2187,7 +2186,7 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-    public object InvokeMember(string name, BindingFlags invokeAttr, OriginBinder binder, object target, object[] args, OriginParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
+    public object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
     {
         return Origin.InvokeMember(name, invokeAttr, binder != DefaultBinder ? binder : null, target, args, modifiers, culture, namedParameters) ?? Void;
     }

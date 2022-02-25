@@ -4,21 +4,21 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security;
+using ArgumentException = System.ArgumentException;
+using Binder = System.Reflection.Binder;
+using BindingFlags = System.Reflection.BindingFlags;
 using Exception = System.Exception;
-using NullReferenceException = System.NullReferenceException;
 using FormatException = System.FormatException;
 using InvalidOperationException = System.InvalidOperationException;
-using ArgumentException = System.ArgumentException;
-using MethodAccessException = System.MethodAccessException;
 using MemberAccessException = System.MemberAccessException;
 using MemberTypes = System.Reflection.MemberTypes;
-using BindingFlags = System.Reflection.BindingFlags;
-using PropertyAttributes = System.Reflection.PropertyAttributes;
+using MethodAccessException = System.MethodAccessException;
+using NullReferenceException = System.NullReferenceException;
 using OriginParameterInfo = System.Reflection.ParameterInfo;
-using OriginBinder = System.Reflection.Binder;
+using PropertyAttributes = System.Reflection.PropertyAttributes;
 using TargetException = System.Reflection.TargetException;
-using TargetParameterCountException = System.Reflection.TargetParameterCountException;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
+using TargetParameterCountException = System.Reflection.TargetParameterCountException;
 
 /// <summary>
 /// Discovers the attributes of a property and provides access to property metadata.
@@ -299,7 +299,7 @@ public partial class PropertyInfo
     /// <exception cref="MethodAccessException">There was an illegal attempt to access a private or protected method inside a class.</exception>
     /// <exception cref="TargetInvocationException">An error occurred while retrieving the property value. For example, an <paramref name="index"/> value specified for an indexed property is out of range. The <see cref="Exception.InnerException"/> property indicates the reason for the error.</exception>
     /// <exception cref="NullReferenceException">Invalid property value.</exception>
-    public object GetValue(object obj, BindingFlags invokeAttr, OriginBinder binder, object[] index, CultureInfo culture)
+    public object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
     {
         return Origin.GetValue(obj != Type.Void ? obj : null, invokeAttr, binder != Assembly.DefaultBinder ? binder : null, index.Length > 0 ? index : null, culture) ?? throw new NullReferenceException("Invalid property value.");
     }
@@ -370,7 +370,7 @@ public partial class PropertyInfo
     /// <exception cref="TargetParameterCountException">The number of parameters in <paramref name="index"/> does not match the number of parameters the indexed property takes.</exception>
     /// <exception cref="MethodAccessException">There was an illegal attempt to access a private or protected method inside a class.</exception>
     /// <exception cref="TargetInvocationException">An error occurred while setting the property value. For example, an index value specified for an indexed property is out of range. The <see cref="Exception.InnerException"/> property indicates the reason for the error.</exception>
-    public void SetValue(object obj, object value, BindingFlags invokeAttr, OriginBinder binder, object[] index, CultureInfo culture)
+    public void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
     {
         Origin.SetValue(obj, value, invokeAttr, binder != Assembly.DefaultBinder ? binder : null, index.Length > 0 ? index : null, culture);
     }

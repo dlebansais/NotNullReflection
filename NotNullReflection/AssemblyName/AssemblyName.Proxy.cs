@@ -4,13 +4,13 @@ using System;
 using System.Configuration.Assemblies;
 using System.Globalization;
 using System.IO;
-using System.Security;
 using System.Runtime.Serialization;
-using OriginAssemblyName = System.Reflection.AssemblyName;
+using System.Security;
 using AssemblyContentType = System.Reflection.AssemblyContentType;
 using AssemblyNameFlags = System.Reflection.AssemblyNameFlags;
-using StrongNameKeyPair = System.Reflection.StrongNameKeyPair;
+using OriginAssemblyName = System.Reflection.AssemblyName;
 using ProcessorArchitecture = System.Reflection.ProcessorArchitecture;
+using StrongNameKeyPair = System.Reflection.StrongNameKeyPair;
 
 /// <summary>
 /// Describes an assembly's unique identity in full.

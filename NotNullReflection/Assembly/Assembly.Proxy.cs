@@ -2,25 +2,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Emit;
 using System.Configuration.Assemblies;
-using System.Security;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.Serialization;
+using System.IO;
 using System.Linq;
-using OriginAssembly = System.Reflection.Assembly;
-using OriginCustomAttributeData = System.Reflection.CustomAttributeData;
-using OriginTypeInfo = System.Reflection.TypeInfo;
-using OriginModule = System.Reflection.Module;
+using System.Reflection.Emit;
+using System.Runtime.Serialization;
+using System.Security;
+using Binder = System.Reflection.Binder;
 using BindingFlags = System.Reflection.BindingFlags;
-using OriginBinder = System.Reflection.Binder;
-using OriginModuleResolveEventHandler = System.Reflection.ModuleResolveEventHandler;
-using OriginManifestResourceInfo = System.Reflection.ManifestResourceInfo;
-using OriginReflectionTypeLoadException = System.Reflection.ReflectionTypeLoadException;
-using OriginAssemblyName = System.Reflection.AssemblyName;
+using CustomAttributeData = System.Reflection.CustomAttributeData;
+using ModuleResolveEventHandler = System.Reflection.ModuleResolveEventHandler;
+using OriginAssembly = System.Reflection.Assembly;
+using OriginModule = System.Reflection.Module;
 using OriginType = System.Type;
+using OriginTypeInfo = System.Reflection.TypeInfo;
+using ReflectionTypeLoadException = System.Reflection.ReflectionTypeLoadException;
 
 /// <summary>
 /// Represents an assembly, which is a reusable, versionable, and self-describing building block of a common language runtime application.
@@ -31,7 +29,7 @@ public partial class Assembly
     /// Gets a collection that contains this assembly's custom attributes.
     /// </summary>
     /// <returns>A collection that contains this assembly's custom attributes.</returns>
-    public IEnumerable<OriginCustomAttributeData> CustomAttributes
+    public IEnumerable<CustomAttributeData> CustomAttributes
     {
         get
         {
@@ -221,7 +219,7 @@ public partial class Assembly
     /// <summary>
     /// Occurs when the common language runtime class loader cannot resolve a reference to an internal module of an assembly through normal means.
     /// </summary>
-    public event OriginModuleResolveEventHandler ModuleResolve
+    public event ModuleResolveEventHandler ModuleResolve
     {
         add
         {
@@ -301,7 +299,7 @@ public partial class Assembly
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
 #endif
-    public object CreateInstance(string typeName, bool ignoreCase, BindingFlags bindingAttr, OriginBinder binder, object[] args, CultureInfo culture)
+    public object CreateInstance(string typeName, bool ignoreCase, BindingFlags bindingAttr, Binder binder, object[] args, CultureInfo culture)
     {
         return Origin.CreateInstance(typeName, ignoreCase, bindingAttr, binder != DefaultBinder ? binder : null, args, culture, null) ?? throw new NullReferenceException($"{nameof(typeName)} is not found");
     }
@@ -365,10 +363,10 @@ public partial class Assembly
     }
 
     /// <summary>
-    /// Returns information about the attributes that have been applied to the current <see cref="OriginAssembly"/>, expressed as <see cref="OriginCustomAttributeData"/> objects.
+    /// Returns information about the attributes that have been applied to the current <see cref="OriginAssembly"/>, expressed as <see cref="CustomAttributeData"/> objects.
     /// </summary>
-    /// <returns>A generic list of <see cref="OriginCustomAttributeData"/> objects representing data about the attributes that have been applied to the current assembly.</returns>
-    public IList<OriginCustomAttributeData> GetCustomAttributesData()
+    /// <returns>A generic list of <see cref="CustomAttributeData"/> objects representing data about the attributes that have been applied to the current assembly.</returns>
+    public IList<CustomAttributeData> GetCustomAttributesData()
     {
         return Origin.GetCustomAttributesData();
     }
@@ -505,9 +503,9 @@ public partial class Assembly
     /// <returns>An object that is populated with information about the resource's topology; this method throws an exception if the resource is not found.</returns>
     /// <exception cref="ArgumentException">The <paramref name="resourceName"/> parameter is an empty string ("").</exception>
     /// <exception cref="NullReferenceException">Resource not found.</exception>
-    public OriginManifestResourceInfo GetManifestResourceInfo(string resourceName)
+    public ManifestResourceInfo GetManifestResourceInfo(string resourceName)
     {
-        return Origin.GetManifestResourceInfo(resourceName) ?? throw new NullReferenceException("Resource not found.");
+        return ManifestResourceInfo.CreateNew(Origin.GetManifestResourceInfo(resourceName) ?? throw new NullReferenceException("Resource not found."));
     }
 
     /// <summary>
@@ -728,7 +726,7 @@ public partial class Assembly
     /// Gets the types defined in this assembly.
     /// </summary>
     /// <returns>An array that contains all the types that are defined in this assembly.</returns>
-    /// <exception cref="OriginReflectionTypeLoadException">The assembly contains one or more types that cannot be loaded. The array returned by the <see cref="OriginReflectionTypeLoadException.Types"/> property of this exception contains a <see cref="Type"/> object for each type that was loaded and <see cref="Type.Missing"/> for each type that could not be loaded, while the <see cref="OriginReflectionTypeLoadException.LoaderExceptions"/> property contains an exception for each type that could not be loaded.</exception>
+    /// <exception cref="ReflectionTypeLoadException">The assembly contains one or more types that cannot be loaded. The array returned by the <see cref="ReflectionTypeLoadException.Types"/> property of this exception contains a <see cref="Type"/> object for each type that was loaded and <see cref="Type.Missing"/> for each type that could not be loaded, while the <see cref="ReflectionTypeLoadException.LoaderExceptions"/> property contains an exception for each type that could not be loaded.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
@@ -740,7 +738,7 @@ public partial class Assembly
         {
             Result = Origin.GetTypes();
         }
-        catch (OriginReflectionTypeLoadException loadException)
+        catch (ReflectionTypeLoadException loadException)
         {
             OriginType[] LoadExceptionTypes = loadException.Types!;
 

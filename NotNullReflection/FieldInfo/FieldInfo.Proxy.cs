@@ -3,23 +3,23 @@
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Exception = System.Exception;
-using NullReferenceException = System.NullReferenceException;
-using FieldAccessException = System.FieldAccessException;
-using InvalidOperationException = System.InvalidOperationException;
 using ArgumentException = System.ArgumentException;
+using Binder = System.Reflection.Binder;
+using BindingFlags = System.Reflection.BindingFlags;
+using Exception = System.Exception;
+using FieldAccessException = System.FieldAccessException;
+using FieldAttributes = System.Reflection.FieldAttributes;
 using FormatException = System.FormatException;
-using NotSupportedException = System.NotSupportedException;
+using InvalidOperationException = System.InvalidOperationException;
 using MemberAccessException = System.MemberAccessException;
+using MemberTypes = System.Reflection.MemberTypes;
+using NotSupportedException = System.NotSupportedException;
+using NullReferenceException = System.NullReferenceException;
+using OriginFieldInfo = System.Reflection.FieldInfo;
 using RuntimeFieldHandle = System.RuntimeFieldHandle;
 using RuntimeTypeHandle = System.RuntimeTypeHandle;
-using TypedReference = System.TypedReference;
 using TargetException = System.Reflection.TargetException;
-using OriginFieldInfo = System.Reflection.FieldInfo;
-using OriginBinder = System.Reflection.Binder;
-using MemberTypes = System.Reflection.MemberTypes;
-using FieldAttributes = System.Reflection.FieldAttributes;
-using BindingFlags = System.Reflection.BindingFlags;
+using TypedReference = System.TypedReference;
 
 /// <summary>
 /// Discovers the attributes of a field and provides access to field metadata.
@@ -394,13 +394,13 @@ public partial class FieldInfo
     /// </summary>
     /// <param name="obj">The object whose field value will be set.</param>
     /// <param name="value">The value to assign to the field.</param>
-    /// <param name="invokeAttr">A field of <see cref="OriginBinder"/> that specifies the type of binding that is desired (for example, <see cref="BindingFlags.CreateInstance"/> or <see cref="BindingFlags.ExactBinding"/>).</param>
+    /// <param name="invokeAttr">A field of <see cref="Binder"/> that specifies the type of binding that is desired (for example, <see cref="BindingFlags.CreateInstance"/> or <see cref="BindingFlags.ExactBinding"/>).</param>
     /// <param name="binder">A set of properties that enables the binding, coercion of argument types, and invocation of members through reflection.</param>
     /// <param name="culture">The software preferences of a particular culture.</param>
     /// <exception cref="FieldAccessException">The caller does not have permission to access this field.</exception>
     /// <exception cref="TargetException">The <paramref name="obj"/> parameter is <see cref="Type.Void"/>and the field is an instance field.</exception>
     /// <exception cref="ArgumentException">The field does not exist on the object. -or- The <paramref name="value"/> parameter cannot be converted and stored in the field.</exception>
-    public void SetValue(object obj, object value, BindingFlags invokeAttr, OriginBinder binder, CultureInfo culture)
+    public void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture)
     {
         Origin.SetValue(obj != Type.Void ? obj : null, value, invokeAttr, binder != Assembly.DefaultBinder ? binder : null, culture);
     }
