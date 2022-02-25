@@ -63,7 +63,7 @@ public partial class Assembly
     {
         get
         {
-            return new MethodInfo(Origin.EntryPoint ?? throw new NullReferenceException("Assembly doesn't have an entry point."));
+            return MethodInfo.CreateNew(Origin.EntryPoint ?? throw new NullReferenceException("Assembly doesn't have an entry point."));
         }
     }
 
@@ -339,7 +339,7 @@ public partial class Assembly
     public static Assembly GetAssembly(Type type)
     {
         OriginAssembly Origin = OriginAssembly.GetAssembly(type.Origin) ?? throw new NullReferenceException("Assembly not found.");
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -381,7 +381,7 @@ public partial class Assembly
     public static Assembly GetEntryAssembly()
     {
         OriginAssembly Origin = OriginAssembly.GetEntryAssembly() ?? throw new NullReferenceException("Assembly not found.");
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -391,7 +391,7 @@ public partial class Assembly
     public static Assembly GetExecutingAssembly()
     {
         OriginAssembly Origin = OriginAssembly.GetCallingAssembly();
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -639,7 +639,7 @@ public partial class Assembly
     public Assembly GetSatelliteAssembly(CultureInfo culture)
     {
         OriginAssembly SatelliteOrigin = Origin.GetSatelliteAssembly(culture);
-        return new Assembly(SatelliteOrigin);
+        return CreateNew(SatelliteOrigin);
     }
 
     /// <summary>
@@ -654,7 +654,7 @@ public partial class Assembly
     public Assembly GetSatelliteAssembly(CultureInfo culture, Version version)
     {
         OriginAssembly SatelliteOrigin = Origin.GetSatelliteAssembly(culture, version);
-        return new Assembly(SatelliteOrigin);
+        return CreateNew(SatelliteOrigin);
     }
 
     /// <summary>
@@ -674,7 +674,7 @@ public partial class Assembly
 #endif
     public Type GetType(string name)
     {
-        return new Type(Origin.GetType(name) ?? throw new NullReferenceException("Class was not found."));
+        return Type.CreateNew(Origin.GetType(name) ?? throw new NullReferenceException("Class was not found."));
     }
 
     /// <summary>
@@ -697,7 +697,7 @@ public partial class Assembly
 #endif
     public Type GetType(string name, bool throwOnError)
     {
-        return new Type(Origin.GetType(name, throwOnError) ?? throw new NullReferenceException("Type cannot be found."));
+        return Type.CreateNew(Origin.GetType(name, throwOnError) ?? throw new NullReferenceException("Type cannot be found."));
     }
 
     /// <summary>
@@ -721,7 +721,7 @@ public partial class Assembly
 #endif
     public Type GetType(string name, bool throwOnError, bool ignoreCase)
     {
-        return new Type(Origin.GetType(name, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type cannot be found."));
+        return Type.CreateNew(Origin.GetType(name, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type cannot be found."));
     }
 
     /// <summary>
@@ -779,7 +779,7 @@ public partial class Assembly
     public static Assembly Load(byte[] rawAssembly)
     {
         OriginAssembly Origin = OriginAssembly.Load(rawAssembly);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -796,7 +796,7 @@ public partial class Assembly
     public static Assembly Load(byte[] rawAssembly, byte[] rawSymbolStore)
     {
         OriginAssembly Origin = OriginAssembly.Load(rawAssembly, rawSymbolStore);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -812,7 +812,7 @@ public partial class Assembly
     public static Assembly Load(AssemblyName assemblyRef)
     {
         OriginAssembly Origin = OriginAssembly.Load(assemblyRef.Origin);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -828,7 +828,7 @@ public partial class Assembly
     public static Assembly Load(string assemblyString)
     {
         OriginAssembly Origin = OriginAssembly.Load(assemblyString);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -848,7 +848,7 @@ public partial class Assembly
     public static Assembly LoadFile(string path)
     {
         OriginAssembly Origin = OriginAssembly.LoadFile(path);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -870,7 +870,7 @@ public partial class Assembly
     public static Assembly LoadFrom(string assemblyFile)
     {
         OriginAssembly Origin = OriginAssembly.LoadFrom(assemblyFile);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -894,7 +894,7 @@ public partial class Assembly
     public static Assembly LoadFrom(string assemblyFile, byte[] hashValue, AssemblyHashAlgorithm hashAlgorithm)
     {
         OriginAssembly Origin = OriginAssembly.LoadFrom(assemblyFile, hashValue, hashAlgorithm);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 
     /// <summary>
@@ -981,6 +981,6 @@ public partial class Assembly
     public static Assembly UnsafeLoadFrom(string assemblyFile)
     {
         OriginAssembly Origin = OriginAssembly.UnsafeLoadFrom(assemblyFile);
-        return new Assembly(Origin);
+        return CreateNew(Origin);
     }
 }

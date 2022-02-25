@@ -49,7 +49,7 @@ public partial class MethodInfo
     {
         get
         {
-            return new Type(Origin.ReturnType);
+            return Type.CreateNew(Origin.ReturnType);
         }
     }
 
@@ -127,7 +127,7 @@ public partial class MethodInfo
     /// <returns>A <see cref="MethodInfo"/> object for the first implementation of this method.</returns>
     public MethodInfo GetBaseDefinition()
     {
-        return new MethodInfo(Origin.GetBaseDefinition());
+        return CreateNew(Origin.GetBaseDefinition());
     }
 
     /// <summary>
@@ -148,7 +148,7 @@ public partial class MethodInfo
     /// <exception cref="NotSupportedException">This method is not supported.</exception>
     public MethodInfo GetGenericMethodDefinition()
     {
-        return new MethodInfo(Origin.GetGenericMethodDefinition());
+        return CreateNew(Origin.GetGenericMethodDefinition());
     }
 
     /// <summary>
@@ -173,7 +173,7 @@ public partial class MethodInfo
 #endif
     public MethodInfo MakeGenericMethod(params Type[] typeArguments)
     {
-        return new MethodInfo(Origin.MakeGenericMethod(Type.GetOriginList(typeArguments).ToArray()));
+        return CreateNew(Origin.MakeGenericMethod(Type.GetOriginList(typeArguments).ToArray()));
     }
 
     /// <summary>

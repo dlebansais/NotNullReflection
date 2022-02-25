@@ -12,7 +12,7 @@ using OriginModule = System.Reflection.Module;
 /// <summary>
 /// Obtains information about the attributes of a member and provides access to member metadata.
 /// </summary>
-public partial class MemberInfo
+public abstract partial class MemberInfo
 {
     /// <summary>
     /// Gets a collection that contains this member's custom attributes.
@@ -35,7 +35,7 @@ public partial class MemberInfo
     {
         get
         {
-            return new Type(Origin.DeclaringType ?? throw new NullReferenceException("Declaring type doesn't exist."));
+            return Type.CreateNew(Origin.DeclaringType ?? throw new NullReferenceException("Declaring type doesn't exist."));
         }
     }
 
@@ -112,7 +112,7 @@ public partial class MemberInfo
     {
         get
         {
-            return new Type(Origin.ReflectedType ?? throw new NullReferenceException("Reflected type doesn't exist."));
+            return Type.CreateNew(Origin.ReflectedType ?? throw new NullReferenceException("Reflected type doesn't exist."));
         }
     }
 

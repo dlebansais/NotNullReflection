@@ -39,7 +39,6 @@ using OriginParameterModifier = System.Reflection.ParameterModifier;
 using OriginModule = System.Reflection.Module;
 using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
-using OriginPropertyInfo = System.Reflection.PropertyInfo;
 using OriginDefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
 using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TypeFilter = System.Reflection.TypeFilter;
@@ -61,7 +60,7 @@ public partial class Type
     {
         get
         {
-            return new Assembly(Origin.Assembly);
+            return Assembly.CreateNew(Origin.Assembly);
         }
     }
 
@@ -99,7 +98,7 @@ public partial class Type
     {
         get
         {
-            return new Type(Origin.BaseType ?? throw new NullReferenceException("Type doesn't have a base type."));
+            return CreateNew(Origin.BaseType ?? throw new NullReferenceException("Type doesn't have a base type."));
         }
     }
 
@@ -124,7 +123,7 @@ public partial class Type
     {
         get
         {
-            return new MethodBase(Origin.DeclaringMethod ?? throw new NullReferenceException("Type doesn't have a declaring methods."));
+            return MethodBase.CreateNew(Origin.DeclaringMethod ?? throw new NullReferenceException("Type doesn't have a declaring methods."));
         }
     }
 
@@ -137,7 +136,7 @@ public partial class Type
     {
         get
         {
-            return new Type(Origin.DeclaringType ?? throw new NullReferenceException("Type doesn't have a declaring type."));
+            return CreateNew(Origin.DeclaringType ?? throw new NullReferenceException("Type doesn't have a declaring type."));
         }
     }
 
@@ -839,7 +838,7 @@ public partial class Type
     {
         get
         {
-            return new Type(Origin.ReflectedType ?? throw new NullReferenceException("Type doesn't have a reflected type."));
+            return CreateNew(Origin.ReflectedType ?? throw new NullReferenceException("Type doesn't have a reflected type."));
         }
     }
 
@@ -879,7 +878,7 @@ public partial class Type
     {
         get
         {
-            return new ConstructorInfo(Origin.TypeInitializer ?? throw new NullReferenceException("Type doesn't have a type initializer."));
+            return ConstructorInfo.CreateNew(Origin.TypeInitializer ?? throw new NullReferenceException("Type doesn't have a type initializer."));
         }
     }
 
@@ -891,7 +890,7 @@ public partial class Type
     {
         get
         {
-            return new Type(Origin.UnderlyingSystemType);
+            return CreateNew(Origin.UnderlyingSystemType);
         }
     }
 
@@ -943,7 +942,7 @@ public partial class Type
 #endif
     public MemberInfo[] FindMembers(MemberTypes memberType, BindingFlags bindingAttr, MemberFilter filter, object filterCriteria)
     {
-        return MemberInfo.GetList(Origin.FindMembers(memberType, bindingAttr, filter, filterCriteria)).ToArray();
+        return GetList(Origin.FindMembers(memberType, bindingAttr, filter, filterCriteria)).ToArray();
     }
 
     /// <summary>
@@ -968,7 +967,7 @@ public partial class Type
     [DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)7)]
     public ConstructorInfo GetConstructor(BindingFlags bindingAttr, Type[] types)
     {
-        return new ConstructorInfo(Origin.GetConstructor(bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
+        return ConstructorInfo.CreateNew(Origin.GetConstructor(bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 #endif
 
@@ -988,7 +987,7 @@ public partial class Type
 #endif
     public ConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new ConstructorInfo(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
+        return ConstructorInfo.CreateNew(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 
     /// <summary>
@@ -1006,7 +1005,7 @@ public partial class Type
 #endif
     public ConstructorInfo GetConstructor(BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new ConstructorInfo(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
+        return ConstructorInfo.CreateNew(Origin.GetConstructor(bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 
     /// <summary>
@@ -1021,7 +1020,7 @@ public partial class Type
 #endif
     public ConstructorInfo GetConstructor(Type[] types)
     {
-        return new ConstructorInfo(Origin.GetConstructor(GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
+        return ConstructorInfo.CreateNew(Origin.GetConstructor(GetOriginList(types).ToArray()) ?? throw new NullReferenceException("No constructor found that matches the specified requirements."));
     }
 
     /// <summary>
@@ -1058,7 +1057,7 @@ public partial class Type
 #endif
     public MemberInfo[] GetDefaultMembers()
     {
-        return MemberInfo.GetList(Origin.GetDefaultMembers()).ToArray();
+        return GetList(Origin.GetDefaultMembers()).ToArray();
     }
 
     /// <summary>
@@ -1068,7 +1067,7 @@ public partial class Type
     /// <exception cref="NullReferenceException">Type doesn't have an element type.</exception>
     public Type GetElementType()
     {
-        return new Type(Origin.GetElementType() ?? throw new NullReferenceException("Type doesn't have an element type."));
+        return CreateNew(Origin.GetElementType() ?? throw new NullReferenceException("Type doesn't have an element type."));
     }
 
     /// <summary>
@@ -1100,7 +1099,7 @@ public partial class Type
     /// <exception cref="ArgumentException">The current type is not an enumeration. -or- The enumeration type is not valid, because it contains more than one instance field.</exception>
     public Type GetEnumUnderlyingType()
     {
-        return new Type(Origin.GetEnumUnderlyingType());
+        return CreateNew(Origin.GetEnumUnderlyingType());
     }
 
     /// <summary>
@@ -1250,7 +1249,7 @@ public partial class Type
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
     public Type GetGenericTypeDefinition()
     {
-        return new Type(Origin.GetGenericTypeDefinition());
+        return CreateNew(Origin.GetGenericTypeDefinition());
     }
 
     /// <summary>
@@ -1275,7 +1274,7 @@ public partial class Type
 #endif
     public Type GetInterface(string name)
     {
-        return new Type(Origin.GetInterface(name) ?? throw new NullReferenceException("Interface not found."));
+        return CreateNew(Origin.GetInterface(name) ?? throw new NullReferenceException("Interface not found."));
     }
 
     /// <summary>
@@ -1292,7 +1291,7 @@ public partial class Type
 #endif
     public Type GetInterface(string name, bool ignoreCase)
     {
-        return new Type(Origin.GetInterface(name, ignoreCase) ?? throw new NullReferenceException("Interface not found."));
+        return CreateNew(Origin.GetInterface(name, ignoreCase) ?? throw new NullReferenceException("Interface not found."));
     }
 
     /// <summary>
@@ -1335,7 +1334,7 @@ public partial class Type
 #endif
     public MemberInfo[] GetMember(string name)
     {
-        return MemberInfo.GetList(Origin.GetMember(name)).ToArray();
+        return GetList(Origin.GetMember(name)).ToArray();
     }
 
     /// <summary>
@@ -1349,7 +1348,7 @@ public partial class Type
 #endif
     public MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
     {
-        return MemberInfo.GetList(Origin.GetMember(name, bindingAttr)).ToArray();
+        return GetList(Origin.GetMember(name, bindingAttr)).ToArray();
     }
 
     /// <summary>
@@ -1365,7 +1364,7 @@ public partial class Type
 #endif
     public MemberInfo[] GetMember(string name, MemberTypes type, BindingFlags bindingAttr)
     {
-        return MemberInfo.GetList(Origin.GetMember(name, type, bindingAttr)).ToArray();
+        return GetList(Origin.GetMember(name, type, bindingAttr)).ToArray();
     }
 
 #if NET6_0_OR_GREATER
@@ -1377,7 +1376,7 @@ public partial class Type
     /// <exception cref="ArgumentException">member does not match a member on the current <see cref="Type"/>.</exception>
     public MemberInfo GetMemberWithSameMetadataDefinitionAs(MemberInfo member)
     {
-        return new MemberInfo(Origin.GetMemberWithSameMetadataDefinitionAs(member.Origin));
+        return CreateNew(Origin.GetMemberWithSameMetadataDefinitionAs(member.Origin));
     }
 #endif
 
@@ -1390,7 +1389,7 @@ public partial class Type
 #endif
     public MemberInfo[] GetMembers()
     {
-        return MemberInfo.GetList(Origin.GetMembers()).ToArray();
+        return GetList(Origin.GetMembers()).ToArray();
     }
 
     /// <summary>
@@ -1403,7 +1402,7 @@ public partial class Type
 #endif
     public MemberInfo[] GetMembers(BindingFlags bindingAttr)
     {
-        return MemberInfo.GetList(Origin.GetMembers(bindingAttr)).ToArray();
+        return GetList(Origin.GetMembers(bindingAttr)).ToArray();
     }
 
     /// <summary>
@@ -1418,7 +1417,7 @@ public partial class Type
 #endif
     public MethodInfo GetMethod(string name)
     {
-        return new MethodInfo(Origin.GetMethod(name) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name) ?? throw new NullReferenceException("Method not found."));
     }
 
 #if NET5_0_OR_GREATER
@@ -1438,7 +1437,7 @@ public partial class Type
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
     public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1456,7 +1455,7 @@ public partial class Type
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
     public MethodInfo GetMethod(string name, int genericParameterCount, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1471,7 +1470,7 @@ public partial class Type
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
     public MethodInfo GetMethod(string name, int genericParameterCount, Type[] types)
     {
-        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1487,7 +1486,7 @@ public partial class Type
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
     public MethodInfo GetMethod(string name, int genericParameterCount, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new MethodInfo(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, genericParameterCount, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 #endif
 
@@ -1504,7 +1503,7 @@ public partial class Type
 #endif
     public MethodInfo GetMethod(string name, BindingFlags bindingAttr)
     {
-        return new MethodInfo(Origin.GetMethod(name, bindingAttr) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, bindingAttr) ?? throw new NullReferenceException("Method not found."));
     }
 
 #if NET6_0_OR_GREATER
@@ -1519,7 +1518,7 @@ public partial class Type
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
     public MethodInfo GetMethod(string name, BindingFlags bindingAttr, Type[] types)
     {
-        return new MethodInfo(Origin.GetMethod(name, bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, bindingAttr, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
     }
 #endif
 
@@ -1541,7 +1540,7 @@ public partial class Type
 #endif
     public MethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, CallingConventions callConvention, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new MethodInfo(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, callConvention, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1561,7 +1560,7 @@ public partial class Type
 #endif
     public MethodInfo GetMethod(string name, BindingFlags bindingAttr, OriginBinder binder, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new MethodInfo(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, bindingAttr, binder != DefaultBinder ? binder : null, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1578,7 +1577,7 @@ public partial class Type
 #endif
     public MethodInfo GetMethod(string name, Type[] types)
     {
-        return new MethodInfo(Origin.GetMethod(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1596,7 +1595,7 @@ public partial class Type
 #endif
     public MethodInfo GetMethod(string name, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new MethodInfo(Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
+        return MethodInfo.CreateNew(Origin.GetMethod(name, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -1635,7 +1634,7 @@ public partial class Type
 #endif
     public Type GetNestedType(string name)
     {
-        return new Type(Origin.GetNestedType(name) ?? throw new NullReferenceException("Nested type not found."));
+        return CreateNew(Origin.GetNestedType(name) ?? throw new NullReferenceException("Nested type not found."));
     }
 
     /// <summary>
@@ -1650,7 +1649,7 @@ public partial class Type
 #endif
     public Type GetNestedType(string name, BindingFlags bindingAttr)
     {
-        return new Type(Origin.GetNestedType(name, bindingAttr) ?? throw new NullReferenceException("Nested type not found."));
+        return CreateNew(Origin.GetNestedType(name, bindingAttr) ?? throw new NullReferenceException("Nested type not found."));
     }
 
     /// <summary>
@@ -1715,31 +1714,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name)
     {
-        return new PropertyInfo(Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found."));
-    }
-
-    /// <summary>
-    /// Determines whether the current type has a public property with the specified name.
-    /// </summary>
-    /// <param name="name">The string containing the name of the public property to look for.</param>
-    /// <param name="property">The property upon return.</param>
-    /// <returns>true if found; otherwise, false.</returns>
-    /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
-#if NET5_0_OR_GREATER
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-#endif
-    public bool IsProperty(string name, out PropertyInfo property)
-    {
-        if (Origin.GetProperty(name) is OriginPropertyInfo OriginProperty)
-        {
-            property = new PropertyInfo(OriginProperty);
-            return true;
-        }
-        else
-        {
-            property = null!;
-            return false;
-        }
+        return PropertyInfo.CreateNew(Origin.GetProperty(name) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1755,7 +1730,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name, BindingFlags bindingAttr)
     {
-        return new PropertyInfo(Origin.GetProperty(name, bindingAttr) ?? throw new NullReferenceException("Property not found."));
+        return PropertyInfo.CreateNew(Origin.GetProperty(name, bindingAttr) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1776,7 +1751,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name, BindingFlags bindingAttr, OriginBinder binder, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new PropertyInfo(Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
+        return PropertyInfo.CreateNew(Origin.GetProperty(name, bindingAttr, binder != DefaultBinder ? binder : null, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1792,7 +1767,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name, Type returnType)
     {
-        return new PropertyInfo(Origin.GetProperty(name, returnType.Origin) ?? throw new NullReferenceException("Property not found."));
+        return PropertyInfo.CreateNew(Origin.GetProperty(name, returnType.Origin) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1810,7 +1785,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name, Type returnType, Type[] types)
     {
-        return new PropertyInfo(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found."));
+        return PropertyInfo.CreateNew(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1829,7 +1804,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name, Type returnType, Type[] types, OriginParameterModifier[] modifiers)
     {
-        return new PropertyInfo(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
+        return PropertyInfo.CreateNew(Origin.GetProperty(name, returnType.Origin, GetOriginList(types).ToArray(), modifiers) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1846,7 +1821,7 @@ public partial class Type
 #endif
     public PropertyInfo GetProperty(string name, Type[] types)
     {
-        return new PropertyInfo(Origin.GetProperty(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found."));
+        return PropertyInfo.CreateNew(Origin.GetProperty(name, GetOriginList(types).ToArray()) ?? throw new NullReferenceException("Property not found."));
     }
 
     /// <summary>
@@ -1856,7 +1831,7 @@ public partial class Type
     /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
     public new Type GetType()
     {
-        return new Type(Origin.GetType());
+        return CreateNew(Origin.GetType());
     }
 
     /// <summary>
@@ -1875,7 +1850,7 @@ public partial class Type
 #endif
     public static Type GetType(string typeName)
     {
-        return new Type(OriginType.GetType(typeName) ?? throw new NullReferenceException("Type not found."));
+        return CreateNew(OriginType.GetType(typeName) ?? throw new NullReferenceException("Type not found."));
     }
 
     /// <summary>
@@ -1896,7 +1871,7 @@ public partial class Type
 #endif
     public static Type GetType(string typeName, bool throwOnError)
     {
-        return new Type(OriginType.GetType(typeName, throwOnError) ?? throw new NullReferenceException("Type not found."));
+        return CreateNew(OriginType.GetType(typeName, throwOnError) ?? throw new NullReferenceException("Type not found."));
     }
 
     /// <summary>
@@ -1918,7 +1893,7 @@ public partial class Type
 #endif
     public static Type GetType(string typeName, bool throwOnError, bool ignoreCase)
     {
-        return new Type(OriginType.GetType(typeName, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
+        return CreateNew(OriginType.GetType(typeName, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
     }
 
     /// <summary>
@@ -1940,9 +1915,9 @@ public partial class Type
     public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver)
     {
         System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
-        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : new Assembly(assembly), typeName, ignoreCase).Origin : null;
+        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : Assembly.CreateNew(assembly), typeName, ignoreCase).Origin : null;
 
-        return new Type(OriginType.GetType(typeName, AssemblyResolver, TypeResolver) ?? throw new NullReferenceException("Type not found."));
+        return CreateNew(OriginType.GetType(typeName, AssemblyResolver, TypeResolver) ?? throw new NullReferenceException("Type not found."));
     }
 
     /// <summary>
@@ -1966,9 +1941,9 @@ public partial class Type
     public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver, bool throwOnError)
     {
         System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
-        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : new Assembly(assembly), typeName, ignoreCase).Origin : null;
+        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : Assembly.CreateNew(assembly), typeName, ignoreCase).Origin : null;
 
-        return new Type(OriginType.GetType(typeName, AssemblyResolver, TypeResolver, throwOnError) ?? throw new NullReferenceException("Type not found."));
+        return CreateNew(OriginType.GetType(typeName, AssemblyResolver, TypeResolver, throwOnError) ?? throw new NullReferenceException("Type not found."));
     }
 
     /// <summary>
@@ -1993,9 +1968,9 @@ public partial class Type
     public static Type GetType(string typeName, System.Func<AssemblyName, Assembly> assemblyResolver, System.Func<Assembly, string, bool, Type> typeResolver, bool throwOnError, bool ignoreCase)
     {
         System.Func<OriginAssemblyName, OriginAssembly?>? AssemblyResolver = (assemblyResolver != DefaultAssemblyResolver) ? (OriginAssemblyName name) => assemblyResolver(new AssemblyName(name)).Origin : null;
-        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : new Assembly(assembly), typeName, ignoreCase).Origin : null;
+        System.Func<OriginAssembly?, string, bool, OriginType?>? TypeResolver = (typeResolver != DefaultTypeResolver) ? (OriginAssembly? assembly, string typeName, bool ignoreCase) => typeResolver(assembly is null ? Assembly.Missing : Assembly.CreateNew(assembly), typeName, ignoreCase).Origin : null;
 
-        return new Type(OriginType.GetType(typeName, AssemblyResolver, TypeResolver, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
+        return CreateNew(OriginType.GetType(typeName, AssemblyResolver, TypeResolver, throwOnError, ignoreCase) ?? throw new NullReferenceException("Type not found."));
     }
 
     /// <summary>
@@ -2027,7 +2002,7 @@ public partial class Type
     /// <exception cref="NullReferenceException">Platform not supported.</exception>
     public static Type GetTypeFromCLSID(Guid clsid)
     {
-        return new Type(OriginType.GetTypeFromCLSID(clsid) ?? throw new NullReferenceException("Platform not supported."));
+        return CreateNew(OriginType.GetTypeFromCLSID(clsid) ?? throw new NullReferenceException("Platform not supported."));
     }
 
     /// <summary>
@@ -2039,7 +2014,7 @@ public partial class Type
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform is not supported.</exception>
     public static Type GetTypeFromCLSID(Guid clsid, bool throwOnError)
     {
-        return new Type(OriginType.GetTypeFromCLSID(clsid, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
+        return CreateNew(OriginType.GetTypeFromCLSID(clsid, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
     }
 
     /// <summary>
@@ -2051,7 +2026,7 @@ public partial class Type
     /// <exception cref="NullReferenceException">Platform not supported.</exception>
     public static Type GetTypeFromCLSID(Guid clsid, string server)
     {
-        return new Type(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null) ?? throw new NullReferenceException("Platform not supported."));
+        return CreateNew(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null) ?? throw new NullReferenceException("Platform not supported."));
     }
 
     /// <summary>
@@ -2064,7 +2039,7 @@ public partial class Type
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform is not supported.</exception>
     public static Type GetTypeFromCLSID(Guid clsid, string server, bool throwOnError)
     {
-        return new Type(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
+        return CreateNew(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
     }
 
     /// <summary>
@@ -2076,7 +2051,7 @@ public partial class Type
     /// <exception cref="NullReferenceException"><paramref name="handle"/> value is null.</exception>
     public static Type GetTypeFromHandle(RuntimeTypeHandle handle)
     {
-        return new Type(OriginType.GetTypeFromHandle(handle));
+        return CreateNew(OriginType.GetTypeFromHandle(handle));
     }
 
     /// <summary>
@@ -2087,7 +2062,7 @@ public partial class Type
     /// <exception cref="NullReferenceException">Platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
     public static Type GetTypeFromProgID(string progID)
     {
-        return new Type(OriginType.GetTypeFromProgID(progID) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
+        return CreateNew(OriginType.GetTypeFromProgID(progID) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
     /// <summary>
@@ -2100,7 +2075,7 @@ public partial class Type
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
     public static Type GetTypeFromProgID(string progID, bool throwOnError)
     {
-        return new Type(OriginType.GetTypeFromProgID(progID, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
+        return CreateNew(OriginType.GetTypeFromProgID(progID, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
     /// <summary>
@@ -2112,7 +2087,7 @@ public partial class Type
     /// <exception cref="NullReferenceException">Platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
     public static Type GetTypeFromProgID(string progID, string server)
     {
-        return new Type(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
+        return CreateNew(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
     /// <summary>
@@ -2126,7 +2101,7 @@ public partial class Type
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
     public static Type GetTypeFromProgID(string progID, string server, bool throwOnError)
     {
-        return new Type(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
+        return CreateNew(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
     }
 
     /// <summary>
@@ -2289,7 +2264,7 @@ public partial class Type
     /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
     public Type MakeArrayType()
     {
-        return new Type(Origin.MakeArrayType());
+        return CreateNew(Origin.MakeArrayType());
     }
 
     /// <summary>
@@ -2302,7 +2277,7 @@ public partial class Type
     /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true. -or- <paramref name="rank"/> is greater than 32.</exception>
     public Type MakeArrayType(int rank)
     {
-        return new Type(Origin.MakeArrayType(rank));
+        return CreateNew(Origin.MakeArrayType(rank));
     }
 
     /// <summary>
@@ -2313,7 +2288,7 @@ public partial class Type
     /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
     public Type MakeByRefType()
     {
-        return new Type(Origin.MakeByRefType());
+        return CreateNew(Origin.MakeByRefType());
     }
 
 #if NET5_0_OR_GREATER
@@ -2325,7 +2300,7 @@ public partial class Type
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="position"/> is negative.</exception>
     public static Type MakeGenericMethodParameter(int position)
     {
-        return new Type(OriginType.MakeGenericMethodParameter(position));
+        return CreateNew(OriginType.MakeGenericMethodParameter(position));
     }
 
     /// <summary>
@@ -2336,7 +2311,7 @@ public partial class Type
     /// <returns>A generic signature type.</returns>
     public static Type MakeGenericSignatureType(Type genericTypeDefinition, params Type[] typeArguments)
     {
-        return new Type(OriginType.MakeGenericSignatureType(genericTypeDefinition.Origin, GetOriginList(typeArguments).ToArray()));
+        return CreateNew(OriginType.MakeGenericSignatureType(genericTypeDefinition.Origin, GetOriginList(typeArguments).ToArray()));
     }
 #endif
 
@@ -2353,7 +2328,7 @@ public partial class Type
 #endif
     public Type MakeGenericType(params Type[] typeArguments)
     {
-        return new Type(Origin.MakeGenericType(GetOriginList(typeArguments).ToArray()));
+        return CreateNew(Origin.MakeGenericType(GetOriginList(typeArguments).ToArray()));
     }
 
     /// <summary>
@@ -2364,7 +2339,7 @@ public partial class Type
     /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
     public Type MakePointerType()
     {
-        return new Type(Origin.MakePointerType());
+        return CreateNew(Origin.MakePointerType());
     }
 
     /// <summary>

@@ -15,5 +15,5 @@ public partial class ConstructorInfo
     /// <param name="collection">The collection of <see cref="OriginConstructorInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="ConstructorInfo"/> objects.</returns>
     public static IEnumerable<ConstructorInfo> GetList(IEnumerable<OriginConstructorInfo> collection) => from OriginConstructorInfo Item in collection
-                                                                                                         select new ConstructorInfo(Item);
+                                                                                                         select CreateNew(Item);
 }

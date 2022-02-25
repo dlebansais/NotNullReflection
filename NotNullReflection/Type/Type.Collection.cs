@@ -15,7 +15,7 @@ public partial class Type
     /// <param name="collection">The collection of <see cref="OriginType"/> to convert.</param>
     /// <returns>A collection of <see cref="Type"/> objects.</returns>
     public static IEnumerable<Type> GetList(IEnumerable<OriginType> collection) => from OriginType Item in collection
-                                                                                   select new Type(Item);
+                                                                                   select CreateNew(Item);
 
     /// <summary>
     /// Converts a collection of <see cref="Type"/> objects to a collection of <see cref="OriginType"/> objects.

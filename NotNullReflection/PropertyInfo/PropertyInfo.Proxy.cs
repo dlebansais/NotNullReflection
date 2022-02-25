@@ -70,7 +70,7 @@ public partial class PropertyInfo
     {
         get
         {
-            return new MethodInfo(Origin.GetMethod ?? throw new NullReferenceException("Method not found."));
+            return MethodInfo.CreateNew(Origin.GetMethod ?? throw new NullReferenceException("Method not found."));
         }
     }
 
@@ -106,7 +106,7 @@ public partial class PropertyInfo
     {
         get
         {
-            return new Type(Origin.PropertyType);
+            return Type.CreateNew(Origin.PropertyType);
         }
     }
 
@@ -119,7 +119,7 @@ public partial class PropertyInfo
     {
         get
         {
-            return new MethodInfo(Origin.SetMethod ?? throw new NullReferenceException("Property is read-only."));
+            return MethodInfo.CreateNew(Origin.SetMethod ?? throw new NullReferenceException("Property is read-only."));
         }
     }
 
@@ -171,7 +171,7 @@ public partial class PropertyInfo
     /// <exception cref="NullReferenceException">Get accessor is non-public or does not exist.</exception>
     public MethodInfo GetGetMethod()
     {
-        return new MethodInfo(Origin.GetGetMethod() ?? throw new NullReferenceException("Get accessor is non-public or does not exist."));
+        return MethodInfo.CreateNew(Origin.GetGetMethod() ?? throw new NullReferenceException("Get accessor is non-public or does not exist."));
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ public partial class PropertyInfo
     /// <exception cref="NullReferenceException"><paramref name="nonPublic"/> is false and the get accessor is non-public, or <paramref name="nonPublic"/> is true but no get accessors exist.</exception>
     public MethodInfo GetGetMethod(bool nonPublic)
     {
-        return new MethodInfo(Origin.GetGetMethod(nonPublic) ?? throw new NullReferenceException($"{nameof(nonPublic)} is false and the get accessor is non-public, or {nameof(nonPublic)} is true but no get accessors exist."));
+        return MethodInfo.CreateNew(Origin.GetGetMethod(nonPublic) ?? throw new NullReferenceException($"{nameof(nonPublic)} is false and the get accessor is non-public, or {nameof(nonPublic)} is true but no get accessors exist."));
     }
 
     /// <summary>
@@ -241,7 +241,7 @@ public partial class PropertyInfo
     /// <exception cref="NullReferenceException">Set accessor not public.</exception>
     public MethodInfo GetSetMethod()
     {
-        return new MethodInfo(Origin.GetSetMethod() ?? throw new NullReferenceException("Set accessor not public."));
+        return MethodInfo.CreateNew(Origin.GetSetMethod() ?? throw new NullReferenceException("Set accessor not public."));
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ public partial class PropertyInfo
     /// <exception cref="NullReferenceException"><paramref name="nonPublic"/> is false and the set accessor is non-public, or <paramref name="nonPublic"/> is true but no set accessors exist.</exception>
     public MethodInfo GetSetMethod(bool nonPublic)
     {
-        return new MethodInfo(Origin.GetSetMethod(nonPublic) ?? throw new NullReferenceException($"{nameof(nonPublic)} is false and the set accessor is non-public, or {nameof(nonPublic)} is true but no set accessors exist."));
+        return MethodInfo.CreateNew(Origin.GetSetMethod(nonPublic) ?? throw new NullReferenceException($"{nameof(nonPublic)} is false and the set accessor is non-public, or {nameof(nonPublic)} is true but no set accessors exist."));
     }
 
     /// <summary>

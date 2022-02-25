@@ -7,7 +7,7 @@ using OriginMemberInfo = System.Reflection.MemberInfo;
 /// <summary>
 /// Obtains information about the attributes of a member and provides access to member metadata.
 /// </summary>
-public partial class MemberInfo
+public abstract partial class MemberInfo
 {
     /// <summary>
     /// Converts a collection of <see cref="OriginMemberInfo"/> objects to a collection of <see cref="MemberInfo"/> objects.
@@ -15,5 +15,5 @@ public partial class MemberInfo
     /// <param name="collection">The collection of <see cref="OriginMemberInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="MemberInfo"/> objects.</returns>
     public static IEnumerable<MemberInfo> GetList(IEnumerable<OriginMemberInfo> collection) => from OriginMemberInfo Item in collection
-                                                                                               select new MemberInfo(Item);
+                                                                                               select CreateNew(Item);
 }

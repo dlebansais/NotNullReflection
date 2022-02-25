@@ -7,7 +7,7 @@ using OriginMethodBase = System.Reflection.MethodBase;
 /// <summary>
 /// Provides information about methods and constructors.
 /// </summary>
-public partial class MethodBase
+public abstract partial class MethodBase
 {
     /// <summary>
     /// Converts a collection of <see cref="OriginMethodBase"/> objects to a collection of <see cref="MethodBase"/> objects.
@@ -15,5 +15,5 @@ public partial class MethodBase
     /// <param name="collection">The collection of <see cref="OriginMethodBase"/> to convert.</param>
     /// <returns>A collection of <see cref="MethodBase"/> objects.</returns>
     public static IEnumerable<MethodBase> GetList(IEnumerable<OriginMethodBase> collection) => from OriginMethodBase Item in collection
-                                                                                               select new MethodBase(Item);
+                                                                                               select CreateNew(Item);
 }

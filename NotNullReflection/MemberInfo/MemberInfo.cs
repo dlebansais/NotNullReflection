@@ -5,13 +5,13 @@ using OriginMemberInfo = System.Reflection.MemberInfo;
 /// <summary>
 /// Obtains information about the attributes of a member and provides access to member metadata.
 /// </summary>
-public partial class MemberInfo
+public abstract partial class MemberInfo
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="MemberInfo"/> class.
     /// </summary>
     /// <param name="origin">The origin member information.</param>
-    internal MemberInfo(OriginMemberInfo origin)
+    protected MemberInfo(OriginMemberInfo origin)
     {
         Origin = origin;
     }

@@ -10,8 +10,8 @@ public partial class ConstructorInfo : MethodBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ConstructorInfo"/> class.
     /// </summary>
-    /// <param name="origin">The origin property information.</param>
-    internal ConstructorInfo(OriginConstructorInfo origin)
+    /// <param name="origin">The origin constructor information.</param>
+    private ConstructorInfo(OriginConstructorInfo origin)
         : base(origin)
     {
         Origin = origin;

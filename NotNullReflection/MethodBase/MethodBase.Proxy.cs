@@ -29,7 +29,7 @@ using OriginBinder = System.Reflection.Binder;
 /// <summary>
 /// Provides information about methods and constructors.
 /// </summary>
-public partial class MethodBase
+public abstract partial class MethodBase
 {
     /// <summary>
     /// Gets the attributes associated with this method.
@@ -342,7 +342,7 @@ public partial class MethodBase
         StackFrame Frame = Trace.GetFrame(1) ?? throw new NullReferenceException("Unable to get current method.");
         OriginMethodBase Method = Frame?.GetMethod() ?? throw new NullReferenceException("Unable to get current method.");
 
-        return new MethodBase(Method);
+        return CreateNew(Method);
     }
 
     /// <summary>
@@ -387,7 +387,7 @@ public partial class MethodBase
     /// <exception cref="NullReferenceException">Method not found.</exception>
     public static MethodBase GetMethodFromHandle(RuntimeMethodHandle handle)
     {
-        return new MethodBase(OriginMethodBase.GetMethodFromHandle(handle) ?? throw new NullReferenceException("Method not found."));
+        return CreateNew(OriginMethodBase.GetMethodFromHandle(handle) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
@@ -400,7 +400,7 @@ public partial class MethodBase
     /// <exception cref="NullReferenceException">Method not found.</exception>
     public static MethodBase GetMethodFromHandle(RuntimeMethodHandle handle, RuntimeTypeHandle declaringType)
     {
-        return new MethodBase(OriginMethodBase.GetMethodFromHandle(handle, declaringType) ?? throw new NullReferenceException("Method not found."));
+        return CreateNew(OriginMethodBase.GetMethodFromHandle(handle, declaringType) ?? throw new NullReferenceException("Method not found."));
     }
 
     /// <summary>
