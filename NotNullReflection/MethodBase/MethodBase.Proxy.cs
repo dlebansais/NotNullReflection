@@ -324,7 +324,7 @@ public abstract partial class MethodBase
     /// Returns a value that indicates whether this instance is equal to a specified object.
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
-    /// <returns>true if obj equals the type and value of this instance; otherwise, false.</returns>
+    /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
     public override bool Equals(object obj)
     {
         return obj is MethodBase AsMethodBase && Origin.Equals(AsMethodBase.Origin);
