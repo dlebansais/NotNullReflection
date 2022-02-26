@@ -32,7 +32,6 @@ using NotSupportedException = System.NotSupportedException;
 using NullReferenceException = System.NullReferenceException;
 using OriginAssembly = System.Reflection.Assembly;
 using OriginAssemblyName = System.Reflection.AssemblyName;
-using OriginEventInfo = System.Reflection.EventInfo;
 using OriginFieldInfo = System.Reflection.FieldInfo;
 using OriginModule = System.Reflection.Module;
 using OriginType = System.Type;
@@ -1112,7 +1111,7 @@ public partial class Type
     }
 
     /// <summary>
-    /// Returns the <see cref="OriginEventInfo"/> object representing the specified public event.
+    /// Returns the <see cref="EventInfo"/> object representing the specified public event.
     /// </summary>
     /// <param name="name">The string containing the name of an event that is declared or inherited by the current <see cref="Type"/>.</param>
     /// <returns>The object representing the specified public event that is declared or inherited by the current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
@@ -1120,13 +1119,13 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents)]
 #endif
-    public OriginEventInfo GetEvent(string name)
+    public EventInfo GetEvent(string name)
     {
-        return Origin.GetEvent(name) ?? throw new NullReferenceException("Event not found.");
+        return EventInfo.CreateNew(Origin.GetEvent(name) ?? throw new NullReferenceException("Event not found."));
     }
 
     /// <summary>
-    /// When overridden in a derived class, returns the <see cref="OriginEventInfo"/> object representing the specified event, using the specified binding constraints.
+    /// When overridden in a derived class, returns the <see cref="EventInfo"/> object representing the specified event, using the specified binding constraints.
     /// </summary>
     /// <param name="name">The string containing the name of an event which is declared or inherited by the current <see cref="Type"/>.</param>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
@@ -1135,34 +1134,34 @@ public partial class Type
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents)]
 #endif
-    public OriginEventInfo GetEvent(string name, BindingFlags bindingAttr)
+    public EventInfo GetEvent(string name, BindingFlags bindingAttr)
     {
-        return Origin.GetEvent(name, bindingAttr) ?? throw new NullReferenceException("Event not found.");
+        return EventInfo.CreateNew(Origin.GetEvent(name, bindingAttr) ?? throw new NullReferenceException("Event not found."));
     }
 
     /// <summary>
     /// Returns all the public events that are declared or inherited by the current <see cref="Type"/>.
     /// </summary>
-    /// <returns>An array of <see cref="OriginEventInfo"/> objects representing all the public events which are declared or inherited by the current <see cref="Type"/>. -or- An empty array of type <see cref="OriginEventInfo"/>, if the current <see cref="Type"/> does not have public events.</returns>
+    /// <returns>An array of <see cref="EventInfo"/> objects representing all the public events which are declared or inherited by the current <see cref="Type"/>. -or- An empty array of type <see cref="EventInfo"/>, if the current <see cref="Type"/> does not have public events.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents)]
 #endif
-    public OriginEventInfo[] GetEvents()
+    public EventInfo[] GetEvents()
     {
-        return Origin.GetEvents();
+        return EventInfo.GetList(Origin.GetEvents()).ToArray();
     }
 
     /// <summary>
     /// When overridden in a derived class, searches for events that are declared or inherited by the current <see cref="Type"/>, using the specified binding constraints.
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted. -or- <see cref="BindingFlags.Default"/> to return an empty array.</param>
-    /// <returns>An array of <see cref="OriginEventInfo"/> objects representing all events that are declared or inherited by the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="OriginEventInfo"/>, if the current <see cref="Type"/> does not have events, or if none of the events match the binding constraints.</returns>
+    /// <returns>An array of <see cref="EventInfo"/> objects representing all events that are declared or inherited by the current <see cref="Type"/> that match the specified binding constraints. -or- An empty array of type <see cref="EventInfo"/>, if the current <see cref="Type"/> does not have events, or if none of the events match the binding constraints.</returns>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents)]
 #endif
-    public OriginEventInfo[] GetEvents(BindingFlags bindingAttr)
+    public EventInfo[] GetEvents(BindingFlags bindingAttr)
     {
-        return Origin.GetEvents(bindingAttr);
+        return EventInfo.GetList(Origin.GetEvents(bindingAttr)).ToArray();
     }
 
     /// <summary>
