@@ -63,7 +63,7 @@ public partial class Type
     /// Searches for a constructor whose parameters match the specified argument types and modifiers, using the specified binding constraints.
     /// </summary>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
-    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection. -or- A null reference (Nothing in Visual Basic), to use the System.Type.DefaultBinder.</param>
+    /// <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.</param>
     /// <param name="types">An array of <see cref="Type"/> objects representing the number, order, and type of the parameters for the constructor to get. -or- An empty array of the type <see cref="Type"/> (that is, <see cref="Type"/>[] types = <see cref="System.Array.Empty{Type}()"/>) to get a constructor that takes no parameters. -or- <see cref="OriginType.EmptyTypes"/>.</param>
     /// <param name="modifiers">An array of <see cref="ParameterModifier"/> objects representing the attributes associated with the corresponding element in the types array. The default binder does not process this parameter.</param>
     /// <returns>A <see cref="ConstructorInfo"/> object representing the constructor that matches the specified requirements, if found; otherwise, throws an exception.</returns>
@@ -478,7 +478,7 @@ public partial class Type
     /// Searches for the public method with the specified name.
     /// </summary>
     /// <param name="name">The string containing the name of the public method to get.</param>
-    /// <returns>An object that represents the public method with the specified name, if found; otherwise, null.</returns>
+    /// <returns>An object that represents the public method with the specified name, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">More than one method is found with the specified name.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
 #if NET5_0_OR_GREATER

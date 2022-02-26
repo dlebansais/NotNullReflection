@@ -301,10 +301,9 @@ public partial class Assembly
     /// <param name="assemblyName">The display name of an assembly.</param>
     /// <param name="typeName">The full name of a type.</param>
     /// <returns>The full name of the type qualified by the display name of the assembly.</returns>
-    /// <exception cref="NullReferenceException"><paramref name="assemblyName"/> or <paramref name="typeName"/> is null.</exception>
     public static string CreateQualifiedName(string assemblyName, string typeName)
     {
-        return OriginAssembly.CreateQualifiedName(assemblyName, typeName) ?? throw new NullReferenceException($"{nameof(assemblyName)} or {nameof(typeName)} is null");
+        return OriginAssembly.CreateQualifiedName(assemblyName, typeName);
     }
 
     /// <summary>
@@ -889,7 +888,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="moduleName">The name of the module. This string must correspond to a file name in this assembly's manifest.</param>
     /// <param name="rawModule">A byte array that is a COFF-based image containing an emitted module, or a resource.</param>
-    /// <param name="rawSymbolStore">A byte array containing the raw bytes representing the symbols for the module. Must be null if this is a resource file.</param>
+    /// <param name="rawSymbolStore">A byte array containing the raw bytes representing the symbols for the module. Must be an empty array if this is a resource file.</param>
     /// <returns>The loaded module.</returns>
     /// <exception cref="ArgumentException"><paramref name="moduleName"/> does not match a file entry in this assembly's manifest.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="rawModule"/> is not a valid module.</exception>
@@ -899,7 +898,7 @@ public partial class Assembly
 #endif
     public OriginModule LoadModule(string moduleName, byte[] rawModule, byte[] rawSymbolStore)
     {
-        return Origin.LoadModule(moduleName, rawModule, rawSymbolStore);
+        return Origin.LoadModule(moduleName, rawModule, rawSymbolStore.Length > 0 ? rawSymbolStore : null);
     }
 
     /// <summary>

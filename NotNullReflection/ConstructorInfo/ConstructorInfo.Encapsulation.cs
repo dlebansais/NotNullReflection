@@ -82,7 +82,7 @@ public partial class ConstructorInfo
     /// When implemented in a derived class, invokes the constructor reflected by this ConstructorInfo with the specified arguments, under the constraints of the specified Binder.
     /// </summary>
     /// <param name="invokeAttr">One of the BindingFlags values that specifies the type of binding.</param>
-    /// <param name="binder">A Binder that defines a set of properties and enables the binding, coercion of argument types, and invocation of members using reflection. If binder is null, then Binder.DefaultBinding is used.</param>
+    /// <param name="binder">A Binder that defines a set of properties and enables the binding, coercion of argument types, and invocation of members using reflection.</param>
     /// <param name="parameters">An array of values that matches the number, order and type (under the constraints of the default binder) of the parameters for this constructor. If this constructor takes no parameters, then use an array with zero elements, as in <see cref="object"/>[] parameters = new <see cref="object"/>[0]. Any object in this array that is not explicitly initialized with a value will contain the default value for that object type. For reference-type elements, this value is null. For value-type elements, this value is 0, 0.0, or <see langword="false"/>, depending on the specific element type.</param>
     /// <param name="culture">A <see cref="CultureInfo"/> used to govern the coercion of types. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired.</param>
     /// <returns>An instance of the class associated with the constructor.</returns>

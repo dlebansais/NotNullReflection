@@ -2,6 +2,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
+using OriginEventInfo = System.Reflection.EventInfo;
+using OriginFieldInfo = System.Reflection.FieldInfo;
 using OriginPropertyInfo = System.Reflection.PropertyInfo;
 
 /// <summary>
@@ -52,7 +54,7 @@ public partial class Type
     /// Determines whether the current type has a public property with the specified name.
     /// </summary>
     /// <param name="name">The string containing the name of the public property to look for.</param>
-    /// <param name="property">The property upon return.</param>
+    /// <param name="property">The property upon return. If not found, the value returned in this parameter should not be used.</param>
     /// <returns><see langword="true"/> if found; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
 #if NET5_0_OR_GREATER
@@ -68,6 +70,52 @@ public partial class Type
         else
         {
             property = null!;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Determines whether the current type has a public field with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public field to look for.</param>
+    /// <param name="field">The field upon return. If not found, the value returned in this parameter should not be used.</param>
+    /// <returns><see langword="true"/> if found; otherwise, <see langword="false"/>.</returns>
+#if NET5_0_OR_GREATER
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)]
+#endif
+    public bool IsField(string name, out FieldInfo field)
+    {
+        if (Origin.GetField(name) is OriginFieldInfo OriginField)
+        {
+            field = FieldInfo.CreateNew(OriginField);
+            return true;
+        }
+        else
+        {
+            field = null!;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Determines whether the current type has a public event with the specified name.
+    /// </summary>
+    /// <param name="name">The string containing the name of the public event to look for.</param>
+    /// <param name="event">The event upon return. If not found, the value returned in this parameter should not be used.</param>
+    /// <returns><see langword="true"/> if found; otherwise, <see langword="false"/>.</returns>
+#if NET5_0_OR_GREATER
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents)]
+#endif
+    public bool IsEvent(string name, out EventInfo @event)
+    {
+        if (Origin.GetEvent(name) is OriginEventInfo OriginEvent)
+        {
+            @event = EventInfo.CreateNew(OriginEvent);
+            return true;
+        }
+        else
+        {
+            @event = null!;
             return false;
         }
     }

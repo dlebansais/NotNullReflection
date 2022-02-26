@@ -292,7 +292,7 @@ public partial class Type
     /// Gets the type associated with the specified program identifier (progID) from the specified server, specifying whether to throw an exception if an error occurs while loading the type.
     /// </summary>
     /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
-    /// <param name="server">The server from which to load the type. If the server name is null, this method automatically reverts to the local machine.</param>
+    /// <param name="server">The server from which to load the type. If the server name is the empty string, this method automatically reverts to the local machine.</param>
     /// <param name="throwOnError"><see langword="true"/> to throw any exception that occurs. -or- <see langword="false"/> to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
     /// <returns>The type associated with the specified program identifier (ProgID), if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
     /// <exception cref="COMException">The specified <paramref name="progID"/> is not registered.</exception>
