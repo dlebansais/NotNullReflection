@@ -1,49 +1,20 @@
 ﻿namespace NotNullReflection;
-
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
-using ArgumentException = System.ArgumentException;
-using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
-using Array = System.Array;
-using BadImageFormatException = System.BadImageFormatException;
 using Binder = System.Reflection.Binder;
 using BindingFlags = System.Reflection.BindingFlags;
-using CallingConventions = System.Reflection.CallingConventions;
-using DefaultMemberAttribute = System.Reflection.DefaultMemberAttribute;
-using FieldAttributes = System.Reflection.FieldAttributes;
 using GenericParameterAttributes = System.Reflection.GenericParameterAttributes;
 using Guid = System.Guid;
-using IndexOutOfRangeException = System.IndexOutOfRangeException;
-using InterfaceMapping = System.Reflection.InterfaceMapping;
 using InvalidOperationException = System.NullReferenceException;
-using MemberFilter = System.Reflection.MemberFilter;
 using MemberTypes = System.Reflection.MemberTypes;
-using MethodAccessException = System.MethodAccessException;
-using MethodAttributes = System.Reflection.MethodAttributes;
-using MethodImplAttributes = System.Reflection.MethodImplAttributes;
-using MissingFieldException = System.MissingFieldException;
-using MissingMethodException = System.MissingMethodException;
 using NotSupportedException = System.NotSupportedException;
 using NullReferenceException = System.NullReferenceException;
-using OriginAssembly = System.Reflection.Assembly;
-using OriginAssemblyName = System.Reflection.AssemblyName;
-using OriginFieldInfo = System.Reflection.FieldInfo;
 using OriginModule = System.Reflection.Module;
 using OriginType = System.Type;
 using ParameterModifier = System.Reflection.ParameterModifier;
 using RuntimeTypeHandle = System.RuntimeTypeHandle;
-using TargetException = System.Reflection.TargetException;
-using TargetInvocationException = System.Reflection.TargetInvocationException;
 using TypeAttributes = System.Reflection.TypeAttributes;
-using TypeCode = System.TypeCode;
-using TypedReference = System.TypedReference;
-using TypeFilter = System.Reflection.TypeFilter;
-using TypeLoadException = System.TypeLoadException;
 
 /// <summary>
 /// Represents type declarations: class types, interface types, array types, value types, enumeration types, type parameters, generic type definitions, and open or closed constructed generic types.
