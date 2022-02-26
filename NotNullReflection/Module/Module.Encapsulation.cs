@@ -149,7 +149,7 @@ public partial class Module
     /// Determines whether this module and the specified object are equal.
     /// </summary>
     /// <param name="o">The object to compare with this instance.</param>
-    /// <returns>true if <paramref name="o"/> is equal to this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="o"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
 #pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     public override bool Equals(object o)
 #pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
@@ -382,7 +382,7 @@ public partial class Module
     /// Returns the specified type, searching the module with the specified case sensitivity.
     /// </summary>
     /// <param name="className">The name of the type to locate. The name must be fully qualified with the namespace.</param>
-    /// <param name="ignoreCase">true for case-insensitive search; otherwise, false.</param>
+    /// <param name="ignoreCase"><see langword="true"/> for case-insensitive search; otherwise, <see langword="false"/>.</param>
     /// <returns>A <see cref="Type"/> object representing the given type, if the type is in this module; otherwise, throws an exception.</returns>
     /// <exception cref="TargetInvocationException">The class initializers are invoked and an exception is thrown.</exception>
     /// <exception cref="ArgumentException"><paramref name="className"/> is a zero-length string.</exception>
@@ -402,16 +402,16 @@ public partial class Module
     /// Returns the specified type, specifying whether to make a case-sensitive search of the module and which exception to throw if the type cannot be found.
     /// </summary>
     /// <param name="className">The name of the type to locate. The name must be fully qualified with the namespace.</param>
-    /// <param name="throwOnError">true to throw <see cref="TypeLoadException"/> if the type is not found; false to throw <see cref="NullReferenceException"/>.</param>
-    /// <param name="ignoreCase">true for case-insensitive search; otherwise, false.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw <see cref="TypeLoadException"/> if the type is not found; <see langword="false"/> to throw <see cref="NullReferenceException"/>.</param>
+    /// <param name="ignoreCase"><see langword="true"/> for case-insensitive search; otherwise, <see langword="false"/>.</param>
     /// <returns>A <see cref="Type"/> object representing the given type, if the type is in this module; otherwise, throws an exception.</returns>
     /// <exception cref="TargetInvocationException">The class initializers are invoked and an exception is thrown.</exception>
     /// <exception cref="ArgumentException"><paramref name="className"/> is a zero-length string.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true, and the type cannot be found.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/>, and the type cannot be found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="className"/> requires a dependent assembly that could not be found.</exception>
     /// <exception cref="FileLoadException"><paramref name="className"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="className"/> requires a dependent assembly that was not preloaded.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="className"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="className"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type not in this module.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type not in this module.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
@@ -439,7 +439,7 @@ public partial class Module
     /// </summary>
     /// <param name="attributeType">The type of custom attribute to test for.</param>
     /// <param name="inherit">This argument is ignored for objects of this type.</param>
-    /// <returns>true if one or more instances of <paramref name="attributeType"/> have been applied to this module; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if one or more instances of <paramref name="attributeType"/> have been applied to this module; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="ArgumentException"><paramref name="attributeType"/> is not a <see cref="Type"/> object supplied by the runtime. For example, <paramref name="attributeType"/> is a <see cref="TypeBuilder"/> object.</exception>
     public bool IsDefined(Type attributeType, bool inherit)
     {
@@ -449,7 +449,7 @@ public partial class Module
     /// <summary>
     /// Gets a value indicating whether the object is a resource.
     /// </summary>
-    /// <returns>true if the object is a resource; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the object is a resource; otherwise, <see langword="false"/>.</returns>
     public bool IsResource()
     {
         return Origin.IsResource();
@@ -460,7 +460,7 @@ public partial class Module
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(Module left, Module right)
     {
         return left.Origin == right.Origin;
@@ -471,7 +471,7 @@ public partial class Module
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(Module left, Module right)
     {
         return left.Origin != right.Origin;

@@ -58,7 +58,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the generic method contains unassigned generic type parameters.
     /// </summary>
-    /// <returns>true if the current <see cref="MethodBase"/> object represents a generic method that contains unassigned generic type parameters; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="MethodBase"/> object represents a generic method that contains unassigned generic type parameters; otherwise, <see langword="false"/>.</returns>
     public bool ContainsGenericParameters
     {
         get
@@ -70,7 +70,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is abstract.
     /// </summary>
-    /// <returns>true if the method is abstract; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the method is abstract; otherwise, <see langword="false"/>.</returns>
     public bool IsAbstract
     {
         get
@@ -82,7 +82,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the potential visibility of this method or constructor is described by <see cref="MethodAttributes.Assembly"/>; that is, the method or constructor is visible at most to other types in the same assembly, and is not visible to derived types outside the assembly.
     /// </summary>
-    /// <returns>true if the visibility of this method or constructor is exactly described by <see cref="MethodAttributes.Assembly"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the visibility of this method or constructor is exactly described by <see cref="MethodAttributes.Assembly"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsAssembly
     {
         get
@@ -107,7 +107,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is a constructor.
     /// </summary>
-    /// <returns>true if this method is a constructor represented by a <see cref="ConstructorInfo"/> object (see note in Remarks about <see cref="ConstructorBuilder"/> objects); otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this method is a constructor represented by a <see cref="ConstructorInfo"/> object (see note in Remarks about <see cref="ConstructorBuilder"/> objects); otherwise, <see langword="false"/>.</returns>
     public bool IsConstructor
     {
         get
@@ -119,7 +119,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the visibility of this method or constructor is described by <see cref="MethodAttributes.Family"/>; that is, the method or constructor is visible only within its class and derived classes.
     /// </summary>
-    /// <returns>true if access to this method or constructor is exactly described by <see cref="MethodAttributes.Family"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this method or constructor is exactly described by <see cref="MethodAttributes.Family"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsFamily
     {
         get
@@ -131,7 +131,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the visibility of this method or constructor is described by <see cref="MethodAttributes.FamANDAssem"/>; that is, the method or constructor can be called by derived classes, but only if they are in the same assembly.
     /// </summary>
-    /// <returns>true if access to this method or constructor is exactly described by <see cref="MethodAttributes.FamANDAssem"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this method or constructor is exactly described by <see cref="MethodAttributes.FamANDAssem"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsFamilyAndAssembly
     {
         get
@@ -143,7 +143,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the potential visibility of this method or constructor is described by <see cref="MethodAttributes.FamORAssem"/>; that is, the method or constructor can be called by derived classes wherever they are, and by classes in the same assembly.
     /// </summary>
-    /// <returns>true if access to this method or constructor is exactly described by <see cref="MethodAttributes.FamORAssem"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this method or constructor is exactly described by <see cref="MethodAttributes.FamORAssem"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsFamilyOrAssembly
     {
         get
@@ -155,7 +155,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether this method is final.
     /// </summary>
-    /// <returns>true if this method is final; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this method is final; otherwise, <see langword="false"/>.</returns>
     public bool IsFinal
     {
         get
@@ -167,7 +167,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is generic.
     /// </summary>
-    /// <returns>true if the current <see cref="MethodBase"/> represents a generic method; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="MethodBase"/> represents a generic method; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericMethod
     {
         get
@@ -179,7 +179,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is a generic method definition.
     /// </summary>
-    /// <returns>true if the current <see cref="MethodBase"/> object represents the definition of a generic method; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="MethodBase"/> object represents the definition of a generic method; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericMethodDefinition
     {
         get
@@ -191,7 +191,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether only a member of the same kind with exactly the same signature is hidden in the derived class.
     /// </summary>
-    /// <returns>true if the member is hidden by signature; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the member is hidden by signature; otherwise, <see langword="false"/>.</returns>
     public bool IsHideBySig
     {
         get
@@ -203,7 +203,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether this member is private.
     /// </summary>
-    /// <returns>true if access to this method is restricted to other members of the class itself; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this method is restricted to other members of the class itself; otherwise, <see langword="false"/>.</returns>
     public bool IsPrivate
     {
         get
@@ -215,7 +215,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether this is a public method.
     /// </summary>
-    /// <returns>true if this method is public; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this method is public; otherwise, <see langword="false"/>.</returns>
     public bool IsPublic
     {
         get
@@ -227,7 +227,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the current method or constructor is security-critical or security-safe-critical at the current trust level, and therefore can perform critical operations.
     /// </summary>
-    /// <returns>true if the current method or constructor is security-critical or security-safe-critical at the current trust level; false if it is transparent.</returns>
+    /// <returns><see langword="true"/> if the current method or constructor is security-critical or security-safe-critical at the current trust level; <see langword="false"/> if it is transparent.</returns>
     public bool IsSecurityCritical
     {
         get
@@ -239,7 +239,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the current method or constructor is security-safe-critical at the current trust level; that is, whether it can perform critical operations and can be accessed by transparent code.
     /// </summary>
-    /// <returns>true if the method or constructor is security-safe-critical at the current trust level; false if it is security-critical or transparent.</returns>
+    /// <returns><see langword="true"/> if the method or constructor is security-safe-critical at the current trust level; <see langword="false"/> if it is security-critical or transparent.</returns>
     public bool IsSecuritySafeCritical
     {
         get
@@ -251,7 +251,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the current method or constructor is transparent at the current trust level, and therefore cannot perform critical operations.
     /// </summary>
-    /// <returns>true if the method or constructor is security-transparent at the current trust level; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the method or constructor is security-transparent at the current trust level; otherwise, <see langword="false"/>.</returns>
     public bool IsSecurityTransparent
     {
         get
@@ -263,7 +263,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether this method has a special name.
     /// </summary>
-    /// <returns>true if this method has a special name; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this method has a special name; otherwise, <see langword="false"/>.</returns>
     public bool IsSpecialName
     {
         get
@@ -275,7 +275,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is static.
     /// </summary>
-    /// <returns>true if this method is static; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this method is static; otherwise, <see langword="false"/>.</returns>
     public bool IsStatic
     {
         get
@@ -287,7 +287,7 @@ public abstract partial class MethodBase
     /// <summary>
     /// Gets a value indicating whether the method is virtual.
     /// </summary>
-    /// <returns>true if this method is virtual; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this method is virtual; otherwise, <see langword="false"/>.</returns>
     public bool IsVirtual
     {
         get
@@ -324,7 +324,7 @@ public abstract partial class MethodBase
     /// Returns a value that indicates whether this instance is equal to a specified object.
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
-    /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="obj"/> equals the type and value of this instance; otherwise, <see langword="false"/>.</returns>
     public override bool Equals(object obj)
     {
         return obj is MethodBase AsMethodBase && Origin.Equals(AsMethodBase.Origin);
@@ -425,14 +425,14 @@ public abstract partial class MethodBase
     /// Invokes the method or constructor represented by the current instance, using the specified parameters.
     /// </summary>
     /// <param name="obj">The object on which to invoke the method or constructor. If a method is static, this argument is ignored. If a constructor is static, this argument must be <see cref="Type.Void"/> or an instance of the class that defines the constructor.</param>
-    /// <param name="parameters">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, parameters should be empty. If the method or constructor represented by this instance takes a ref parameter (ByRef in Visual Basic), no special attribute is required for that parameter in order to invoke the method or constructor using this function. Any object in this array that is not explicitly initialized with a value will contain the default value for that object type. For reference-type elements, this value is null. For value-type elements, this value is 0, 0.0, or false, depending on the specific element type.</param>
+    /// <param name="parameters">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, parameters should be empty. If the method or constructor represented by this instance takes a ref parameter (ByRef in Visual Basic), no special attribute is required for that parameter in order to invoke the method or constructor using this function. Any object in this array that is not explicitly initialized with a value will contain the default value for that object type. For reference-type elements, this value is null. For value-type elements, this value is 0, 0.0, or <see langword="false"/>, depending on the specific element type.</param>
     /// <returns>An object containing the return value of the invoked method, or <see cref="Type.Void"/> in the case of a constructor.</returns>
     /// <exception cref="TargetException">The <paramref name="obj"/> parameter is <see cref="Type.Void"/> and the method is not static. -or- The method is not declared or inherited by the class of <paramref name="obj"/>. -or- A static constructor is invoked, and <paramref name="obj"/> is neither <see cref="Type.Void"/> nor an instance of the class that declared the constructor. Note: In .NET for Windows Store apps or the Portable Class Library, catch <see cref="Exception"/> instead.</exception>
     /// <exception cref="ArgumentException">The elements of the <paramref name="parameters"/> array do not match the signature of the method or constructor reflected by this instance.</exception>
     /// <exception cref="TargetInvocationException">The invoked method or constructor throws an exception. -or- The current instance is a <see cref="DynamicMethod"/> that contains unverifiable code. See the "Verification" section in Remarks for <see cref="DynamicMethod"/>.</exception>
     /// <exception cref="TargetParameterCountException">The <paramref name="parameters"/> array does not have the correct number of arguments.</exception>
     /// <exception cref="MethodAccessException">The caller does not have permission to execute the method or constructor that is represented by the current instance. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="MemberAccessException"/>, instead.</exception>
-    /// <exception cref="InvalidOperationException">The type that declares the method is an open generic type. That is, the <see cref="Type.ContainsGenericParameters"/> property returns true for the declaring type.</exception>
+    /// <exception cref="InvalidOperationException">The type that declares the method is an open generic type. That is, the <see cref="Type.ContainsGenericParameters"/> property returns <see langword="true"/> for the declaring type.</exception>
     /// <exception cref="NotSupportedException">The current instance is a <see cref="MethodBuilder"/>.</exception>
     public object Invoke(object obj, object[] parameters)
     {
@@ -445,7 +445,7 @@ public abstract partial class MethodBase
     /// <param name="obj">The object on which to invoke the method or constructor. If a method is static, this argument is ignored. If a constructor is static, this argument must be <see cref="Type.Void"/> or an instance of the class that defines the constructor.</param>
     /// <param name="invokeAttr">A bitmask that is a combination of 0 or more bit flags from <see cref="BindingFlags"/>. If <paramref name="binder"/> is <see cref="Assembly.DefaultBinder"/>, this parameter is assigned the value <see cref="BindingFlags.Default"/>; thus, whatever you pass in is ignored.</param>
     /// <param name="binder">An object that enables the binding, coercion of argument types, invocation of members, and retrieval of <see cref="MemberInfo"/> objects via reflection.</param>
-    /// <param name="parameters">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, parameters should be empty. If the method or constructor represented by this instance takes a ref parameter (ByRef in Visual Basic), no special attribute is required for that parameter in order to invoke the method or constructor using this function. Any object in this array that is not explicitly initialized with a value will contain the default value for that object type. For reference-type elements, this value is null. For value-type elements, this value is 0, 0.0, or false, depending on the specific element type.</param>
+    /// <param name="parameters">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, parameters should be empty. If the method or constructor represented by this instance takes a ref parameter (ByRef in Visual Basic), no special attribute is required for that parameter in order to invoke the method or constructor using this function. Any object in this array that is not explicitly initialized with a value will contain the default value for that object type. For reference-type elements, this value is null. For value-type elements, this value is 0, 0.0, or <see langword="false"/>, depending on the specific element type.</param>
     /// <param name="culture">An instance of <see cref="CultureInfo"/> used to govern the coercion of types. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired. (This is necessary to convert a string that represents 1000 to a <see cref="double"/> value, for example, since 1000 is represented differently by different cultures.)</param>
     /// <returns>An <see cref="object"/> containing the return value of the invoked method, or <see cref="Type.Void"/> in the case of a constructor, or <see cref="Type.Void"/> if the method's return type is void. Before calling the method or constructor, Invoke checks to see if the user has access permission and verifies that the parameters are valid.</returns>
     /// <exception cref="TargetException">The <paramref name="obj"/> parameter is <see cref="Type.Void"/> and the method is not static. -or- The method is not declared or inherited by the class of <paramref name="obj"/>. -or- A static constructor is invoked, and <paramref name="obj"/> is neither <see cref="Type.Void"/> nor an instance of the class that declared the constructor.</exception>
@@ -453,7 +453,7 @@ public abstract partial class MethodBase
     /// <exception cref="TargetParameterCountException">The <paramref name="parameters"/> array does not have the correct number of arguments.</exception>
     /// <exception cref="TargetInvocationException">The invoked method or constructor throws an exception.</exception>
     /// <exception cref="MethodAccessException">The caller does not have permission to execute the method or constructor that is represented by the current instance.</exception>
-    /// <exception cref="InvalidOperationException">The type that declares the method is an open generic type. That is, the <see cref="Type.ContainsGenericParameters"/> property returns true for the declaring type.</exception>
+    /// <exception cref="InvalidOperationException">The type that declares the method is an open generic type. That is, the <see cref="Type.ContainsGenericParameters"/> property returns <see langword="true"/> for the declaring type.</exception>
     public object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
     {
         return Origin.Invoke(obj != Type.Void ? obj : null, invokeAttr, binder != Assembly.DefaultBinder ? binder : null, parameters.Length > 0 ? parameters : null, culture) ?? Type.Void;
@@ -464,7 +464,7 @@ public abstract partial class MethodBase
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(MethodBase left, MethodBase right)
     {
         return left.Origin == right.Origin;
@@ -475,7 +475,7 @@ public abstract partial class MethodBase
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(MethodBase left, MethodBase right)
     {
         return left.Origin != right.Origin;

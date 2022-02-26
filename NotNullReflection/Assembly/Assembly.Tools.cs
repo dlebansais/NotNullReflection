@@ -12,7 +12,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="name">The full name of the type.</param>
     /// <param name="type">An object that represents the specified class, or <see cref="Type.Missing"/> if the class is not found.</param>
-    /// <returns>true if the type is found; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the type is found; otherwise, <see langword="false"/>.</returns>
     public bool HasType(string name, out Type type)
     {
         OriginType? TestedType = Origin.GetType(name);

@@ -40,7 +40,7 @@ public partial class PropertyInfo
     /// <summary>
     /// Gets a value indicating whether the property can be read.
     /// </summary>
-    /// <returns>true if this property can be read; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this property can be read; otherwise, <see langword="false"/>.</returns>
     public bool CanRead
     {
         get
@@ -52,7 +52,7 @@ public partial class PropertyInfo
     /// <summary>
     /// Gets a value indicating whether the property can be written to.
     /// </summary>
-    /// <returns>true if this property can be written to; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this property can be written to; otherwise, <see langword="false"/>.</returns>
     public bool CanWrite
     {
         get
@@ -77,7 +77,7 @@ public partial class PropertyInfo
     /// <summary>
     /// Gets a value indicating whether the property is the special name.
     /// </summary>
-    /// <returns>true if this property is the special name; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this property is the special name; otherwise, <see langword="false"/>.</returns>
     public bool IsSpecialName
     {
         get
@@ -127,7 +127,7 @@ public partial class PropertyInfo
     /// Returns a value that indicates whether this instance is equal to a specified object.
     /// </summary>
     /// <param name="obj">The object to compare with this instance.</param>
-    /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="obj"/> equals the type and value of this instance; otherwise, <see langword="false"/>.</returns>
     public override bool Equals(object obj)
     {
         return obj is PropertyInfo AsPropertyInfo && Origin.Equals(AsPropertyInfo.Origin);
@@ -145,8 +145,8 @@ public partial class PropertyInfo
     /// <summary>
     /// Returns an array whose elements reflect the public and, if specified, non-public get and set accessors of the property reflected by the current instance.
     /// </summary>
-    /// <param name="nonPublic">Indicates whether non-public methods should be returned in the returned array. true if non-public methods are to be included; otherwise, false.</param>
-    /// <returns>An array whose elements reflect the get and set accessors of the property reflected by the current instance. If <paramref name="nonPublic"/> is true, this array contains public and non-public get and set accessors. If <paramref name="nonPublic"/> is false, this array contains only public get and set accessors. If no accessors with the specified visibility are found, this method returns an array with zero (0) elements.</returns>
+    /// <param name="nonPublic">Indicates whether non-public methods should be returned in the returned array. <see langword="true"/> if non-public methods are to be included; otherwise, <see langword="false"/>.</param>
+    /// <returns>An array whose elements reflect the get and set accessors of the property reflected by the current instance. If <paramref name="nonPublic"/> is <see langword="true"/>, this array contains public and non-public get and set accessors. If <paramref name="nonPublic"/> is <see langword="false"/>, this array contains only public get and set accessors. If no accessors with the specified visibility are found, this method returns an array with zero (0) elements.</returns>
     public MethodInfo[] GetAccessors(bool nonPublic)
     {
         return MethodInfo.GetList(Origin.GetAccessors(nonPublic)).ToArray();
@@ -177,10 +177,10 @@ public partial class PropertyInfo
     /// <summary>
     /// When overridden in a derived class, returns the public or non-public get accessor for this property.
     /// </summary>
-    /// <param name="nonPublic">Indicates whether a non-public get accessor should be returned. true if a non-public accessor is to be returned; otherwise, false.</param>
-    /// <returns>A <see cref="MethodInfo"/> object representing the get accessor for this property, if <paramref name="nonPublic"/> is true. Throws an exception if <paramref name="nonPublic"/> is false and the get accessor is non-public, or if <paramref name="nonPublic"/> is true but no get accessors exist.</returns>
+    /// <param name="nonPublic">Indicates whether a non-public get accessor should be returned. <see langword="true"/> if a non-public accessor is to be returned; otherwise, <see langword="false"/>.</param>
+    /// <returns>A <see cref="MethodInfo"/> object representing the get accessor for this property, if <paramref name="nonPublic"/> is <see langword="true"/>. Throws an exception if <paramref name="nonPublic"/> is <see langword="false"/> and the get accessor is non-public, or if <paramref name="nonPublic"/> is <see langword="true"/> but no get accessors exist.</returns>
     /// <exception cref="SecurityException">The requested method is non-public and the caller does not have System.Security.Permissions.ReflectionPermission to reflect on this non-public method.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="nonPublic"/> is false and the get accessor is non-public, or <paramref name="nonPublic"/> is true but no get accessors exist.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="nonPublic"/> is <see langword="false"/> and the get accessor is non-public, or <paramref name="nonPublic"/> is <see langword="true"/> but no get accessors exist.</exception>
     public MethodInfo GetGetMethod(bool nonPublic)
     {
         return MethodInfo.CreateNew(Origin.GetGetMethod(nonPublic) ?? throw new NullReferenceException($"{nameof(nonPublic)} is false and the get accessor is non-public, or {nameof(nonPublic)} is true but no get accessors exist."));
@@ -247,10 +247,10 @@ public partial class PropertyInfo
     /// <summary>
     /// When overridden in a derived class, returns the set accessor for this property.
     /// </summary>
-    /// <param name="nonPublic">Indicates whether the accessor should be returned if it is non-public. true if a non-public accessor is to be returned; otherwise, false.</param>
-    /// <returns>This property's Set method, or null, as shown in the following table. Value – Condition The Set method for this property. – The set accessor is public, OR <paramref name="nonPublic"/> is true and the set accessor is non-public. Exception thrown –<paramref name="nonPublic"/> is true, but the property is read-only, OR <paramref name="nonPublic"/> is false and the set accessor is non-public, OR there is no set accessor.</returns>
+    /// <param name="nonPublic">Indicates whether the accessor should be returned if it is non-public. <see langword="true"/> if a non-public accessor is to be returned; otherwise, <see langword="false"/>.</param>
+    /// <returns>This property's Set method, or null, as shown in the following table. Value – Condition The Set method for this property. – The set accessor is public, OR <paramref name="nonPublic"/> is <see langword="true"/> and the set accessor is non-public. Exception thrown –<paramref name="nonPublic"/> is <see langword="true"/>, but the property is read-only, OR <paramref name="nonPublic"/> is <see langword="false"/> and the set accessor is non-public, OR there is no set accessor.</returns>
     /// <exception cref="SecurityException">The requested method is non-public and the caller does not have System.Security.Permissions.ReflectionPermission to reflect on this non-public method.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="nonPublic"/> is false and the set accessor is non-public, or <paramref name="nonPublic"/> is true but no set accessors exist.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="nonPublic"/> is <see langword="false"/> and the set accessor is non-public, or <paramref name="nonPublic"/> is <see langword="true"/> but no set accessors exist.</exception>
     public MethodInfo GetSetMethod(bool nonPublic)
     {
         return MethodInfo.CreateNew(Origin.GetSetMethod(nonPublic) ?? throw new NullReferenceException($"{nameof(nonPublic)} is false and the set accessor is non-public, or {nameof(nonPublic)} is true but no set accessors exist."));
@@ -309,7 +309,7 @@ public partial class PropertyInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(PropertyInfo left, PropertyInfo right)
     {
         return left.Origin == right.Origin;
@@ -320,7 +320,7 @@ public partial class PropertyInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(PropertyInfo left, PropertyInfo right)
     {
         return left.Origin != right.Origin;

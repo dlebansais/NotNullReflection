@@ -33,7 +33,7 @@ public partial class Type
     /// Gets a value indicating whether the current type is the typeof(<typeparamref name="T"/>) object.
     /// </summary>
     /// <typeparam name="T">The type.</typeparam>
-    /// <returns>true if the current type is the typeof(<typeparamref name="T"/>) object.</returns>
+    /// <returns><see langword="true"/> if the current type is the typeof(<typeparamref name="T"/>) object.</returns>
     public bool IsTypeof<T>()
     {
         return Origin == typeof(T);
@@ -42,7 +42,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current type is the typeof(<see cref="void"/>) object.
     /// </summary>
-    /// <returns>true if the current type is the typeof(<see cref="void"/>) object.</returns>
+    /// <returns><see langword="true"/> if the current type is the typeof(<see cref="void"/>) object.</returns>
     public bool IsTypeofVoid()
     {
         return Origin == typeof(void);
@@ -53,7 +53,7 @@ public partial class Type
     /// </summary>
     /// <param name="name">The string containing the name of the public property to look for.</param>
     /// <param name="property">The property upon return.</param>
-    /// <returns>true if found; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if found; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]

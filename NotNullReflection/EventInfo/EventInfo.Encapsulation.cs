@@ -61,7 +61,7 @@ public partial class EventInfo
     /// <summary>
     /// Gets a value indicating whether the event is multicast.
     /// </summary>
-    /// <returns>true if the delegate is an instance of a multicast delegate; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the delegate is an instance of a multicast delegate; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="SecurityException">The caller does not have the required permission.</exception>
     public virtual bool IsMulticast
     {
@@ -74,7 +74,7 @@ public partial class EventInfo
     /// <summary>
     /// Gets a value indicating whether the <see cref="EventInfo"/> has a name with a special meaning.
     /// </summary>
-    /// <returns>true if this event has a special name; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this event has a special name; otherwise, <see langword="false"/>.</returns>
     public bool IsSpecialName
     {
         get
@@ -138,7 +138,7 @@ public partial class EventInfo
     /// Returns a value that indicates whether this instance is equal to a specified object.
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
-    /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="obj"/> equals the type and value of this instance; otherwise, <see langword="false"/>.</returns>
     public override bool Equals(object obj)
     {
         return obj is EventInfo AsEventInfo && Origin.Equals(AsEventInfo.Origin);
@@ -157,9 +157,9 @@ public partial class EventInfo
     /// <summary>
     /// When overridden in a derived class, retrieves the <see cref="MethodInfo"/> object for the <see cref="AddEventHandler(object,Delegate)"/> method of the event, specifying whether to return non-public methods.
     /// </summary>
-    /// <param name="nonPublic">true if non-public methods can be returned; otherwise, false.</param>
+    /// <param name="nonPublic"><see langword="true"/> if non-public methods can be returned; otherwise, <see langword="false"/>.</param>
     /// <returns>A <see cref="MethodInfo"/> object representing the method used to add an event handler delegate to the event source.</returns>
-    /// <exception cref="MethodAccessException"><paramref name="nonPublic"/> is true, the method used to add an event handler delegate is non-public, and the caller does not have permission to reflect on non-public methods.</exception>
+    /// <exception cref="MethodAccessException"><paramref name="nonPublic"/> is <see langword="true"/>, the method used to add an event handler delegate is non-public, and the caller does not have permission to reflect on non-public methods.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     public MethodInfo GetAddMethod(bool nonPublic)
     {
@@ -187,7 +187,7 @@ public partial class EventInfo
     /// <summary>
     /// Returns the methods that have been associated with the event in metadata using the .other directive, specifying whether to include non-public methods.
     /// </summary>
-    /// <param name="nonPublic">true to include non-public methods; otherwise, false.</param>
+    /// <param name="nonPublic"><see langword="true"/> to include non-public methods; otherwise, <see langword="false"/>.</param>
     /// <returns>An array representing methods that have been associated with an event in metadata by using the .other directive. If there are no methods matching the specification, an empty array is returned.</returns>
     /// <exception cref="NotImplementedException">This method is not implemented.</exception>
     public MethodInfo[] GetOtherMethods(bool nonPublic)
@@ -208,9 +208,9 @@ public partial class EventInfo
     /// <summary>
     /// When overridden in a derived class, returns the method that is called when the event is raised, specifying whether to return non-public methods.
     /// </summary>
-    /// <param name="nonPublic">true if non-public methods can be returned; otherwise, false.</param>
+    /// <param name="nonPublic"><see langword="true"/> if non-public methods can be returned; otherwise, <see langword="false"/>.</param>
     /// <returns>A <see cref="MethodInfo"/> object that was called when the event was raised.</returns>
-    /// <exception cref="MethodAccessException"><paramref name="nonPublic"/> is true, the method used to add an event handler delegate is non-public, and the caller does not have permission to reflect on non-public methods.</exception>
+    /// <exception cref="MethodAccessException"><paramref name="nonPublic"/> is <see langword="true"/>, the method used to add an event handler delegate is non-public, and the caller does not have permission to reflect on non-public methods.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     public MethodInfo GetRaiseMethod(bool nonPublic)
     {
@@ -230,9 +230,9 @@ public partial class EventInfo
     /// <summary>
     /// When overridden in a derived class, retrieves the <see cref="MethodInfo"/> object for removing a method of the event, specifying whether to return non-public methods.
     /// </summary>
-    /// <param name="nonPublic">true if non-public methods can be returned; otherwise, false.</param>
+    /// <param name="nonPublic"><see langword="true"/> if non-public methods can be returned; otherwise, <see langword="false"/>.</param>
     /// <returns>A <see cref="MethodInfo"/> object representing the method used to remove an event handler delegate from the event source.</returns>
-    /// <exception cref="MethodAccessException"><paramref name="nonPublic"/> is true, the method used to add an event handler delegate is non-public, and the caller does not have permission to reflect on non-public methods.</exception>
+    /// <exception cref="MethodAccessException"><paramref name="nonPublic"/> is <see langword="true"/>, the method used to add an event handler delegate is non-public, and the caller does not have permission to reflect on non-public methods.</exception>
     /// <exception cref="NullReferenceException">Method not found.</exception>
     public MethodInfo GetRemoveMethod(bool nonPublic)
     {
@@ -244,7 +244,7 @@ public partial class EventInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(EventInfo left, EventInfo right)
     {
         return left.Origin == right.Origin;
@@ -255,7 +255,7 @@ public partial class EventInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(EventInfo left, EventInfo right)
     {
         return left.Origin != right.Origin;

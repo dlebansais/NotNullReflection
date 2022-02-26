@@ -65,7 +65,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the potential visibility of this field is described by <see cref="FieldAttributes.Assembly"/>; that is, the field is visible at most to other types in the same assembly, and is not visible to derived types outside the assembly.
     /// </summary>
-    /// <returns>true if the visibility of this field is exactly described by <see cref="FieldAttributes.Assembly"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the visibility of this field is exactly described by <see cref="FieldAttributes.Assembly"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsAssembly
     {
         get
@@ -77,7 +77,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the visibility of this field is described by <see cref="FieldAttributes.Family"/>; that is, the field is visible only within its class and derived classes.
     /// </summary>
-    /// <returns>true if access to this field is exactly described by <see cref="FieldAttributes.Family"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this field is exactly described by <see cref="FieldAttributes.Family"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsFamily
     {
         get
@@ -89,7 +89,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the visibility of this field is described by <see cref="FieldAttributes.FamANDAssem"/>; that is, the field can be accessed from derived classes, but only if they are in the same assembly.
     /// </summary>
-    /// <returns>true if access to this field is exactly described by <see cref="FieldAttributes.FamANDAssem"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this field is exactly described by <see cref="FieldAttributes.FamANDAssem"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsFamilyAndAssembly
     {
         get
@@ -101,7 +101,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the potential visibility of this field is described by <see cref="FieldAttributes.FamORAssem"/>; that is, the field can be accessed by derived classes wherever they are, and by classes in the same assembly.
     /// </summary>
-    /// <returns>true if access to this field is exactly described by <see cref="FieldAttributes.FamORAssem"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if access to this field is exactly described by <see cref="FieldAttributes.FamORAssem"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsFamilyOrAssembly
     {
         get
@@ -113,7 +113,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the field can only be set in the body of the constructor.
     /// </summary>
-    /// <returns>true if the field has the <see cref="FieldAttributes.InitOnly"/> attribute set; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the field has the <see cref="FieldAttributes.InitOnly"/> attribute set; otherwise, <see langword="false"/>.</returns>
     public bool IsInitOnly
     {
         get
@@ -125,7 +125,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the value is written at compile time and cannot be changed.
     /// </summary>
-    /// <returns>true if the field has the <see cref="FieldAttributes.Literal"/> attribute set; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the field has the <see cref="FieldAttributes.Literal"/> attribute set; otherwise, <see langword="false"/>.</returns>
     public bool IsLiteral
     {
         get
@@ -137,7 +137,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether this field has the <see cref="FieldAttributes.NotSerialized"/> attribute.
     /// </summary>
-    /// <returns>true if the field has the <see cref="FieldAttributes.NotSerialized"/> attribute set; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the field has the <see cref="FieldAttributes.NotSerialized"/> attribute set; otherwise, <see langword="false"/>.</returns>
     public bool IsNotSerialized
     {
         get
@@ -149,7 +149,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the corresponding <see cref="FieldAttributes.PinvokeImpl"/> attribute is set in <see cref="FieldAttributes"/>.
     /// </summary>
-    /// <returns>true if the <see cref="FieldAttributes.PinvokeImpl"/> attribute is set in <see cref="FieldAttributes"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="FieldAttributes.PinvokeImpl"/> attribute is set in <see cref="FieldAttributes"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsPinvokeImpl
     {
         get
@@ -161,7 +161,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the field is private.
     /// </summary>
-    /// <returns>true if the field is private; otherwise; false.</returns>
+    /// <returns><see langword="true"/> if the field is private; otherwise, <see langword="false"/>.</returns>
     public bool IsPrivate
     {
         get
@@ -173,7 +173,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the field is public.
     /// </summary>
-    /// <returns>true if this field is public; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this field is public; otherwise, <see langword="false"/>.</returns>
     public bool IsPublic
     {
         get
@@ -185,7 +185,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the current field is security-critical or security-safe-critical at the current trust level.
     /// </summary>
-    /// <returns>true if the current field is security-critical or security-safe-critical at the current trust level; false if it is transparent.</returns>
+    /// <returns><see langword="true"/> if the current field is security-critical or security-safe-critical at the current trust level; <see langword="false"/> if it is transparent.</returns>
     public bool IsSecurityCritical
     {
         get
@@ -197,7 +197,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the current field is security-safe-critical at the current trust level.
     /// </summary>
-    /// <returns>true if the current field is security-safe-critical at the current trust level; false if it is security-critical or transparent.</returns>
+    /// <returns><see langword="true"/> if the current field is security-safe-critical at the current trust level; <see langword="false"/> if it is security-critical or transparent.</returns>
     public bool IsSecuritySafeCritical
     {
         get
@@ -209,7 +209,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the current field is transparent at the current trust level.
     /// </summary>
-    /// <returns>true if the field is security-transparent at the current trust level; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the field is security-transparent at the current trust level; otherwise, <see langword="false"/>.</returns>
     public bool IsSecurityTransparent
     {
         get
@@ -221,7 +221,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the corresponding <see cref="FieldAttributes.SpecialName"/> attribute is set in the <see cref="FieldAttributes"/> enumerator.
     /// </summary>
-    /// <returns>true if the <see cref="FieldAttributes.SpecialName"/> attribute is set in <see cref="FieldAttributes"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="FieldAttributes.SpecialName"/> attribute is set in <see cref="FieldAttributes"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsSpecialName
     {
         get
@@ -233,7 +233,7 @@ public partial class FieldInfo
     /// <summary>
     /// Gets a value indicating whether the field is static.
     /// </summary>
-    /// <returns>true if this field is static; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this field is static; otherwise, <see langword="false"/>.</returns>
     public bool IsStatic
     {
         get
@@ -258,7 +258,7 @@ public partial class FieldInfo
     /// Returns a value that indicates whether this instance is equal to a specified object.
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
-    /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="obj"/> equals the type and value of this instance; otherwise, <see langword="false"/>.</returns>
     public override bool Equals(object obj)
     {
         return obj is FieldInfo AsFieldInfo && Origin.Equals(AsFieldInfo.Origin);
@@ -359,7 +359,7 @@ public partial class FieldInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(FieldInfo left, FieldInfo right)
     {
         return left.Origin == right.Origin;
@@ -370,7 +370,7 @@ public partial class FieldInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(FieldInfo left, FieldInfo right)
     {
         return left.Origin != right.Origin;

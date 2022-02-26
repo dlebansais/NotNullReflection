@@ -115,7 +115,7 @@ public partial class MethodInfo
     /// Returns a value that indicates whether this instance is equal to a specified object.
     /// </summary>
     /// <param name="obj">An object to compare with this instance.</param>
-    /// <returns>true if <paramref name="obj"/> equals the type and value of this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="obj"/> equals the type and value of this instance; otherwise, <see langword="false"/>.</returns>
     public override bool Equals(object obj)
     {
         return obj is MethodInfo AsMethodInfo && Origin.Equals(AsMethodInfo.Origin);
@@ -144,7 +144,7 @@ public partial class MethodInfo
     /// Returns a <see cref="MethodInfo"/> object that represents a generic method definition from which the current method can be constructed.
     /// </summary>
     /// <returns>A <see cref="MethodInfo"/> object representing a generic method definition from which the current method can be constructed.</returns>
-    /// <exception cref="InvalidOperationException">The current method is not a generic method. That is, <see cref="MethodBase.IsGenericMethod"/> returns false.</exception>
+    /// <exception cref="InvalidOperationException">The current method is not a generic method. That is, <see cref="MethodBase.IsGenericMethod"/> returns <see langword="false"/>.</exception>
     /// <exception cref="NotSupportedException">This method is not supported.</exception>
     public MethodInfo GetGenericMethodDefinition()
     {
@@ -165,7 +165,7 @@ public partial class MethodInfo
     /// </summary>
     /// <param name="typeArguments">An array of types to be substituted for the type parameters of the current generic method definition.</param>
     /// <returns>A <see cref="MethodInfo"/> object that represents the constructed method formed by substituting the elements of typeArguments for the type parameters of the current generic method definition.</returns>
-    /// <exception cref="InvalidOperationException">The current <see cref="MethodInfo"/> does not represent a generic method definition. That is, <see cref="MethodBase.IsGenericMethodDefinition"/> returns false.</exception>
+    /// <exception cref="InvalidOperationException">The current <see cref="MethodInfo"/> does not represent a generic method definition. That is, <see cref="MethodBase.IsGenericMethodDefinition"/> returns <see langword="false"/>.</exception>
     /// <exception cref="ArgumentException">The number of elements in <paramref name="typeArguments"/> is not the same as the number of type parameters of the current generic method definition. -or- An element of <paramref name="typeArguments"/> does not satisfy the constraints specified for the corresponding type parameter of the current generic method definition.</exception>
     /// <exception cref="NotSupportedException">This method is not supported.</exception>
 #if NET5_0_OR_GREATER
@@ -181,7 +181,7 @@ public partial class MethodInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(MethodInfo left, MethodInfo right)
     {
         return left.Origin == right.Origin;
@@ -192,7 +192,7 @@ public partial class MethodInfo
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(MethodInfo left, MethodInfo right)
     {
         return left.Origin != right.Origin;

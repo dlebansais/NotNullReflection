@@ -234,7 +234,7 @@ public partial class AssemblyName
     /// </summary>
     /// <param name="reference">The reference assembly name.</param>
     /// <param name="definition">The assembly name that is compared to the reference assembly.</param>
-    /// <returns>true if the simple assembly names are the same; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the simple assembly names are the same; otherwise, <see langword="false"/>.</returns>
     public static bool ReferenceMatchesDefinition(AssemblyName reference, AssemblyName definition)
     {
         return OriginAssemblyName.ReferenceMatchesDefinition(reference.Origin, definition.Origin);

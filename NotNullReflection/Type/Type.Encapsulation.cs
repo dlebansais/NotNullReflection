@@ -103,7 +103,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> object has type parameters that have not been replaced by specific types.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> object is itself a generic type parameter or has type parameters for which specific types have not been supplied; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> object is itself a generic type parameter or has type parameters for which specific types have not been supplied; otherwise, <see langword="false"/>.</returns>
     public bool ContainsGenericParameters
     {
         get
@@ -167,7 +167,7 @@ public partial class Type
     /// Gets a combination of <see cref="OriginType.GenericParameterAttributes"/> flags that describe the covariance and special constraints of the current generic type parameter.
     /// </summary>
     /// <returns>A bitwise combination of <see cref="OriginType.GenericParameterAttributes"/> values that describes the covariance and special constraints of the current generic type parameter.</returns>
-    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> object is not a generic type parameter. That is, the <see cref="IsGenericParameter"/> property returns false.</exception>
+    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> object is not a generic type parameter. That is, the <see cref="IsGenericParameter"/> property returns <see langword="false"/>.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
     public GenericParameterAttributes GenericParameterAttributes
     {
@@ -181,7 +181,7 @@ public partial class Type
     /// Gets the position of the type parameter in the type parameter list of the generic type or method that declared the parameter, when the <see cref="Type"/> object represents a type parameter of a generic type or a generic method.
     /// </summary>
     /// <returns>The position of a type parameter in the type parameter list of the generic type or method that defines the parameter. Position numbers begin at 0.</returns>
-    /// <exception cref="InvalidOperationException">The current type does not represent a type parameter. That is, <see cref="IsGenericParameter"/> returns false.</exception>
+    /// <exception cref="InvalidOperationException">The current type does not represent a type parameter. That is, <see cref="IsGenericParameter"/> returns <see langword="false"/>.</exception>
     public int GenericParameterPosition
     {
         get
@@ -217,7 +217,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current System.Type encompasses or refers to another type; that is, whether the current System.Type is an array, a pointer, or is passed by reference.
     /// </summary>
-    /// <returns>true if the System.Type is an array, a pointer, or is passed by reference; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the System.Type is an array, a pointer, or is passed by reference; otherwise, <see langword="false"/>.</returns>
     public bool HasElementType
     {
         get
@@ -229,7 +229,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is abstract and must be overridden.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is abstract; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is abstract; otherwise, <see langword="false"/>.</returns>
     public bool IsAbstract
     {
         get
@@ -241,7 +241,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the string format attribute AnsiClass is selected for the <see cref="Type"/>.
     /// </summary>
-    /// <returns>true if the string format attribute AnsiClass is selected for the <see cref="Type"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the string format attribute AnsiClass is selected for the <see cref="Type"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsAnsiClass
     {
         get
@@ -253,7 +253,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type is an array.
     /// </summary>
-    /// <returns>true if the current type is an array; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current type is an array; otherwise, <see langword="false"/>.</returns>
     public bool IsArray
     {
         get
@@ -265,7 +265,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the string format attribute AutoClass is selected for the <see cref="Type"/>.
     /// </summary>
-    /// <returns>true if the string format attribute AutoClass is selected for the <see cref="Type"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the string format attribute AutoClass is selected for the <see cref="Type"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsAutoClass
     {
         get
@@ -277,7 +277,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the fields of the current type are laid out automatically by the common language runtime.
     /// </summary>
-    /// <returns>true if the <see cref="Attributes"/> property of the current type includes <see cref="TypeAttributes.AutoLayout"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Attributes"/> property of the current type includes <see cref="TypeAttributes.AutoLayout"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsAutoLayout
     {
         get
@@ -289,7 +289,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is passed by reference.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is passed by reference; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is passed by reference; otherwise, <see langword="false"/>.</returns>
     public bool IsByRef
     {
         get
@@ -302,7 +302,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type is a byref-like structure.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is a a byref-like structure; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is a a byref-like structure; otherwise, <see langword="false"/>.</returns>
     public bool IsByRefLike
     {
         get
@@ -315,7 +315,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is a class or a delegate; that is, not a value type or interface.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is a class; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is a class; otherwise, <see langword="false"/>.</returns>
     public bool IsClass
     {
         get
@@ -327,7 +327,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is a COM object.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is a COM object; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is a COM object; otherwise, <see langword="false"/>.</returns>
     public bool IsCOMObject
     {
         get
@@ -339,7 +339,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether this object represents a constructed generic type. You can create instances of a constructed generic type.
     /// </summary>
-    /// <returns>true if this object represents a constructed generic type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this object represents a constructed generic type; otherwise, <see langword="false"/>.</returns>
     public bool IsConstructedGenericType
     {
         get
@@ -351,7 +351,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> can be hosted in a context.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> can be hosted in a context; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> can be hosted in a context; otherwise, <see langword="false"/>.</returns>
     public bool IsContextful
     {
         get
@@ -363,7 +363,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents an enumeration.
     /// </summary>
-    /// <returns>true if the current <see cref="Type"/> represents an enumeration; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> represents an enumeration; otherwise, <see langword="false"/>.</returns>
     public bool IsEnum
     {
         get
@@ -375,7 +375,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the fields of the current type are laid out at explicitly specified offsets.
     /// </summary>
-    /// <returns>true if the <see cref="Attributes"/> property of the current type includes <see cref="TypeAttributes.ExplicitLayout"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Attributes"/> property of the current type includes <see cref="TypeAttributes.ExplicitLayout"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsExplicitLayout
     {
         get
@@ -388,7 +388,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a type parameter in the definition of a generic method.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> object represents a type parameter of a generic method definition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> object represents a type parameter of a generic method definition; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericMethodParameter
     {
         get
@@ -401,7 +401,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a type parameter in the definition of a generic type or method.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> object represents a type parameter of a generic type definition or generic method definition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> object represents a type parameter of a generic type definition or generic method definition; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericParameter
     {
         get
@@ -413,7 +413,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current type is a generic type.
     /// </summary>
-    /// <returns>true if the current type is a generic type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current type is a generic type; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericType
     {
         get
@@ -425,7 +425,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a generic type definition, from which other generic types can be constructed.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> object represents a generic type definition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> object represents a generic type definition; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericTypeDefinition
     {
         get
@@ -438,7 +438,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> represents a type parameter in the definition of a generic type.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> object represents a type parameter of a generic type definition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> object represents a type parameter of a generic type definition; otherwise, <see langword="false"/>.</returns>
     public bool IsGenericTypeParameter
     {
         get
@@ -451,7 +451,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> has a <see cref="ComImportAttribute"/> attribute applied, indicating that it was imported from a COM type library.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> has a <see cref="ComImportAttribute"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> has a <see cref="ComImportAttribute"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsImport
     {
         get
@@ -463,7 +463,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is an interface; that is, not a class or a value type.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is an interface; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is an interface; otherwise, <see langword="false"/>.</returns>
     public bool IsInterface
     {
         get
@@ -475,7 +475,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the fields of the current type are laid out sequentially, in the order that they were defined or emitted to the metadata.
     /// </summary>
-    /// <returns>true if the <see cref="Attributes"/> property of the current type includes <see cref="TypeAttributes.SequentialLayout"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Attributes"/> property of the current type includes <see cref="TypeAttributes.SequentialLayout"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsLayoutSequential
     {
         get
@@ -487,7 +487,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is marshaled by reference.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is marshaled by reference; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is marshaled by reference; otherwise, <see langword="false"/>.</returns>
     public bool IsMarshalByRef
     {
         get
@@ -499,7 +499,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current <see cref="Type"/> object represents a type whose definition is nested inside the definition of another type.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is nested inside another type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is nested inside another type; otherwise, <see langword="false"/>.</returns>
     public bool IsNested
     {
         get
@@ -511,7 +511,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is nested and visible only within its own assembly.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is nested and visible only within its own assembly; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is nested and visible only within its own assembly; otherwise, <see langword="false"/>.</returns>
     public bool IsNestedAssembly
     {
         get
@@ -523,7 +523,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is nested and visible only to classes that belong to both its own family and its own assembly.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is nested and visible only to classes that belong to both its own family and its own assembly; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is nested and visible only to classes that belong to both its own family and its own assembly; otherwise, <see langword="false"/>.</returns>
     public bool IsNestedFamANDAssem
     {
         get
@@ -535,7 +535,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is nested and visible only within its own family.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is nested and visible only within its own family; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is nested and visible only within its own family; otherwise, <see langword="false"/>.</returns>
     public bool IsNestedFamily
     {
         get
@@ -547,7 +547,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is nested and visible only to classes that belong to either its own family or to its own assembly.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is nested and visible only to classes that belong to its own family or to its own assembly; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is nested and visible only to classes that belong to its own family or to its own assembly; otherwise, <see langword="false"/>.</returns>
     public bool IsNestedFamORAssem
     {
         get
@@ -559,7 +559,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is nested and declared private.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is nested and declared private; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is nested and declared private; otherwise, <see langword="false"/>.</returns>
     public bool IsNestedPrivate
     {
         get
@@ -571,7 +571,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether a class is nested and declared public.
     /// </summary>
-    /// <returns>true if the class is nested and declared public; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the class is nested and declared public; otherwise, <see langword="false"/>.</returns>
     public bool IsNestedPublic
     {
         get
@@ -583,7 +583,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is not declared public.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is not declared public and is not a nested type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is not declared public and is not a nested type; otherwise, <see langword="false"/>.</returns>
     public bool IsNotPublic
     {
         get
@@ -595,7 +595,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is a pointer.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is a pointer; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is a pointer; otherwise, <see langword="false"/>.</returns>
     public bool IsPointer
     {
         get
@@ -607,7 +607,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is one of the primitive types.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is one of the primitive types; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is one of the primitive types; otherwise, <see langword="false"/>.</returns>
     public bool IsPrimitive
     {
         get
@@ -619,7 +619,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is declared public.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is declared public and is not a nested type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is declared public and is not a nested type; otherwise, <see langword="false"/>.</returns>
     public bool IsPublic
     {
         get
@@ -631,7 +631,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is declared sealed.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is declared sealed; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is declared sealed; otherwise, <see langword="false"/>.</returns>
     public bool IsSealed
     {
         get
@@ -643,7 +643,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current type is security-critical or security-safe-critical at the current trust level, and therefore can perform critical operations.
     /// </summary>
-    /// <returns>true if the current type is security-critical or security-safe-critical at the current trust level; false if it is transparent.</returns>
+    /// <returns><see langword="true"/> if the current type is security-critical or security-safe-critical at the current trust level; <see langword="false"/> if it is transparent.</returns>
     public bool IsSecurityCritical
     {
         get
@@ -655,7 +655,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current type is security-safe-critical at the current trust level; that is, whether it can perform critical operations and can be accessed by transparent code.
     /// </summary>
-    /// <returns>true if the current type is security-safe-critical at the current trust level; false if it is security-critical or transparent.</returns>
+    /// <returns><see langword="true"/> if the current type is security-safe-critical at the current trust level; <see langword="false"/> if it is security-critical or transparent.</returns>
     public bool IsSecuritySafeCritical
     {
         get
@@ -667,7 +667,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the current type is transparent at the current trust level, and therefore cannot perform critical operations.
     /// </summary>
-    /// <returns>true if the type is security-transparent at the current trust level; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the type is security-transparent at the current trust level; otherwise, <see langword="false"/>.</returns>
     public bool IsSecurityTransparent
     {
         get
@@ -679,7 +679,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is serializable.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is serializable; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is serializable; otherwise, <see langword="false"/>.</returns>
     public bool IsSerializable
     {
         get
@@ -692,7 +692,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type is a signature type.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is a signature type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is a signature type; otherwise, <see langword="false"/>.</returns>
     public bool IsSignatureType
     {
         get
@@ -705,7 +705,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type has a name that requires special handling.
     /// </summary>
-    /// <returns>true if the type has a name that requires special handling; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the type has a name that requires special handling; otherwise, <see langword="false"/>.</returns>
     public bool IsSpecialName
     {
         get
@@ -718,7 +718,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type is an array type that can represent only a single-dimensional array with a zero lower bound.
     /// </summary>
-    /// <returns>true if the current <see cref="Type"/> is an array type that can represent only a single-dimensional array with a zero lower bound; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> is an array type that can represent only a single-dimensional array with a zero lower bound; otherwise, <see langword="false"/>.</returns>
     public bool IsSZArray
     {
         get
@@ -730,7 +730,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type is a type definition.
     /// </summary>
-    /// <returns>true if the current <see cref="Type"/> is a type definition; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> is a type definition; otherwise, <see langword="false"/>.</returns>
     public bool IsTypeDefinition
     {
         get
@@ -743,7 +743,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the string format attribute UnicodeClass is selected for the <see cref="Type"/>.
     /// </summary>
-    /// <returns>true if the string format attribute UnicodeClass is selected for the <see cref="Type"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the string format attribute UnicodeClass is selected for the <see cref="Type"/>; otherwise, <see langword="false"/>.</returns>
     public bool IsUnicodeClass
     {
         get
@@ -755,7 +755,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> is a value type.
     /// </summary>
-    /// <returns>true if the <see cref="Type"/> is a value type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the <see cref="Type"/> is a value type; otherwise, <see langword="false"/>.</returns>
     public bool IsValueType
     {
         get
@@ -768,7 +768,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the type is an array type that can represent a multi-dimensional array or an array with an arbitrary lower bound.
     /// </summary>
-    /// <returns>true if the current <see cref="Type"/> is an array type that can represent a multi-dimensional array or an array with an arbitrary lower bound; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> is an array type that can represent a multi-dimensional array or an array with an arbitrary lower bound; otherwise, <see langword="false"/>.</returns>
     public bool IsVariableBoundArray
     {
         get
@@ -781,7 +781,7 @@ public partial class Type
     /// <summary>
     /// Gets a value indicating whether the <see cref="Type"/> can be accessed by code outside the assembly.
     /// </summary>
-    /// <returns>true if the current <see cref="Type"/> is a public type or a public nested type such that all the enclosing types are public; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> is a public type or a public nested type such that all the enclosing types are public; otherwise, <see langword="false"/>.</returns>
     public bool IsVisible
     {
         get
@@ -896,7 +896,7 @@ public partial class Type
     /// Determines if the underlying system type of the current <see cref="Type"/> object is the same as the underlying system type of the specified <see cref="object"/>.
     /// </summary>
     /// <param name="o">The object whose underlying system type is to be compared with the underlying system type of the current <see cref="Type"/>. For the comparison to succeed, <paramref name="o"/> must be able to be cast or converted to an object of type <see cref="Type"/>.</param>
-    /// <returns>true if the underlying system type of <paramref name="o"/> is the same as the underlying system type of the current S<see cref="Type"/>; otherwise, false. This method also returns false if <paramref name="o"/> cannot be cast or converted to a <see cref="Type"/> object.</returns>
+    /// <returns><see langword="true"/> if the underlying system type of <paramref name="o"/> is the same as the underlying system type of the current S<see cref="Type"/>; otherwise, <see langword="false"/>. This method also returns <see langword="false"/> if <paramref name="o"/> cannot be cast or converted to a <see cref="Type"/> object.</returns>
     public override bool Equals(object o)
     {
         return o is Type AsType && Origin.Equals(AsType.Origin);
@@ -906,7 +906,7 @@ public partial class Type
     /// Determines if the underlying system type of the current <see cref="Type"/> is the same as the underlying system type of the specified <see cref="Type"/>.
     /// </summary>
     /// <param name="o">The object whose underlying system type is to be compared with the underlying system type of the current <see cref="Type"/>.</param>
-    /// <returns>true if the underlying system type of <paramref name="o"/> is the same as the underlying system type of the current <see cref="Type"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the underlying system type of <paramref name="o"/> is the same as the underlying system type of the current <see cref="Type"/>; otherwise, <see langword="false"/>.</returns>
     public bool Equals(Type o)
     {
         return Origin.Equals(o.Origin);
@@ -932,7 +932,7 @@ public partial class Type
     /// </summary>
     /// <param name="memberType">A bitwise combination of the enumeration values that indicates the type of member to search for.</param>
     /// <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.</param>
-    /// <param name="filter">The delegate that does the comparisons, returning true if the member currently being inspected matches the <paramref name="filterCriteria"/> and false otherwise.</param>
+    /// <param name="filter">The delegate that does the comparisons, returning <see langword="true"/> if the member currently being inspected matches the <paramref name="filterCriteria"/> and <see langword="false"/> otherwise.</param>
     /// <param name="filterCriteria">The search criteria that determines whether a member is returned in the array of <see cref="MemberInfo"/> objects. The fields of <see cref="FieldAttributes"/>, <see cref="MethodAttributes"/>, and <see cref="MethodImplAttributes"/> can be used in conjunction with the <see cref="OriginType.FilterAttribute"/> delegate supplied by this class.</param>
     /// <returns>A filtered array of <see cref="MemberInfo"/> objects of the specified member type. -or- An empty array if the current <see cref="Type"/> does not have members of type <paramref name="memberType"/> that match the filter criteria.</returns>
 #if NET5_0_OR_GREATER
@@ -1233,7 +1233,7 @@ public partial class Type
     /// Returns an array of <see cref="Type"/> objects that represent the constraints on the current generic type parameter.
     /// </summary>
     /// <returns>An array of <see cref="Type"/> objects that represent the constraints on the current generic type parameter.</returns>
-    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> object is not a generic type parameter. That is, the <see cref="Type.IsGenericParameter"/> property returns false.</exception>
+    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> object is not a generic type parameter. That is, the <see cref="Type.IsGenericParameter"/> property returns <see langword="false"/>.</exception>
     public Type[] GetGenericParameterConstraints()
     {
         return GetList(Origin.GetGenericParameterConstraints()).ToArray();
@@ -1243,7 +1243,7 @@ public partial class Type
     /// Returns a <see cref="Type"/> object that represents a generic type definition from which the current generic type can be constructed.
     /// </summary>
     /// <returns>A <see cref="Type"/> object representing a generic type from which the current type can be constructed.</returns>
-    /// <exception cref="InvalidOperationException">The current type is not a generic type. That is, <see cref="Type.IsGenericType"/> returns false.</exception>
+    /// <exception cref="InvalidOperationException">The current type is not a generic type. That is, <see cref="Type.IsGenericType"/> returns <see langword="false"/>.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
     public Type GetGenericTypeDefinition()
     {
@@ -1279,7 +1279,7 @@ public partial class Type
     /// When overridden in a derived class, searches for the specified interface, specifying whether to do a case-insensitive search for the interface name.
     /// </summary>
     /// <param name="name">The string containing the name of the interface to get. For generic interfaces, this is the mangled name.</param>
-    /// <param name="ignoreCase">true to ignore the case of that part of name that specifies the simple interface name (the part that specifies the namespace must be correctly cased). -or- false to perform a case-sensitive search for all parts of name.</param>
+    /// <param name="ignoreCase"><see langword="true"/> to ignore the case of that part of name that specifies the simple interface name (the part that specifies the namespace must be correctly cased). -or- <see langword="false"/> to perform a case-sensitive search for all parts of name.</param>
     /// <returns>An object representing the interface with the specified name, implemented or inherited by the current <see cref="Type"/>, if found; otherwise, throws an exception.</returns>
     /// <exception cref="AmbiguousMatchException">The current <see cref="Type"/> represents a type that implements the same generic interface with different type arguments.</exception>
     /// <exception cref="NullReferenceException">Interface not found.</exception>
@@ -1297,8 +1297,8 @@ public partial class Type
     /// </summary>
     /// <param name="interfaceType">The interface type to retrieve a mapping for.</param>
     /// <returns>An object that represents the interface mapping for <paramref name="interfaceType"/>.</returns>
-    /// <exception cref="ArgumentException"><paramref name="interfaceType"/> is not implemented by the current type. -or- The <paramref name="interfaceType"/> argument does not refer to an interface. -or- The current instance of <paramref name="interfaceType"/> argument is an open generic type; that is, the <see cref="Type.ContainsGenericParameters"/> property returns true. -or- <paramref name="interfaceType"/> is a generic interface, and the current type is an array type.</exception>
-    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> represents a generic type parameter; that is, <see cref="Type.IsGenericParameter"/> is true.</exception>
+    /// <exception cref="ArgumentException"><paramref name="interfaceType"/> is not implemented by the current type. -or- The <paramref name="interfaceType"/> argument does not refer to an interface. -or- The current instance of <paramref name="interfaceType"/> argument is an open generic type; that is, the <see cref="Type.ContainsGenericParameters"/> property returns <see langword="true"/>. -or- <paramref name="interfaceType"/> is a generic interface, and the current type is an array type.</exception>
+    /// <exception cref="InvalidOperationException">The current <see cref="Type"/> represents a generic type parameter; that is, <see cref="Type.IsGenericParameter"/> is <see langword="true"/>.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
     public InterfaceMapping GetInterfaceMap(
 #if NET5_0_OR_GREATER
@@ -1855,15 +1855,15 @@ public partial class Type
     /// Gets the <see cref="Type"/> with the specified name, performing a case-sensitive search and specifying exception to throw if the type is not found.
     /// </summary>
     /// <param name="typeName">The assembly-qualified name of the type to get. See <see cref="Type.AssemblyQualifiedName"/>. If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, it is sufficient to supply the type name qualified by its namespace.</param>
-    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; <see langword="false"/> to throw a <see cref="NullReferenceException"/> exception. Specifying <see langword="false"/> also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
     /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
     /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
-    /// <exception cref="ArgumentException"><paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax. For example, "MyType[,*,]". -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
-    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/> and the type is not found. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid syntax. For example, "MyType[,*,]". -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is <see langword="true"/> and the assembly or one of its dependencies was not found.</exception>
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
 #endif
@@ -1876,16 +1876,16 @@ public partial class Type
     /// Gets the <see cref="Type"/> with the specified name, specifying whether to throw an exception if the type is not found and whether to perform a case-sensitive search.
     /// </summary>
     /// <param name="typeName">The assembly-qualified name of the type to get. See <see cref="Type.AssemblyQualifiedName"/>. If the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, it is sufficient to supply the type name qualified by its namespace.</param>
-    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
-    /// <param name="ignoreCase">true to perform a case-insensitive search for <paramref name="typeName"/>, false to perform a case-sensitive search for <paramref name="typeName"/>.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; <see langword="false"/> to throw a <see cref="NullReferenceException"/> exception. Specifying <see langword="false"/> also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <param name="ignoreCase"><see langword="true"/> to perform a case-insensitive search for <paramref name="typeName"/>, <see langword="false"/> to perform a case-sensitive search for <paramref name="typeName"/>.</param>
     /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
     /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
-    /// <exception cref="ArgumentException"><paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax. For example, "MyType[,*,]". -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
-    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/> and the type is not found. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid syntax. For example, "MyType[,*,]". -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is <see langword="true"/> and the assembly or one of its dependencies was not found.</exception>
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- Version 2.0 or later of the common language runtime is currently loaded, and the assembly was compiled with a later version.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
 #endif
@@ -1899,7 +1899,7 @@ public partial class Type
     /// </summary>
     /// <param name="typeName">The name of the type to get. If the <paramref name="typeResolver"/> parameter is provided, the type name can be any string that <paramref name="typeResolver"/> is capable of resolving. If the <paramref name="assemblyResolver"/> parameter is provided or if standard type resolution is used, <paramref name="typeName"/> must be an assembly-qualified name (see <see cref="Type.AssemblyQualifiedName"/>), unless the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, in which case it is sufficient to supply the type name qualified by its namespace.</param>
     /// <param name="assemblyResolver">A method that locates and returns the assembly that is specified in <paramref name="typeName"/>. The assembly name is passed to <paramref name="assemblyResolver"/> as an <see cref="OriginAssemblyName"/> object. If <paramref name="typeName"/> does not contain the name of an assembly, <paramref name="assemblyResolver"/> is not called. If <paramref name="assemblyResolver"/> is not supplied, standard assembly resolution is performed. Caution Do not pass methods from unknown or untrusted callers. Doing so could result in elevation of privilege for malicious code. Use only methods that you provide or that you are familiar with.</param>
-    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; false is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
+    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; <see langword="false"/> is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
     /// <returns>The type with the specified name, or throws an exception if the type is not found.</returns>
     /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
     /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
@@ -1923,16 +1923,16 @@ public partial class Type
     /// </summary>
     /// <param name="typeName">The name of the type to get. If the <paramref name="typeResolver"/> parameter is provided, the type name can be any string that <paramref name="typeResolver"/> is capable of resolving. If the <paramref name="assemblyResolver"/> parameter is provided or if standard type resolution is used, <paramref name="typeName"/> must be an assembly-qualified name (see <see cref="Type.AssemblyQualifiedName"/>), unless the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, in which case it is sufficient to supply the type name qualified by its namespace.</param>
     /// <param name="assemblyResolver">A method that locates and returns the assembly that is specified in <paramref name="typeName"/>. The assembly name is passed to <paramref name="assemblyResolver"/> as an <see cref="OriginAssemblyName"/> object. If <paramref name="typeName"/> does not contain the name of an assembly, <paramref name="assemblyResolver"/> is not called. If <paramref name="assemblyResolver"/> is not supplied, standard assembly resolution is performed. Caution Do not pass methods from unknown or untrusted callers. Doing so could result in elevation of privilege for malicious code. Use only methods that you provide or that you are familiar with.</param>
-    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; false is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
-    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; <see langword="false"/> is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; <see langword="false"/> to throw a <see cref="NullReferenceException"/> exception. Specifying <see langword="false"/> also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
     /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
     /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
-    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax (for example, "MyType[,*,]"). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
-    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/> and the type is not found. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid syntax (for example, "MyType[,*,]"). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is <see langword="true"/> and the assembly or one of its dependencies was not found. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
 #endif
@@ -1949,17 +1949,17 @@ public partial class Type
     /// </summary>
     /// <param name="typeName">The name of the type to get. If the <paramref name="typeResolver"/> parameter is provided, the type name can be any string that <paramref name="typeResolver"/> is capable of resolving. If the <paramref name="assemblyResolver"/> parameter is provided or if standard type resolution is used, <paramref name="typeName"/> must be an assembly-qualified name (see <see cref="Type.AssemblyQualifiedName"/>), unless the type is in the currently executing assembly or in mscorlib.dll/System.Private.CoreLib.dll, in which case it is sufficient to supply the type name qualified by its namespace.</param>
     /// <param name="assemblyResolver">A method that locates and returns the assembly that is specified in <paramref name="typeName"/>. The assembly name is passed to <paramref name="assemblyResolver"/> as an <see cref="OriginAssemblyName"/> object. If <paramref name="typeName"/> does not contain the name of an assembly, <paramref name="assemblyResolver"/> is not called. If <paramref name="assemblyResolver"/> is not supplied, standard assembly resolution is performed. Caution Do not pass methods from unknown or untrusted callers. Doing so could result in elevation of privilege for malicious code. Use only methods that you provide or that you are familiar with.</param>
-    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; false is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
-    /// <param name="throwOnError">true to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; false to throw a <see cref="NullReferenceException"/> exception. Specifying false also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
-    /// <param name="ignoreCase">true to perform a case-insensitive search for <paramref name="typeName"/>, false to perform a case-sensitive search for <paramref name="typeName"/>.</param>
+    /// <param name="typeResolver">A method that locates and returns the type that is specified by <paramref name="typeName"/> from the assembly that is returned by <paramref name="assemblyResolver"/> or by standard assembly resolution. If no assembly is provided, the <paramref name="typeResolver"/> method can provide one. The method also takes a parameter that specifies whether to perform a case-insensitive search; <see langword="false"/> is passed to that parameter. Caution Do not pass methods from unknown or untrusted callers.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw a <see cref="TypeLoadException"/> exception if the type cannot be found; <see langword="false"/> to throw a <see cref="NullReferenceException"/> exception. Specifying <see langword="false"/> also suppresses some other exception conditions, but not all of them. See the Exceptions section.</param>
+    /// <param name="ignoreCase"><see langword="true"/> to perform a case-insensitive search for <paramref name="typeName"/>, <see langword="false"/> to perform a case-sensitive search for <paramref name="typeName"/>.</param>
     /// <returns>The type with the specified name. If the type is not found, the <paramref name="throwOnError"/> parameter specifies which exception is thrown. In some cases, an exception is thrown regardless of the value of <paramref name="throwOnError"/>. See the Exceptions section.</returns>
     /// <exception cref="TargetInvocationException">A class initializer is invoked and throws an exception.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true and the type is not found. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
-    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="throwOnError"/> is true and <paramref name="typeName"/> contains invalid syntax (for example, "MyType[,*,]"). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
-    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is true and the assembly or one of its dependencies was not found.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/> and the type is not found. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid characters, such as an embedded tab. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> is an empty string. -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> represents an array type with an invalid size. -or- <paramref name="typeName"/> represents an array of <see cref="TypedReference"/>.</exception>
+    /// <exception cref="ArgumentException">An error occurs when <paramref name="typeName"/> is parsed into a type name and an assembly name (for example, when the simple type name includes an unescaped special character). -or- <paramref name="throwOnError"/> is <see langword="true"/> and <paramref name="typeName"/> contains invalid syntax (for example, "MyType[,*,]"). -or- <paramref name="typeName"/> represents a generic type that has a pointer type, a ByRef type, or <see cref="System.Void"/> as one of its type arguments. -or- <paramref name="typeName"/> represents a generic type that has an incorrect number of type arguments. -or- <paramref name="typeName"/> represents a generic type, and one of its type arguments does not satisfy the constraints for the corresponding type parameter.</exception>
+    /// <exception cref="FileNotFoundException"><paramref name="throwOnError"/> is <see langword="true"/> and the assembly or one of its dependencies was not found.</exception>
     /// <exception cref="FileLoadException">The assembly or one of its dependencies was found, but could not be loaded. -or- <paramref name="typeName"/> contains an invalid assembly name. -or- <paramref name="typeName"/> is a valid assembly name without a type name.</exception>
     /// <exception cref="BadImageFormatException">The assembly or one of its dependencies is not valid. -or- The assembly was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type is not found.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("The type might be removed")]
 #endif
@@ -2007,9 +2007,9 @@ public partial class Type
     /// Gets the type associated with the specified class identifier (CLSID), specifying which exception to throw if an error occurs while loading the type.
     /// </summary>
     /// <param name="clsid">The CLSID of the type to get.</param>
-    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw <see cref="NullReferenceException"/> if an error occurs.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw any exception that occurs. -or- <see langword="false"/> to throw <see cref="NullReferenceException"/> if an error occurs.</param>
     /// <returns>System.__ComObject regardless of whether the CLSID is valid.</returns>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform is not supported.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the platform is not supported.</exception>
     public static Type GetTypeFromCLSID(Guid clsid, bool throwOnError)
     {
         return CreateNew(OriginType.GetTypeFromCLSID(clsid, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
@@ -2032,9 +2032,9 @@ public partial class Type
     /// </summary>
     /// <param name="clsid">The CLSID of the type to get.</param>
     /// <param name="server">The server from which to load the type. If the server name is <see cref="string.Empty"/>, this method automatically reverts to the local machine.</param>
-    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw <see cref="NullReferenceException"/> if an error occurs.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw any exception that occurs. -or- <see langword="false"/> to throw <see cref="NullReferenceException"/> if an error occurs.</param>
     /// <returns>System.__ComObject regardless of whether the CLSID is valid.</returns>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform is not supported.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the platform is not supported.</exception>
     public static Type GetTypeFromCLSID(Guid clsid, string server, bool throwOnError)
     {
         return CreateNew(OriginType.GetTypeFromCLSID(clsid, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException("Platform not supported."));
@@ -2067,10 +2067,10 @@ public partial class Type
     /// Gets the type associated with the specified program identifier (ProgID), specifying whether to throw an exception if an error occurs while loading the type.
     /// </summary>
     /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
-    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw any exception that occurs. -or- <see langword="false"/> to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
     /// <returns>The type associated with the specified program identifier (ProgID), if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
     /// <exception cref="COMException">The specified <paramref name="progID"/> is not registered.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
     public static Type GetTypeFromProgID(string progID, bool throwOnError)
     {
         return CreateNew(OriginType.GetTypeFromProgID(progID, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
@@ -2093,10 +2093,10 @@ public partial class Type
     /// </summary>
     /// <param name="progID">The progID of the <see cref="Type"/> to get.</param>
     /// <param name="server">The server from which to load the type. If the server name is null, this method automatically reverts to the local machine.</param>
-    /// <param name="throwOnError">true to throw any exception that occurs. -or- false to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw any exception that occurs. -or- <see langword="false"/> to throw the <see cref="NullReferenceException"/> exception if an error occurs.</param>
     /// <returns>The type associated with the specified program identifier (ProgID), if <paramref name="progID"/> is a valid entry in the registry and a type is associated with it; otherwise, throws an exception.</returns>
     /// <exception cref="COMException">The specified <paramref name="progID"/> is not registered.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the platform not supported or <paramref name="progID"/> is not a valid entry in the registry.</exception>
     public static Type GetTypeFromProgID(string progID, string server, bool throwOnError)
     {
         return CreateNew(OriginType.GetTypeFromProgID(progID, server.Length > 0 ? server : null, throwOnError) ?? throw new NullReferenceException($"Platform not supported or {nameof(progID)} is not a valid entry in the registry."));
@@ -2124,11 +2124,11 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="invokeAttr"/> is not a valid <see cref="BindingFlags"/> attribute. -or- <paramref name="invokeAttr"/> does not contain one of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains CreateInstance combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains both GetField and SetField. -or- <paramref name="invokeAttr"/> contains both GetProperty and SetProperty. -or- <paramref name="invokeAttr"/> contains InvokeMethod combined with SetField or SetProperty. -or- <paramref name="invokeAttr"/> contains SetField and args has more than one element. -or- This method is called on a COM object and one of the following binding flags was not passed in: <see cref="BindingFlags.InvokeMethod"/>, <see cref="BindingFlags.GetProperty"/>, <see cref="BindingFlags.SetProperty"/>, <see cref="BindingFlags.PutDispProperty"/>, or <see cref="BindingFlags.PutRefDispProperty"/>.</exception>
     /// <exception cref="MethodAccessException">The specified member is a class initializer.</exception>
     /// <exception cref="MissingFieldException">The field or property cannot be found.</exception>
-    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
+    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns <see langword="true"/>.</exception>
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
-    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns true.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns <see langword="true"/>.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
@@ -2150,11 +2150,11 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="invokeAttr"/> is not a valid <see cref="BindingFlags"/> attribute. -or- <paramref name="invokeAttr"/> does not contain one of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains CreateInstance combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains both GetField and SetField. -or- <paramref name="invokeAttr"/> contains both GetProperty and SetProperty. -or- <paramref name="invokeAttr"/> contains InvokeMethod combined with SetField or SetProperty. -or- <paramref name="invokeAttr"/> contains SetField and args has more than one element. -or- This method is called on a COM object and one of the following binding flags was not passed in: <see cref="BindingFlags.InvokeMethod"/>, <see cref="BindingFlags.GetProperty"/>, <see cref="BindingFlags.SetProperty"/>, <see cref="BindingFlags.PutDispProperty"/>, or <see cref="BindingFlags.PutRefDispProperty"/>.</exception>
     /// <exception cref="MethodAccessException">The specified member is a class initializer.</exception>
     /// <exception cref="MissingFieldException">The field or property cannot be found.</exception>
-    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
+    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns <see langword="true"/>.</exception>
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
     /// <exception cref="NotSupportedException">The .NET Compact Framework does not currently support this method.</exception>
-    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns true.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns <see langword="true"/>.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
@@ -2178,10 +2178,10 @@ public partial class Type
     /// <exception cref="ArgumentException"><paramref name="invokeAttr"/> is not a valid <see cref="BindingFlags"/> attribute. -or- <paramref name="invokeAttr"/> does not contain one of the following binding flags: InvokeMethod, CreateInstance, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains CreateInstance combined with InvokeMethod, GetField, SetField, GetProperty, or SetProperty. -or- <paramref name="invokeAttr"/> contains both GetField and SetField. -or- <paramref name="invokeAttr"/> contains both GetProperty and SetProperty. -or- <paramref name="invokeAttr"/> contains InvokeMethod combined with SetField or SetProperty. -or- <paramref name="invokeAttr"/> contains SetField and args has more than one element. -or- This method is called on a COM object and one of the following binding flags was not passed in: <see cref="BindingFlags.InvokeMethod"/>, <see cref="BindingFlags.GetProperty"/>, <see cref="BindingFlags.SetProperty"/>, <see cref="BindingFlags.PutDispProperty"/>, or <see cref="BindingFlags.PutRefDispProperty"/>.</exception>
     /// <exception cref="MethodAccessException">The specified member is a class initializer.</exception>
     /// <exception cref="MissingFieldException">The field or property cannot be found.</exception>
-    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns true.</exception>
+    /// <exception cref="MissingMethodException">No method can be found that matches the arguments in <paramref name="args"/>. -or- The current <see cref="Type"/> object represents a type that contains open type parameters, that is, <see cref="Type.ContainsGenericParameters"/> returns <see langword="true"/>.</exception>
     /// <exception cref="TargetException">The specified member cannot be invoked on target.</exception>
     /// <exception cref="AmbiguousMatchException">More than one method matches the binding criteria.</exception>
-    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns true.</exception>
+    /// <exception cref="InvalidOperationException">The method represented by name has one or more unspecified generic type parameters. That is, the method's <see cref="MethodBase.ContainsGenericParameters"/> property returns <see langword="true"/>.</exception>
 #if NET5_0_OR_GREATER
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
@@ -2194,7 +2194,7 @@ public partial class Type
     /// Determines whether an instance of a specified type <paramref name="c"/> can be assigned to a variable of the current type.
     /// </summary>
     /// <param name="c">The type to compare with the current type.</param>
-    /// <returns>true if any of the following conditions is true: - <paramref name="c"/> and the current instance represent the same type. - <paramref name="c"/> is derived either directly or indirectly from the current instance. <paramref name="c"/> is derived directly from the current instance if it inherits from the current instance; <paramref name="c"/> is derived indirectly from the current instance if it inherits from a succession of one or more classes that inherit from the current instance. - The current instance is an interface that <paramref name="c"/> implements. - <paramref name="c"/> is a generic type parameter, and the current instance represents one of the constraints of <paramref name="c"/>. - <paramref name="c"/> represents a value type, and the current instance represents <see cref="System.Nullable{c}"/>. false if none of these conditions are true.</returns>
+    /// <returns><see langword="true"/> if any of the following conditions is true: - <paramref name="c"/> and the current instance represent the same type. - <paramref name="c"/> is derived either directly or indirectly from the current instance. <paramref name="c"/> is derived directly from the current instance if it inherits from the current instance; <paramref name="c"/> is derived indirectly from the current instance if it inherits from a succession of one or more classes that inherit from the current instance. - The current instance is an interface that <paramref name="c"/> implements. - <paramref name="c"/> is a generic type parameter, and the current instance represents one of the constraints of <paramref name="c"/>. - <paramref name="c"/> represents a value type, and the current instance represents <see cref="System.Nullable{c}"/>. <see langword="false"/> if none of these conditions are true.</returns>
     public bool IsAssignableFrom(Type c)
     {
         return Origin.IsAssignableFrom(c.Origin);
@@ -2205,7 +2205,7 @@ public partial class Type
     /// Determines whether the current type can be assigned to a variable of the specified <paramref name="targetType"/>.
     /// </summary>
     /// <param name="targetType">The type to compare with the current type.</param>
-    /// <returns>true if any of the following conditions is true: - The current instance and <paramref name="targetType"/> represent the same type. - The current type is derived either directly or indirectly from <paramref name="targetType"/>. The current type is derived directly from <paramref name="targetType"/> if it inherits from <paramref name="targetType"/>; the current type is derived indirectly from <paramref name="targetType"/> if it inherits from a succession of one or more classes that inherit from <paramref name="targetType"/>. - <paramref name="targetType"/> is an interface that the current type implements. - The current type is a generic type parameter, and <paramref name="targetType"/> represents one of the constraints of the current type. - The current type represents a value type, and <paramref name="targetType"/> represents <see cref="System.Nullable{c}"/>. false if none of these conditions are true.</returns>
+    /// <returns><see langword="true"/> if any of the following conditions is true: - The current instance and <paramref name="targetType"/> represent the same type. - The current type is derived either directly or indirectly from <paramref name="targetType"/>. The current type is derived directly from <paramref name="targetType"/> if it inherits from <paramref name="targetType"/>; the current type is derived indirectly from <paramref name="targetType"/> if it inherits from a succession of one or more classes that inherit from <paramref name="targetType"/>. - <paramref name="targetType"/> is an interface that the current type implements. - The current type is a generic type parameter, and <paramref name="targetType"/> represents one of the constraints of the current type. - The current type represents a value type, and <paramref name="targetType"/> represents <see cref="System.Nullable{c}"/>. <see langword="false"/> if none of these conditions are true.</returns>
     public bool IsAssignableTo(Type targetType)
     {
         return Origin.IsAssignableTo(targetType.Origin);
@@ -2216,7 +2216,7 @@ public partial class Type
     /// Returns a value that indicates whether the specified value exists in the current enumeration type.
     /// </summary>
     /// <param name="value">The value to be tested.</param>
-    /// <returns>true if the specified value is a member of the current enumeration type; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the specified value is a member of the current enumeration type; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="ArgumentException">The current type is not an enumeration.</exception>
     /// <exception cref="InvalidOperationException"><paramref name="value"/> is of a type that cannot be the underlying type of an enumeration.</exception>
     public bool IsEnumDefined(object value)
@@ -2228,7 +2228,7 @@ public partial class Type
     /// Determines whether two COM types have the same identity and are eligible for type equivalence.
     /// </summary>
     /// <param name="other">The COM type that is tested for equivalence with the current type.</param>
-    /// <returns>true if the COM types are equivalent; otherwise, false. This method also returns false if one type is in an assembly that is loaded for execution, and the other is in an assembly that is loaded into the reflection-only context.</returns>
+    /// <returns><see langword="true"/> if the COM types are equivalent; otherwise, <see langword="false"/>. This method also returns <see langword="false"/> if one type is in an assembly that is loaded for execution, and the other is in an assembly that is loaded into the reflection-only context.</returns>
     public bool IsEquivalentTo(Type other)
     {
         return Origin.IsEquivalentTo(other.Origin);
@@ -2238,7 +2238,7 @@ public partial class Type
     /// Determines whether the specified object is an instance of the current <see cref="Type"/>.
     /// </summary>
     /// <param name="o">The object to compare with the current type.</param>
-    /// <returns>true if the current <see cref="Type"/> is in the inheritance hierarchy of the object represented by <paramref name="o"/>, or if the current <see cref="Type"/> is an interface that <paramref name="o"/> implements. false if neither of these conditions is the case or if the current <see cref="Type"/> is an open generic type (that is, <see cref="Type.ContainsGenericParameters"/> returns true).</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> is in the inheritance hierarchy of the object represented by <paramref name="o"/>, or if the current <see cref="Type"/> is an interface that <paramref name="o"/> implements. <see langword="false"/> if neither of these conditions is the case or if the current <see cref="Type"/> is an open generic type (that is, <see cref="Type.ContainsGenericParameters"/> returns <see langword="true"/>).</returns>
     public bool IsInstanceOfType(object o)
     {
         return Origin.IsInstanceOfType(o);
@@ -2248,7 +2248,7 @@ public partial class Type
     /// Determines whether the current <see cref="Type"/> derives from the specified <see cref="Type"/>.
     /// </summary>
     /// <param name="c">The type to compare with the current type.</param>
-    /// <returns>true if the current <see cref="Type"/> derives from <paramref name="c"/>; otherwise, false. This method also returns false if <paramref name="c"/> and the current <see cref="Type"/> are equal.</returns>
+    /// <returns><see langword="true"/> if the current <see cref="Type"/> derives from <paramref name="c"/>; otherwise, <see langword="false"/>. This method also returns <see langword="false"/> if <paramref name="c"/> and the current <see cref="Type"/> are equal.</returns>
     public bool IsSubclassOf(Type c)
     {
         return Origin.IsSubclassOf(c.Origin);
@@ -2259,7 +2259,7 @@ public partial class Type
     /// </summary>
     /// <returns>A <see cref="Type"/> object representing a one-dimensional array of the current type, with a lower bound of zero.</returns>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
-    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns <see langword="true"/>.</exception>
     public Type MakeArrayType()
     {
         return CreateNew(Origin.MakeArrayType());
@@ -2272,7 +2272,7 @@ public partial class Type
     /// <returns>An object representing an array of the current type, with the specified number of dimensions.</returns>
     /// <exception cref="IndexOutOfRangeException"><paramref name="rank"/> is invalid. For example, 0 or negative.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
-    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true. -or- <paramref name="rank"/> is greater than 32.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns <see langword="true"/>. -or- <paramref name="rank"/> is greater than 32.</exception>
     public Type MakeArrayType(int rank)
     {
         return CreateNew(Origin.MakeArrayType(rank));
@@ -2283,7 +2283,7 @@ public partial class Type
     /// </summary>
     /// <returns>A <see cref="Type"/> object that represents the current type when passed as a ref parameter.</returns>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
-    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns <see langword="true"/>.</exception>
     public Type MakeByRefType()
     {
         return CreateNew(Origin.MakeByRefType());
@@ -2318,8 +2318,8 @@ public partial class Type
     /// </summary>
     /// <param name="typeArguments">An array of types to be substituted for the type parameters of the current generic type.</param>
     /// <returns>A <see cref="Type"/> representing the constructed type formed by substituting the elements of <paramref name="typeArguments"/> for the type parameters of the current generic type.</returns>
-    /// <exception cref="InvalidOperationException">The current type does not represent a generic type definition. That is, <see cref="IsGenericTypeDefinition"/> returns false.</exception>
-    /// <exception cref="ArgumentException">The number of elements in <paramref name="typeArguments"/> is not the same as the number of type parameters in the current generic type definition. -or- Any element of <paramref name="typeArguments"/> does not satisfy the constraints specified for the corresponding type parameter of the current generic type. -or- <paramref name="typeArguments"/> contains an element that is a pointer type (<see cref="IsPointer"/> returns true), a by-ref type (<see cref="IsByRef"/> returns true), or <see cref="System.Void"/>.</exception>
+    /// <exception cref="InvalidOperationException">The current type does not represent a generic type definition. That is, <see cref="IsGenericTypeDefinition"/> returns <see langword="false"/>.</exception>
+    /// <exception cref="ArgumentException">The number of elements in <paramref name="typeArguments"/> is not the same as the number of type parameters in the current generic type definition. -or- Any element of <paramref name="typeArguments"/> does not satisfy the constraints specified for the corresponding type parameter of the current generic type. -or- <paramref name="typeArguments"/> contains an element that is a pointer type (<see cref="IsPointer"/> returns <see langword="true"/>), a by-ref type (<see cref="IsByRef"/> returns <see langword="true"/>), or <see cref="System.Void"/>.</exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class. Derived classes must provide an implementation.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("If some of the generic arguments are annotated (either with DynamicallyAccessedMembersAttribute, or generic constraints), trimming can't validate that the requirements of those annotations are met.")]
@@ -2334,7 +2334,7 @@ public partial class Type
     /// </summary>
     /// <returns>A <see cref="Type"/> object that represents a pointer to the current type.</returns>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
-    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns true.</exception>
+    /// <exception cref="TypeLoadException">The current type is <see cref="TypedReference"/>. -or- The current type is a ByRef type. That is, <see cref="IsByRef"/> returns <see langword="true"/>.</exception>
     public Type MakePointerType()
     {
         return CreateNew(Origin.MakePointerType());
@@ -2345,7 +2345,7 @@ public partial class Type
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(Type left, Type right)
     {
         return left.Origin == right.Origin;
@@ -2356,7 +2356,7 @@ public partial class Type
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(Type left, Type right)
     {
         return left.Origin != right.Origin;

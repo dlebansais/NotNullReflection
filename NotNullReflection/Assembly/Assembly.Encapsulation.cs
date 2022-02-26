@@ -121,7 +121,7 @@ public partial class Assembly
     /// <summary>
     /// Gets a value indicating whether this assembly is held in a collectible System.Runtime.Loader.AssemblyLoadContext.
     /// </summary>
-    /// <returns>true if this assembly is held in a collectible System.Runtime.Loader.AssemblyLoadContext; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if this assembly is held in a collectible System.Runtime.Loader.AssemblyLoadContext; otherwise, <see langword="false"/>.</returns>
     public bool IsCollectible
     {
         get
@@ -134,7 +134,7 @@ public partial class Assembly
     /// <summary>
     /// Gets a value indicating whether the current assembly was generated dynamically in the current process by using reflection emit.
     /// </summary>
-    /// <returns>true if the current assembly was generated dynamically in the current process; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current assembly was generated dynamically in the current process; otherwise, <see langword="false"/>.</returns>
     public bool IsDynamic
     {
         get
@@ -146,7 +146,7 @@ public partial class Assembly
     /// <summary>
     /// Gets a value indicating whether the current assembly is loaded with full trust.
     /// </summary>
-    /// <returns>true if the current assembly is loaded with full trust; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the current assembly is loaded with full trust; otherwise, <see langword="false"/>.</returns>
     public bool IsFullyTrusted
     {
         get
@@ -195,7 +195,7 @@ public partial class Assembly
     /// <summary>
     /// Gets a value indicating whether this assembly was loaded into the reflection-only context.
     /// </summary>
-    /// <returns>true if the assembly was loaded into the reflection-only context, rather than the execution context; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the assembly was loaded into the reflection-only context, rather than the execution context; otherwise, <see langword="false"/>.</returns>
     public bool ReflectionOnly
     {
         get
@@ -254,7 +254,7 @@ public partial class Assembly
     /// Locates the specified type from this assembly and creates an instance of it using the system activator, with optional case-sensitive search.
     /// </summary>
     /// <param name="typeName">The <see cref="Type.FullName"/> of the type to locate.</param>
-    /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
+    /// <param name="ignoreCase"><see langword="true"/> to ignore the case of the type name; otherwise, <see langword="false"/>.</param>
     /// <returns>An instance of the specified type created with the parameterless constructor; if <paramref name="typeName"/> is not found this method throws an exception. The type is resolved using the default binder, without specifying culture or activation attributes, and with <see cref="BindingFlags"/> set to <see cref="BindingFlags.Public"/> or <see cref="BindingFlags.Instance"/>.</returns>
     /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character. -or- The current assembly was loaded into the reflection-only context.</exception>
     /// <exception cref="MissingMethodException">No matching constructor was found.</exception>
@@ -274,7 +274,7 @@ public partial class Assembly
     /// Locates the specified type from this assembly and creates an instance of it using the system activator, with optional case-sensitive search and having the specified culture, arguments, and binding and activation attributes.
     /// </summary>
     /// <param name="typeName">The <see cref="Type.FullName"/> of the type to locate.</param>
-    /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
+    /// <param name="ignoreCase"><see langword="true"/> to ignore the case of the type name; otherwise, <see langword="false"/>.</param>
     /// <param name="bindingAttr">A bitmask that affects the way in which the search is conducted. The value is a combination of bit flags from <see cref="BindingFlags"/>.</param>
     /// <param name="binder">An object that enables the binding, coercion of argument types, invocation of members, and retrieval of <see cref="MemberInfo"/> objects via reflection. If binder is <see cref="DefaultBinder"/>, the default binder is used.</param>
     /// <param name="args">An array that contains the arguments to be passed to the constructor. This array of arguments must match in number, order, and type the parameters of the constructor to be invoked. If the parameterless constructor is desired, args must be <see cref="Array.Empty"/>.</param>
@@ -311,7 +311,7 @@ public partial class Assembly
     /// Determines whether this assembly and the specified object are equal.
     /// </summary>
     /// <param name="o">The object to compare with this instance.</param>
-    /// <returns>true if <paramref name="o"/> is equal to this instance; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="o"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
 #pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
     public override bool Equals(object o)
 #pragma warning restore CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
@@ -432,7 +432,7 @@ public partial class Assembly
     /// <summary>
     /// Gets the files in the file table of an assembly manifest, specifying whether to include resource modules.
     /// </summary>
-    /// <param name="getResourceModules">true to include resource modules; otherwise, false.</param>
+    /// <param name="getResourceModules"><see langword="true"/> to include resource modules; otherwise, <see langword="false"/>.</param>
     /// <returns>An array of streams that contain the files.</returns>
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
     /// <exception cref="FileNotFoundException">A file was not found.</exception>
@@ -480,7 +480,7 @@ public partial class Assembly
     /// <summary>
     /// Gets all the loaded modules that are part of this assembly, specifying whether to include resource modules.
     /// </summary>
-    /// <param name="getResourceModules">true to include resource modules; otherwise, false.</param>
+    /// <param name="getResourceModules"><see langword="true"/> to include resource modules; otherwise, <see langword="false"/>.</param>
     /// <returns>An array of modules.</returns>
     public OriginModule[] GetLoadedModules(bool getResourceModules)
     {
@@ -569,7 +569,7 @@ public partial class Assembly
     /// <summary>
     /// Gets all the modules that are part of this assembly, specifying whether to include resource modules.
     /// </summary>
-    /// <param name="getResourceModules">true to include resource modules; otherwise, false.</param>
+    /// <param name="getResourceModules"><see langword="true"/> to include resource modules; otherwise, <see langword="false"/>.</param>
     /// <returns>An array of modules.</returns>
     public OriginModule[] GetModules(bool getResourceModules)
     {
@@ -588,7 +588,7 @@ public partial class Assembly
     /// <summary>
     /// Gets a <see cref="AssemblyName"/> for this assembly, setting the codebase as specified by copiedName.
     /// </summary>
-    /// <param name="copiedName">true to set the <see cref="OriginAssembly.CodeBase"/> to the location of the assembly after it was shadow copied; false to set <see cref="OriginAssembly.CodeBase"/> to the original location.</param>
+    /// <param name="copiedName"><see langword="true"/> to set the <see cref="OriginAssembly.CodeBase"/> to the location of the assembly after it was shadow copied; <see langword="false"/> to set <see cref="OriginAssembly.CodeBase"/> to the original location.</param>
     /// <returns>An object that contains the fully parsed display name for this assembly.</returns>
     public AssemblyName GetName(bool copiedName)
     {
@@ -668,14 +668,14 @@ public partial class Assembly
     /// Gets the <see cref="Type"/> object with the specified name in the assembly instance and optionally throws <see cref="TypeLoadException"/> if the type is not found.
     /// </summary>
     /// <param name="name">The full name of the type.</param>
-    /// <param name="throwOnError">true to throw <see cref="TypeLoadException"/> if the type is not found; false to throw <see cref="NullReferenceException"/>.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw <see cref="TypeLoadException"/> if the type is not found; <see langword="false"/> to throw <see cref="NullReferenceException"/>.</param>
     /// <returns>An object that represents the specified class.</returns>
     /// <exception cref="ArgumentException"><paramref name="name"/> is invalid. -or- The length of <paramref name="name"/> exceeds 1024 characters.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true, and the type cannot be found.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/>, and the type cannot be found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="name"/> requires a dependent assembly that could not be found.</exception>
     /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type cannot be found.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type cannot be found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
@@ -688,15 +688,15 @@ public partial class Assembly
     /// Gets the <see cref="Type"/> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.
     /// </summary>
     /// <param name="name">The full name of the type.</param>
-    /// <param name="throwOnError">true to throw <see cref="TypeLoadException"/> if the type is not found; false to throw <see cref="NullReferenceException"/>.</param>
-    /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
+    /// <param name="throwOnError"><see langword="true"/> to throw <see cref="TypeLoadException"/> if the type is not found; <see langword="false"/> to throw <see cref="NullReferenceException"/>.</param>
+    /// <param name="ignoreCase"><see langword="true"/> to ignore the case of the type name; otherwise, <see langword="false"/>.</param>
     /// <returns>An object that represents the specified class.</returns>
     /// <exception cref="ArgumentException"><paramref name="name"/> is invalid. -or- The length of <paramref name="name"/> exceeds 1024 characters.</exception>
-    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true, and the type cannot be found.</exception>
+    /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is <see langword="true"/>, and the type cannot be found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="name"/> requires a dependent assembly that could not be found.</exception>
     /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded.</exception>
     /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
-    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type cannot be found.</exception>
+    /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is <see langword="false"/>, and the type cannot be found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
 #endif
@@ -740,7 +740,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="attributeType">The type of the attribute to be checked for this assembly.</param>
     /// <param name="inherit">This argument is ignored for objects of this type.</param>
-    /// <returns>true if the attribute has been applied to the assembly; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if the attribute has been applied to the assembly; otherwise, <see langword="false"/>.</returns>
     /// <exception cref="ArgumentException"><paramref name="attributeType"/> uses an invalid type.</exception>
     public bool IsDefined(Type attributeType, bool inherit)
     {
@@ -907,7 +907,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="left">The assembly to compare to right.</param>
     /// <param name="right">The assembly to compare to left.</param>
-    /// <returns>true if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(Assembly left, Assembly right)
     {
         return left.Origin == right.Origin;
@@ -918,7 +918,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="left">The assembly to compare to right.</param>
     /// <param name="right">The assembly to compare to left.</param>
-    /// <returns>true if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, false.</returns>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(Assembly left, Assembly right)
     {
         return left.Origin != right.Origin;
