@@ -9,9 +9,11 @@ Proxy for System.Reflection with no null references whatsoever.
 + `System.Reflection.ConstructorInfo`
 + `System.Reflection.EventInfo`
 + `System.Reflection.FieldInfo`
++ `System.Reflection.ManifestResourceInfo`
 + `System.Reflection.MemberInfo`
 + `System.Reflection.MethodBase`
 + `System.Reflection.MethodInfo`
++ `System.Reflection.Module`
 + `System.Reflection.PropertyInfo`
 + `System.Type`
 
