@@ -236,14 +236,11 @@ public partial class Assembly
     /// </summary>
     /// <param name="typeName">The <see cref="Type.FullName"/> of the type to locate.</param>
     /// <returns>An instance of the specified type created with the parameterless constructor; if <paramref name="typeName"/> is not found this method throws an exception. The type is resolved using the default binder, without specifying culture or activation attributes, and with <see cref="BindingFlags"/> set to <see cref="BindingFlags.Public"/> or <see cref="BindingFlags.Instance"/>.</returns>
-    /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character.</exception>
-    /// <exception cref="ArgumentException">The current assembly was loaded into the reflection-only context.</exception>
+    /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character. -or- The current assembly was loaded into the reflection-only context.</exception>
     /// <exception cref="MissingMethodException">No matching constructor was found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="typeName"/> requires a dependent assembly that could not be found.</exception>
-    /// <exception cref="FileLoadException"><paramref name="typeName"/> requires a dependent assembly that was found but could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The current assembly was loaded into the reflection-only context, and <paramref name="typeName"/> requires a dependent assembly that was not preloaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
+    /// <exception cref="FileLoadException"><paramref name="typeName"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="typeName"/> requires a dependent assembly that was not preloaded.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="typeName"/> is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
@@ -259,14 +256,11 @@ public partial class Assembly
     /// <param name="typeName">The <see cref="Type.FullName"/> of the type to locate.</param>
     /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
     /// <returns>An instance of the specified type created with the parameterless constructor; if <paramref name="typeName"/> is not found this method throws an exception. The type is resolved using the default binder, without specifying culture or activation attributes, and with <see cref="BindingFlags"/> set to <see cref="BindingFlags.Public"/> or <see cref="BindingFlags.Instance"/>.</returns>
-    /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character.</exception>
-    /// <exception cref="ArgumentException">The current assembly was loaded into the reflection-only context.</exception>
+    /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character. -or- The current assembly was loaded into the reflection-only context.</exception>
     /// <exception cref="MissingMethodException">No matching constructor was found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="typeName"/> requires a dependent assembly that could not be found.</exception>
-    /// <exception cref="FileLoadException"><paramref name="typeName"/> requires a dependent assembly that was found but could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The current assembly was loaded into the reflection-only context, and <paramref name="typeName"/> requires a dependent assembly that was not preloaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
+    /// <exception cref="FileLoadException"><paramref name="typeName"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="typeName"/> requires a dependent assembly that was not preloaded.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="typeName"/> is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
@@ -286,15 +280,12 @@ public partial class Assembly
     /// <param name="args">An array that contains the arguments to be passed to the constructor. This array of arguments must match in number, order, and type the parameters of the constructor to be invoked. If the parameterless constructor is desired, args must be <see cref="Array.Empty"/>.</param>
     /// <param name="culture">An instance of <see cref="CultureInfo"/> used to govern the coercion of types. Use <see cref="CultureInfo.CurrentCulture"/> if the default is desired. (This is necessary to convert a string that represents 1000 to a <see cref="double"/> value, for example, since 1000 is represented differently by different cultures.)</param>
     /// <returns>An instance of the specified type; if <paramref name="typeName"/> is not found this method throws an exception. The supplied arguments are used to resolve the type, and to bind the constructor that is used to create the instance.</returns>
-    /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character.</exception>
-    /// <exception cref="ArgumentException">The current assembly was loaded into the reflection-only context.</exception>
+    /// <exception cref="ArgumentException"><paramref name="typeName"/> is an empty string ("") or a string beginning with a null character. -or- The current assembly was loaded into the reflection-only context.</exception>
     /// <exception cref="MissingMethodException">No matching constructor was found.</exception>
     /// <exception cref="NotSupportedException">A non-empty activation attributes array is passed to a type that does not inherit from <see cref="MarshalByRefObject"/>.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="typeName"/> requires a dependent assembly that could not be found.</exception>
-    /// <exception cref="FileLoadException"><paramref name="typeName"/> requires a dependent assembly that was found but could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The current assembly was loaded into the reflection-only context, and <paramref name="typeName"/> requires a dependent assembly that was not preloaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
+    /// <exception cref="FileLoadException"><paramref name="typeName"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="typeName"/> requires a dependent assembly that was not preloaded.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="typeName"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="typeName"/> requires a dependent assembly that was compiled for a version of the runtime that is later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="typeName"/> is not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Assembly.CreateInstance is not supported with trimming. Use Type.GetType instead.")]
@@ -662,10 +653,8 @@ public partial class Assembly
     /// <returns>An object that represents the specified class; this method throws an exception if the class is not found.</returns>
     /// <exception cref="ArgumentException"><paramref name="name"/> is invalid.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="name"/> requires a dependent assembly that could not be found.</exception>
-    /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
+    /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException">Class was not found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
@@ -681,14 +670,11 @@ public partial class Assembly
     /// <param name="name">The full name of the type.</param>
     /// <param name="throwOnError">true to throw <see cref="TypeLoadException"/> if the type is not found; false to throw <see cref="NullReferenceException"/>.</param>
     /// <returns>An object that represents the specified class.</returns>
-    /// <exception cref="ArgumentException"><paramref name="name"/> is invalid.</exception>
-    /// <exception cref="ArgumentException">The length of <paramref name="name"/> exceeds 1024 characters.</exception>
+    /// <exception cref="ArgumentException"><paramref name="name"/> is invalid. -or- The length of <paramref name="name"/> exceeds 1024 characters.</exception>
     /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true, and the type cannot be found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="name"/> requires a dependent assembly that could not be found.</exception>
-    /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
+    /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type cannot be found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
@@ -705,14 +691,11 @@ public partial class Assembly
     /// <param name="throwOnError">true to throw <see cref="TypeLoadException"/> if the type is not found; false to throw <see cref="NullReferenceException"/>.</param>
     /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
     /// <returns>An object that represents the specified class.</returns>
-    /// <exception cref="ArgumentException"><paramref name="name"/> is invalid.</exception>
-    /// <exception cref="ArgumentException">The length of <paramref name="name"/> exceeds 1024 characters.</exception>
+    /// <exception cref="ArgumentException"><paramref name="name"/> is invalid. -or- The length of <paramref name="name"/> exceeds 1024 characters.</exception>
     /// <exception cref="TypeLoadException"><paramref name="throwOnError"/> is true, and the type cannot be found.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="name"/> requires a dependent assembly that could not be found.</exception>
-    /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
+    /// <exception cref="FileLoadException"><paramref name="name"/> requires a dependent assembly that was found but could not be loaded. -or- The current assembly was loaded into the reflection-only context, and <paramref name="name"/> requires a dependent assembly that was not preloaded.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="name"/> requires a dependent assembly, but the file is not a valid assembly. -or- <paramref name="name"/> requires a dependent assembly which was compiled for a version of the runtime later than the currently loaded version.</exception>
     /// <exception cref="NullReferenceException"><paramref name="throwOnError"/> is false, and the type cannot be found.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types might be removed")]
@@ -769,8 +752,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="rawAssembly">A byte array that is a COFF-based image containing an emitted assembly.</param>
     /// <returns>The loaded assembly.</returns>
-    /// <exception cref="BadImageFormatException"><paramref name="rawAssembly"/> is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="rawAssembly"/> was compiled with a later version.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="rawAssembly"/> is not a valid assembly. -or- Version 2.0 or later of the common language runtime is currently loaded and <paramref name="rawAssembly"/> was compiled with a later version.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
 #endif
@@ -786,8 +768,7 @@ public partial class Assembly
     /// <param name="rawAssembly">A byte array that is a COFF-based image containing an emitted assembly.</param>
     /// <param name="rawSymbolStore">A byte array that contains the raw bytes representing the symbols for the assembly.</param>
     /// <returns>The loaded assembly.</returns>
-    /// <exception cref="BadImageFormatException"><paramref name="rawAssembly"/> is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="rawAssembly"/> was compiled with a later version.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="rawAssembly"/> is not a valid assembly. -or- Version 2.0 or later of the common language runtime is currently loaded and <paramref name="rawAssembly"/> was compiled with a later version.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
 #endif
@@ -803,10 +784,8 @@ public partial class Assembly
     /// <param name="assemblyRef">The object that describes the assembly to be loaded.</param>
     /// <returns>The loaded assembly.</returns>
     /// <exception cref="FileNotFoundException"><paramref name="assemblyRef"/> is not found.</exception>
-    /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
-    /// <exception cref="FileLoadException"><paramref name="assemblyRef"/> specifies a remote assembly, but the ability to execute code in remote assemblies is disabled. See &lt;LoadFromRemoteSources&gt;. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyRef"/> is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyRef"/> was compiled with a later version.</exception>
+    /// <exception cref="FileLoadException">A file that was found could not be loaded. -or- <paramref name="assemblyRef"/> specifies a remote assembly, but the ability to execute code in remote assemblies is disabled. See &lt;LoadFromRemoteSources&gt;. Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception, <see cref="IOException"/>, instead.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="assemblyRef"/> is not a valid assembly. -or- Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyRef"/> was compiled with a later version.</exception>
     public static Assembly Load(AssemblyName assemblyRef)
     {
         OriginAssembly Origin = OriginAssembly.Load(assemblyRef.Origin);
@@ -821,8 +800,7 @@ public partial class Assembly
     /// <exception cref="ArgumentException"><paramref name="assemblyString"/> is a zero-length string.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="assemblyString"/> is not found.</exception>
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyString"/> is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyString"/> was compiled with a later version.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="assemblyString"/> is not a valid assembly. -or- Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyString"/> was compiled with a later version.</exception>
     public static Assembly Load(string assemblyString)
     {
         OriginAssembly Origin = OriginAssembly.Load(assemblyString);
@@ -835,11 +813,9 @@ public partial class Assembly
     /// <param name="path">The fully qualified path of the file to load.</param>
     /// <returns>The loaded assembly.</returns>
     /// <exception cref="ArgumentException">The <paramref name="path"/> argument is not an absolute path.</exception>
-    /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The ability to execute code in remote assemblies is disabled. See &lt;loadFromRemoteSources&gt;.</exception>
+    /// <exception cref="FileLoadException">A file that was found could not be loaded. -or- The ability to execute code in remote assemblies is disabled. See &lt;loadFromRemoteSources&gt;.</exception>
     /// <exception cref="FileNotFoundException">The <paramref name="path"/> parameter is an empty string ("") or does not exist.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="path"/> is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="path"/> was compiled with a later version.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="path"/> is not a valid assembly. -or- Version 2.0 or later of the common language runtime is currently loaded and <paramref name="path"/> was compiled with a later version.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
 #endif
@@ -857,10 +833,8 @@ public partial class Assembly
     /// <exception cref="ArgumentException">The <paramref name="assemblyFile"/> parameter is an empty string ("").</exception>
     /// <exception cref="PathTooLongException">The assembly name exceeds the system-defined maximum length.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="assemblyFile"/> is not found, or the module you are trying to load does not specify a filename extension.</exception>
-    /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The ability to execute code in remote assemblies is disabled. See &lt;loadFromRemoteSources&gt;.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly; for example, a 32-bit assembly in a 64-bit process. See the exception topic for more information.</exception>
-    /// <exception cref="BadImageFormatException">Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyFile"/> was compiled with a later version.</exception>
+    /// <exception cref="FileLoadException">A file that was found could not be loaded. -or- The ability to execute code in remote assemblies is disabled. See &lt;loadFromRemoteSources&gt;.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly; for example, a 32-bit assembly in a 64-bit process. See the exception topic for more information. -or- Version 2.0 or later of the common language runtime is currently loaded and <paramref name="assemblyFile"/> was compiled with a later version.</exception>
     /// <exception cref="SecurityException">A codebase that does not start with "file://" was specified without the required System.Net.WebPermission.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
@@ -881,10 +855,8 @@ public partial class Assembly
     /// <exception cref="ArgumentException">The <paramref name="assemblyFile"/> parameter is an empty string ("").</exception>
     /// <exception cref="PathTooLongException">The assembly name exceeds the system-defined maximum length.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="assemblyFile"/> is not found, or the module you are trying to load does not specify a filename extension.</exception>
-    /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
-    /// <exception cref="FileLoadException">The ability to execute code in remote assemblies is disabled. See &lt;loadFromRemoteSources&gt;.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly; for example, a 32-bit assembly in a 64-bit process. See the exception topic for more information.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
+    /// <exception cref="FileLoadException">A file that was found could not be loaded. -or- The ability to execute code in remote assemblies is disabled. See &lt;loadFromRemoteSources&gt;.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly; for example, a 32-bit assembly in a 64-bit process. See the exception topic for more information. -or- <paramref name="assemblyFile"/> was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="SecurityException">A codebase that does not start with "file://" was specified without the required System.Net.WebPermission.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
@@ -970,8 +942,7 @@ public partial class Assembly
     /// <exception cref="PathTooLongException">The assembly name exceeds the system-defined maximum length.</exception>
     /// <exception cref="FileNotFoundException"><paramref name="assemblyFile"/> is not found, or the module you are trying to load does not specify a filename extension.</exception>
     /// <exception cref="FileLoadException">A file that was found could not be loaded.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly.</exception>
-    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
+    /// <exception cref="BadImageFormatException"><paramref name="assemblyFile"/> is not a valid assembly. -or- <paramref name="assemblyFile"/> was compiled with a later version of the common language runtime than the version that is currently loaded.</exception>
     /// <exception cref="SecurityException">A codebase that does not start with "file://" was specified without the required System.Net.WebPermission.</exception>
 #if NET5_0_OR_GREATER
     [RequiresUnreferencedCode("Types and members the loaded assembly depends on might be removed")]
