@@ -20,7 +20,7 @@ public partial class FieldInfo : MemberInfo
     }
 
     /// <summary>
-    /// Gets the origin field information for which this class is a proxy.
+    /// Gets the origin field information this class encapsulates.
     /// </summary>
     public new OriginFieldInfo Origin { get; }
 }

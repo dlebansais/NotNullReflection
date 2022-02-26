@@ -20,7 +20,7 @@ public partial class ConstructorInfo : MethodBase
     }
 
     /// <summary>
-    /// Gets the origin constructor information for which this class is a proxy.
+    /// Gets the origin constructor information this class encapsulates.
     /// </summary>
     public new OriginConstructorInfo Origin { get; }
 }

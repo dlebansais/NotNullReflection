@@ -20,7 +20,7 @@ public partial class AssemblyName : ICloneable
     }
 
     /// <summary>
-    /// Gets the origin assembly name for which this class is a proxy.
+    /// Gets the origin assembly name this class encapsulates.
     /// </summary>
     public OriginAssemblyName Origin { get; }
 

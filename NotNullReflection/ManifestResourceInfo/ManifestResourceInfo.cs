@@ -19,7 +19,7 @@ public partial class ManifestResourceInfo
     }
 
     /// <summary>
-    /// Gets the origin manifest resource information for which this class is a proxy.
+    /// Gets the origin manifest resource information this class encapsulates.
     /// </summary>
     public OriginManifestResourceInfo Origin { get; }
 }

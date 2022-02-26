@@ -20,7 +20,7 @@ public partial class MethodInfo : MethodBase
     }
 
     /// <summary>
-    /// Gets the origin method information for which this class is a proxy.
+    /// Gets the origin method information this class encapsulates.
     /// </summary>
     public new OriginMethodInfo Origin { get; }
 }

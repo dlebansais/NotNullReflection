@@ -20,7 +20,7 @@ public partial class EventInfo : MemberInfo
     }
 
     /// <summary>
-    /// Gets the origin event information for which this class is a proxy.
+    /// Gets the origin event information this class encapsulates.
     /// </summary>
     public new OriginEventInfo Origin { get; }
 }

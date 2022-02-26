@@ -20,7 +20,7 @@ public partial class Type : MemberInfo
     }
 
     /// <summary>
-    /// Gets the origin type for which this class is a proxy.
+    /// Gets the origin type this class encapsulates.
     /// </summary>
     public new OriginType Origin { get; }
 }

@@ -19,7 +19,7 @@ public abstract partial class MemberInfo
     }
 
     /// <summary>
-    /// Gets the origin member information for which this class is a proxy.
+    /// Gets the origin member information this class encapsulates.
     /// </summary>
     public OriginMemberInfo Origin { get; }
 }

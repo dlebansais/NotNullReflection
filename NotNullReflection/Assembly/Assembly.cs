@@ -27,7 +27,7 @@ public partial class Assembly
     }
 
     /// <summary>
-    /// Gets the origin assembly for which this class is a proxy.
+    /// Gets the origin assembly this class encapsulates.
     /// </summary>
     public OriginAssembly Origin { get; }
 }

@@ -1,6 +1,6 @@
 # NotNullReflection
 
-Proxy for System.Reflection with no null references whatsoever.
+Encapsulation of `System.Reflection` with no null references whatsoever.
 
 ## Supported types
 
