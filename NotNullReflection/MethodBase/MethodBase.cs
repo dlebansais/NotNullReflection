@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginMethodBase = System.Reflection.MethodBase;
 
 /// <summary>
 /// Provides information about methods and constructors.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public abstract partial class MethodBase : MemberInfo
 {
     /// <summary>

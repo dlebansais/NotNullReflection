@@ -1,11 +1,13 @@
 ﻿namespace NotNullReflection;
 
 using System;
+using System.Diagnostics;
 using OriginAssemblyName = System.Reflection.AssemblyName;
 
 /// <summary>
 /// Describes an assembly's unique identity in full.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class AssemblyName : ICloneable
 {
     /// <summary>

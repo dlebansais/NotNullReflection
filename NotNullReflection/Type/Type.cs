@@ -6,7 +6,7 @@ using OriginType = System.Type;
 /// <summary>
 /// Represents type declarations: class types, interface types, array types, value types, enumeration types, type parameters, generic type definitions, and open or closed constructed generic types.
 /// </summary>
-[DebuggerDisplay("Name = {Name} FullName = {FullName}")]
+[DebuggerDisplay("{Origin}")]
 public partial class Type : MemberInfo
 {
     /// <summary>

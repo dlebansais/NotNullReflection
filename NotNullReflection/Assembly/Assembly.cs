@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginAssembly = System.Reflection.Assembly;
 
 /// <summary>
 /// Represents an assembly, which is a reusable, versionable, and self-describing building block of a common language runtime application.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class Assembly
 {
     /// <summary>

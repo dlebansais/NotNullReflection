@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginManifestResourceInfo = System.Reflection.ManifestResourceInfo;
 
 /// <summary>
 /// Provides access to manifest resources, which are XML files that describe application dependencies.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class ManifestResourceInfo
 {
     /// <summary>

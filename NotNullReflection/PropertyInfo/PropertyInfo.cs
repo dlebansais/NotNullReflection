@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginPropertyInfo = System.Reflection.PropertyInfo;
 
 /// <summary>
 /// Discovers the attributes of a property and provides access to property metadata.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class PropertyInfo : MemberInfo
 {
     /// <summary>

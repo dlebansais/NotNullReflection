@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginModule = System.Reflection.Module;
 
 /// <summary>
 /// Performs reflection on a module.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class Module
 {
     /// <summary>

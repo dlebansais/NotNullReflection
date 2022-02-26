@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginConstructorInfo = System.Reflection.ConstructorInfo;
 
 /// <summary>
 /// Discovers the attributes of a class constructor and provides access to constructor metadata.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class ConstructorInfo : MethodBase
 {
     /// <summary>

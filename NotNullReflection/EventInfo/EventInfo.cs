@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginEventInfo = System.Reflection.EventInfo;
 
 /// <summary>
 /// Discovers the attributes of an event and provides access to event metadata.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class EventInfo : MemberInfo
 {
     /// <summary>

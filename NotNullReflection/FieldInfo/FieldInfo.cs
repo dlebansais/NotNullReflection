@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginFieldInfo = System.Reflection.FieldInfo;
 
 /// <summary>
 /// Discovers the attributes of a field and provides access to field metadata.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public partial class FieldInfo : MemberInfo
 {
     /// <summary>

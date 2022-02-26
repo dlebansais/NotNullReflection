@@ -1,10 +1,12 @@
 ﻿namespace NotNullReflection;
 
+using System.Diagnostics;
 using OriginMemberInfo = System.Reflection.MemberInfo;
 
 /// <summary>
 /// Obtains information about the attributes of a member and provides access to member metadata.
 /// </summary>
+[DebuggerDisplay("{Origin}")]
 public abstract partial class MemberInfo
 {
     /// <summary>
