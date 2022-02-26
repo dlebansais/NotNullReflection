@@ -14,6 +14,6 @@ public partial class FieldInfo
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginFieldInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="FieldInfo"/> objects.</returns>
-    public static IEnumerable<FieldInfo> GetList(IEnumerable<OriginFieldInfo> collection) => from OriginFieldInfo Item in collection
-                                                                                             select CreateNew(Item);
+    internal static IEnumerable<FieldInfo> GetList(IEnumerable<OriginFieldInfo> collection) => from OriginFieldInfo Item in collection
+                                                                                               select CreateNew(Item);
 }

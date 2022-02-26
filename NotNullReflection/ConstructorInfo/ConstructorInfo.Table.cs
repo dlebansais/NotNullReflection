@@ -13,7 +13,7 @@ public partial class ConstructorInfo
     /// </summary>
     /// <param name="origin">The origin constructor information.</param>
     /// <returns>The new instance.</returns>
-    public static ConstructorInfo CreateNew(OriginConstructorInfo origin)
+    internal static ConstructorInfo CreateNew(OriginConstructorInfo origin)
     {
         if (ConstructorInfoCache.ContainsKey(origin))
             return ConstructorInfoCache[origin];

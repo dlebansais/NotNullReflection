@@ -20,7 +20,7 @@ public abstract partial class MemberInfo
     /// <param name="origin">The origin member information.</param>
     /// <returns>The new instance.</returns>
     /// <exception cref="NotSupportedException">Conversion not supported.</exception>
-    public static MemberInfo CreateNew(OriginMemberInfo origin)
+    internal static MemberInfo CreateNew(OriginMemberInfo origin)
     {
         if (MemberInfoCache.ContainsKey(origin))
             return MemberInfoCache[origin];

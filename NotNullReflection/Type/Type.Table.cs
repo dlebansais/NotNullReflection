@@ -13,7 +13,7 @@ public partial class Type
     /// </summary>
     /// <param name="origin">The origin type.</param>
     /// <returns>The new instance.</returns>
-    public static Type CreateNew(OriginType origin)
+    internal static Type CreateNew(OriginType origin)
     {
         if (TypeCache.ContainsKey(origin))
             return TypeCache[origin];

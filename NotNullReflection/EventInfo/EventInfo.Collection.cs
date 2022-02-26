@@ -14,6 +14,6 @@ public partial class EventInfo
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginEventInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="EventInfo"/> objects.</returns>
-    public static IEnumerable<EventInfo> GetList(IEnumerable<OriginEventInfo> collection) => from OriginEventInfo Item in collection
-                                                                                             select CreateNew(Item);
+    internal static IEnumerable<EventInfo> GetList(IEnumerable<OriginEventInfo> collection) => from OriginEventInfo Item in collection
+                                                                                               select CreateNew(Item);
 }

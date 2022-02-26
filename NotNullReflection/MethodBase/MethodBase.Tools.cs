@@ -29,7 +29,7 @@ public abstract partial class MethodBase
     /// <param name="origin">The origin method information.</param>
     /// <returns>The new instance.</returns>
     /// <exception cref="NotSupportedException">Conversion not supported.</exception>
-    public static MethodBase CreateNew(OriginMethodBase origin)
+    internal static MethodBase CreateNew(OriginMethodBase origin)
     {
         switch (origin)
         {

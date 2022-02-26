@@ -13,7 +13,7 @@ public partial class PropertyInfo
     /// </summary>
     /// <param name="origin">The origin property information.</param>
     /// <returns>The new instance.</returns>
-    public static PropertyInfo CreateNew(OriginPropertyInfo origin)
+    internal static PropertyInfo CreateNew(OriginPropertyInfo origin)
     {
         if (PropertyInfoCache.ContainsKey(origin))
             return PropertyInfoCache[origin];

@@ -14,6 +14,6 @@ public partial class ManifestResourceInfo
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginManifestResourceInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="ManifestResourceInfo"/> objects.</returns>
-    public static IEnumerable<ManifestResourceInfo> GetList(IEnumerable<OriginManifestResourceInfo> collection) => from OriginManifestResourceInfo Item in collection
-                                                                                                                   select CreateNew(Item);
+    internal static IEnumerable<ManifestResourceInfo> GetList(IEnumerable<OriginManifestResourceInfo> collection) => from OriginManifestResourceInfo Item in collection
+                                                                                                                     select CreateNew(Item);
 }

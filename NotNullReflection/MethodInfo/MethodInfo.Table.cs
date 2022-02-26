@@ -13,7 +13,7 @@ public partial class MethodInfo
     /// </summary>
     /// <param name="origin">The origin method information.</param>
     /// <returns>The new instance.</returns>
-    public static MethodInfo CreateNew(OriginMethodInfo origin)
+    internal static MethodInfo CreateNew(OriginMethodInfo origin)
     {
         if (MethodInfoCache.ContainsKey(origin))
             return MethodInfoCache[origin];

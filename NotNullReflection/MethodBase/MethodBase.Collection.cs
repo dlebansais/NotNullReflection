@@ -14,6 +14,6 @@ public abstract partial class MethodBase
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginMethodBase"/> to convert.</param>
     /// <returns>A collection of <see cref="MethodBase"/> objects.</returns>
-    public static IEnumerable<MethodBase> GetList(IEnumerable<OriginMethodBase> collection) => from OriginMethodBase Item in collection
-                                                                                               select CreateNew(Item);
+    internal static IEnumerable<MethodBase> GetList(IEnumerable<OriginMethodBase> collection) => from OriginMethodBase Item in collection
+                                                                                                 select CreateNew(Item);
 }

@@ -14,6 +14,6 @@ public partial class Module
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginModule"/> to convert.</param>
     /// <returns>A collection of <see cref="Module"/> objects.</returns>
-    public static IEnumerable<Module> GetList(IEnumerable<OriginModule> collection) => from OriginModule Item in collection
-                                                                                       select CreateNew(Item);
+    internal static IEnumerable<Module> GetList(IEnumerable<OriginModule> collection) => from OriginModule Item in collection
+                                                                                         select CreateNew(Item);
 }

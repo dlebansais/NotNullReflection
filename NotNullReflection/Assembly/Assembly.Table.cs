@@ -13,7 +13,7 @@ public partial class Assembly
     /// </summary>
     /// <param name="origin">The origin assembly.</param>
     /// <returns>The new instance.</returns>
-    public static Assembly CreateNew(OriginAssembly origin)
+    internal static Assembly CreateNew(OriginAssembly origin)
     {
         if (AssemblyCache.ContainsKey(origin))
             return AssemblyCache[origin];

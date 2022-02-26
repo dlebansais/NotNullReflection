@@ -14,6 +14,6 @@ public partial class AssemblyName
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginAssemblyName"/> to convert.</param>
     /// <returns>A collection of <see cref="AssemblyName"/> objects.</returns>
-    public static IEnumerable<AssemblyName> GetList(IEnumerable<OriginAssemblyName> collection) => from OriginAssemblyName Item in collection
-                                                                                                   select new AssemblyName(Item);
+    internal static IEnumerable<AssemblyName> GetList(IEnumerable<OriginAssemblyName> collection) => from OriginAssemblyName Item in collection
+                                                                                                     select new AssemblyName(Item);
 }

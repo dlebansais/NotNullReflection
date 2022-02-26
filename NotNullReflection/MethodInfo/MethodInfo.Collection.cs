@@ -14,6 +14,6 @@ public partial class MethodInfo
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginMethodInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="MethodInfo"/> objects.</returns>
-    public static IEnumerable<MethodInfo> GetList(IEnumerable<OriginMethodInfo> collection) => from OriginMethodInfo Item in collection
-                                                                                               select CreateNew(Item);
+    internal static IEnumerable<MethodInfo> GetList(IEnumerable<OriginMethodInfo> collection) => from OriginMethodInfo Item in collection
+                                                                                                 select CreateNew(Item);
 }

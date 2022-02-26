@@ -13,7 +13,7 @@ public partial class Module
     /// </summary>
     /// <param name="origin">The origin field information.</param>
     /// <returns>The new instance.</returns>
-    public static Module CreateNew(OriginModule origin)
+    internal static Module CreateNew(OriginModule origin)
     {
         if (ModuleCache.ContainsKey(origin))
             return ModuleCache[origin];

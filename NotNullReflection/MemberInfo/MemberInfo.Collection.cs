@@ -14,6 +14,6 @@ public abstract partial class MemberInfo
     /// </summary>
     /// <param name="collection">The collection of <see cref="OriginMemberInfo"/> to convert.</param>
     /// <returns>A collection of <see cref="MemberInfo"/> objects.</returns>
-    public static IEnumerable<MemberInfo> GetList(IEnumerable<OriginMemberInfo> collection) => from OriginMemberInfo Item in collection
-                                                                                               select CreateNew(Item);
+    internal static IEnumerable<MemberInfo> GetList(IEnumerable<OriginMemberInfo> collection) => from OriginMemberInfo Item in collection
+                                                                                                 select CreateNew(Item);
 }

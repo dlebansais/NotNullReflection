@@ -13,7 +13,7 @@ public partial class FieldInfo
     /// </summary>
     /// <param name="origin">The origin field information.</param>
     /// <returns>The new instance.</returns>
-    public static FieldInfo CreateNew(OriginFieldInfo origin)
+    internal static FieldInfo CreateNew(OriginFieldInfo origin)
     {
         if (FieldInfoCache.ContainsKey(origin))
             return FieldInfoCache[origin];

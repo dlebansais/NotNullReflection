@@ -13,7 +13,7 @@ public partial class ManifestResourceInfo
     /// </summary>
     /// <param name="origin">The origin manifest resource information.</param>
     /// <returns>The new instance.</returns>
-    public static ManifestResourceInfo CreateNew(OriginManifestResourceInfo origin)
+    internal static ManifestResourceInfo CreateNew(OriginManifestResourceInfo origin)
     {
         if (ManifestResourceInfoCache.ContainsKey(origin))
             return ManifestResourceInfoCache[origin];

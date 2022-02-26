@@ -13,7 +13,7 @@ public partial class EventInfo
     /// </summary>
     /// <param name="origin">The origin event information.</param>
     /// <returns>The new instance.</returns>
-    public static EventInfo CreateNew(OriginEventInfo origin)
+    internal static EventInfo CreateNew(OriginEventInfo origin)
     {
         if (EventInfoCache.ContainsKey(origin))
             return EventInfoCache[origin];
