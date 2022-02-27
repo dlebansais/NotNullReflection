@@ -2,6 +2,8 @@
 
 Encapsulation of `System.Reflection` with no null references whatsoever.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/w7j88ujjovca8ipn?svg=true)](https://ci.appveyor.com/project/dlebansais/notnullreflection) [![CodeFactor](https://www.codefactor.io/repository/github/dlebansais/easly-language/badge)](https://www.codefactor.io/repository/github/dlebansais/easly-language)
+
 ## Supported types
 
 + `System.Reflection.Assembly`
